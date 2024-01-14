@@ -20,7 +20,7 @@ jobs:
     - uses: DeterminateSystems/nix-installer-action@v9
     - uses: DeterminateSystems/magic-nix-cache-action@v2
     - name: Build documentation
-      run: nix build .#docs --print-build-logs
+      run: nix build .#doc --print-build-logs
     - name: Adjust permissions
       run: |
           chown -R "$(id -u):$(id -g)" ./result
