@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
     paths:
-      - ./.github/workflows/deploy.yaml # this workflow
+      - ./.github/workflows/deploy.yml # this workflow
       - ./docs/** # Docs generation code
       - ./options.nix # module options
       # Nix files
