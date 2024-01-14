@@ -1,0 +1,43 @@
+name: Deploy Documentation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ./.github/workflows/deploy.yaml # this workflow
+      - ./docs/** # Docs generation code
+      - ./options.nix # module options
+      # Nix files
+      - flake.lock
+      - flake.nix
+
+jobs:
+  build-website:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: DeterminateSystems/nix-installer-action@v9
+    - uses: DeterminateSystems/magic-nix-cache-action@v2
+    - name: Build documentation
+      run: nix build .#docs --print-build-logs
+    - name: Adjust permissions
+      run: |
+          chown -R "$(id -u):$(id -g)" ./result
+          chmod -R a+rwx ./result
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v1
+      with:
+        path: ./result
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
