@@ -29,7 +29,7 @@ jobs:
       with:
         path: ./result
   deploy:
-    needs: build
+    needs: build-website
     runs-on: ubuntu-latest
     permissions:
       pages: write
