@@ -1,46 +1,11 @@
 { stylix }: { config, pkgs, lib, ... }:
 let
-  inherit (lib) types;
   cfg = config.jconfig;
-  mkDisableOption = option: lib.mkOption {
-    description = lib.mdDoc "Whether to enable ${option}.";
-    type = types.bool;
-    default = true;
-    example = false;
-  };
 in
 {
-  imports = [ ./gui ] ++ lib.optional (cfg.enable && cfg.styling.enable) stylix.homeManagerModules.stylix;
+  imports = [ ./gui ] ++ lib.optional (cfg.enable && cfg.styling.enable) stylix.nixosModules.stylix;
 
-  options.jconfig = lib.mkOption {
-    description = lib.mdDoc "Jalil's default NixOS configuration.";
-    type = types.submodule {
-      options.enable = lib.mkEnableOption "jalil's default configuration.";
-      options.styling = lib.mkOption {
-        description = "Jalil's styling options";
-        type = types.submodule {
-          options.enable = mkDisableOption "jalil's default styling";
-          options.wallpaper = lib.mkOption {
-            description = "The wallpaper to use.";
-            type = types.str;
-            default = builtins.fetchurl {
-              url = "https://raw.githubusercontent.com/lunik1/nixos-logo-gruvbox-wallpaper/d4937c424fad79c1136a904599ba689fcf8d0fad/png/gruvbox-dark-rainbow.png";
-              sha256 = "036gqhbf6s5ddgvfbgn6iqbzgizssyf7820m5815b2gd748jw8zc";
-            };
-          };
-          options.bootLogo = lib.mkOption {
-            description = "The logo used by plymouth at boot.";
-            type = types.str;
-            # http://xenia-linux-site.glitch.me/images/cathodegaytube-splash.png
-            default = builtins.fetchurl {
-              url = "https://efimero.github.io/xenia-images/cathodegaytube-splash.png";
-              sha256 = "qKugUfdRNvMwSNah+YmMepY3Nj6mWlKFh7jlGlAQDo8=";
-            };
-          };
-        };
-      };
-    };
-  };
+  options = import ../options.nix;
 
   config = lib.optionalAttrs cfg.enable {
     boot.plymouth.enable = cfg.styling.enable;

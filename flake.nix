@@ -30,7 +30,7 @@
 
       nixosModules = rec {
         default = nixosModule;
-        nixosModule = import ./configuration { inherit stylix; };
+        nixosModule = import ./module { inherit stylix; };
       };
     };
 }
