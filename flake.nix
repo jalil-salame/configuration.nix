@@ -15,15 +15,18 @@
   # Flake outputs that other flakes can use
   outputs = { flake-schemas, nixpkgs, stylix, ... }:
     let
+      inherit (nixpkgs) lib;
       # Helpers for producing system-specific outputs
       supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
-      forEachSupportedSystem = f: nixpkgs.lib.genAttrs supportedSystems (system: f {
-        pkgs = import nixpkgs { inherit system; };
-      });
+      forEachSupportedSystem = f: nixpkgs.lib.genAttrs supportedSystems (system: f { pkgs = import nixpkgs { inherit system; }; });
+      # Module documentation
+      doc = forEachSupportedSystem ({ pkgs }: { doc = import ./docs { inherit pkgs lib; }; });
     in
     {
       # Schemas tell Nix about the structure of your flake's outputs
       schemas = flake-schemas.schemas;
+
+      packages = doc;
 
       # Nix files formatter (run `nix fmt`)
       formatter = forEachSupportedSystem ({ pkgs }: pkgs.nixpkgs-fmt);

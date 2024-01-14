@@ -1,0 +1,6 @@
+[book]
+authors = ["Jalil David Salamé Messina"]
+language = "en"
+multilingual = false
+src = "src"
+title = "Jalil's NixOS configuration module"
