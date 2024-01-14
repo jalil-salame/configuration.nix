@@ -5,9 +5,12 @@ on:
   push:
     branches: [main]
     paths:
-      - ./.github/workflows/deploy.yml # this workflow
-      - ./docs/** # Docs generation code
-      - ./options.nix # module options
+      # This workflow
+      - ./.github/workflows/deploy.yml
+      # Docs generation code
+      - ./docs/**
+      # Module options
+      - ./options.nix
       # Nix files
       - flake.lock
       - flake.nix
@@ -21,10 +24,6 @@ jobs:
     - uses: DeterminateSystems/magic-nix-cache-action@v2
     - name: Build documentation
       run: nix build .#doc --print-build-logs
-    - name: Adjust permissions
-      run: |
-          chown -R "$(id -u):$(id -g)" ./result
-          chmod -R a+rwx ./result
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v1
       with:
