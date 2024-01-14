@@ -2,7 +2,8 @@
 let
   eval = lib.evalModules { modules = [ ../options.nix ]; };
   doc = (pkgs.nixosOptionsDoc { inherit (eval) options; }).optionsCommonMark;
-in pkgs.stdenvNoCC.mkDerivation {
+in
+pkgs.stdenvNoCC.mkDerivation {
   name = "nixos-configuration-book";
   src = ./.;
 
