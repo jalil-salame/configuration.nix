@@ -1,0 +1,28 @@
+name: Check flake
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: 5 4 * * 5 # At 04:05 on Friday.
+
+jobs:
+  check:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: DeterminateSystems/nix-installer-action@v9
+      - uses: DeterminateSystems/magic-nix-cache-action@v2
+      - name: Check formatting
+        run: nix run .#formatter.x86_64-linux -- --check
+      - name: Run `nix flake check`
+        run: nix flake check
+  lockfile:
+    needs: check
+    if: ${{ github.event_name == 'schedule' }} # only run when scheduled
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: DeterminateSystems/nix-installer-action@v9
+      - uses: DeterminateSystems/update-flake-lock@v20
+      - name: Run `nix flake check`
+        run: nix flake check
