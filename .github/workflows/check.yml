@@ -1,6 +1,9 @@
 name: Check flake
 on:
   push:
+    path:
+      - ./**.nix
+      - ./flake.lock
   pull_request:
   schedule:
     - cron: 5 4 * * 5 # At 04:05 on Friday.

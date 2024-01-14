@@ -12,8 +12,8 @@ on:
       # Module options
       - ./options.nix
       # Nix files
-      - flake.lock
-      - flake.nix
+      - ./flake.lock
+      - ./flake.nix
 
 jobs:
   build-website:
