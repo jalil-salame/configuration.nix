@@ -1,37 +1,9 @@
 { config, lib, pkgs, ... }:
 let
-  inherit (lib) types;
   cfg = config.jconfig.gui;
-  enable = config.jconfig.enable && cfg.enable;
-  # Like lib.mkEnableOption but default to true
-  mkDisableOption = option: lib.mkOption {
-    description = lib.mdDoc "Whether to enable ${option}.";
-    type = types.bool;
-    default = true;
-    example = false;
-  };
 in
 {
-  options.jhome.gui = lib.mkOption {
-    description = lib.mdDoc "Jalil's default configuration for a NixOS gui.";
-    type = types.submodule {
-      options.enable = lib.mkEnableOption "jalil's default gui configuration.";
-      # Fix for using Xinput mode on 8bitdo Ultimate C controller
-      # Inspired by https://aur.archlinux.org/packages/8bitdo-ultimate-controller-udev
-      # Adapted from: https://gist.github.com/interdependence/28452fbfbe692986934fbe1e54c920d4
-      options."8bitdoFix" = mkDisableOption "a fix for 8bitdo controllers";
-      options.steamHardwareSupport = mkDisableOption "steam hardware support";
-      options.ydotool = lib.mkOption {
-        description = lib.mdDoc "Jalil's default ydotool configuration.";
-        type = types.submodule {
-          options.enable = mkDisableOption "ydotool";
-          options.autoStart = mkDisableOption "autostarting ydotool at login";
-        };
-      };
-    };
-  };
-
-  config = lib.optionalAttrs enable
+  config = lib.optionalAttrs (config.jconfig.enable && cfg.enable)
     {
       environment.systemPackages = [
         pkgs.gnome.adwaita-icon-theme
