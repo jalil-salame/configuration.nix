@@ -4,16 +4,6 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths:
-      # This workflow
-      - ./.github/workflows/deploy.yml
-      # Docs generation code
-      - ./docs/**
-      # Module options
-      - ./options.nix
-      # Nix files
-      - ./flake.lock
-      - ./flake.nix
 
 jobs:
   build-website:
