@@ -247,20 +247,6 @@
         "url": "https://flakehub.com/f/DeterminateSystems/flake-schemas/%2A.tar.gz"
       }
     },
-    "flake-schemas_2": {
-      "locked": {
-        "lastModified": 1697467827,
-        "narHash": "sha256-j8SR19V1SRysyJwpOBF4TLuAvAjF5t+gMiboN4gYQDU=",
-        "rev": "764932025c817d4e500a8d2a4d8c565563923d29",
-        "revCount": 29,
-        "type": "tarball",
-        "url": "https://api.flakehub.com/f/pinned/DeterminateSystems/flake-schemas/0.1.2/018b3da8-4cc3-7fbb-8ff7-1588413c53e2/source.tar.gz"
-      },
-      "original": {
-        "type": "tarball",
-        "url": "https://flakehub.com/f/DeterminateSystems/flake-schemas/%2A.tar.gz"
-      }
-    },
     "flake-utils": {
       "inputs": {
         "systems": "systems"
@@ -375,11 +361,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1705355563,
-        "narHash": "sha256-RuLJrwBSi3yNKsfIneEt1Mc6kII5z9omr/uxoIHTQxI=",
+        "lastModified": 1705355685,
+        "narHash": "sha256-nNCmjoLa37UuKmi1VqQzpu/hVB+ri+DOJi/Nx1rW678=",
         "owner": "jalil-salame",
         "repo": "home.nix",
-        "rev": "082e31754b178021a0c6efdb32b80410a85c0353",
+        "rev": "dfe3aff9305f2f500f3f6cdcc8b2742e7867a158",
         "type": "github"
       },
       "original": {
@@ -664,7 +650,10 @@
     },
     "nvim-config": {
       "inputs": {
-        "flake-schemas": "flake-schemas_2",
+        "flake-schemas": [
+          "home-config",
+          "flake-schemas"
+        ],
         "home-manager": [
           "home-config",
           "home-manager"
