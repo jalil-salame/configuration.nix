@@ -1,6 +1,6 @@
 { pkgs, lib, ... }:
 let
-  eval = lib.evalModules { modules = [ ../options.nix ]; };
+  eval = lib.evalModules { modules = [ ../nixos/options.nix ]; };
   doc = (pkgs.nixosOptionsDoc { inherit (eval) options; }).optionsCommonMark;
 in
 pkgs.stdenvNoCC.mkDerivation {

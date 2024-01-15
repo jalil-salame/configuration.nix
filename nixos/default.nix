@@ -3,13 +3,15 @@ let
   cfg = config.jconfig;
 in
 {
-  imports = [ ./gui ] ++ lib.optional (cfg.enable && cfg.styling.enable) stylix.nixosModules.stylix;
+  imports = [
+    ./options.nix
+    ./gui
+    stylix.nixosModules.stylix
+  ];
 
-  options = import ../options.nix;
-
-  config = lib.optionalAttrs cfg.enable {
+  config = lib.mkIf cfg.enable {
     boot.plymouth.enable = cfg.styling.enable;
-    stylix = lib.optionalAttrs cfg.styling.enable (import ./stylix-config.nix);
+    stylix = lib.mkIf cfg.styling.enable (import ./stylix-config.nix { inherit config pkgs; });
 
     # Enable unlocking the gpg-agent at boot (configured through home.nix)
     security.pam.services.login.gnupg.enable = true;
@@ -32,7 +34,7 @@ in
 
     # Shell prompt
     programs.starship.enable = true;
-    programs.starship.settings = lib.optionalAttrs cfg.styling.enable {
+    programs.starship.settings = lib.mkIf cfg.styling.enable {
       format = "$time$all";
       add_newline = false;
       cmd_duration.min_time = 500;

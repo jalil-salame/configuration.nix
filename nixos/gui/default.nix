@@ -3,7 +3,7 @@ let
   cfg = config.jconfig.gui;
 in
 {
-  config = lib.optionalAttrs (config.jconfig.enable && cfg.enable)
+  config = lib.mkIf (config.jconfig.enable && cfg.enable)
     {
       environment.systemPackages = [
         pkgs.gnome.adwaita-icon-theme
@@ -12,7 +12,7 @@ in
         pkgs.pinentry-qt
       ] ++ lib.optional cfg.ydotool.enable pkgs.ydotool;
 
-      systemd.user.services.ydotool = lib.optionalAttrs cfg.ydotool.enable {
+      systemd.user.services.ydotool = lib.mkIf cfg.ydotool.enable {
         enable = cfg.ydotool.autoStart;
         wantedBy = [ "default.target" ];
         description = "Generic command-line automation tool";
@@ -56,7 +56,7 @@ in
       hardware.opengl.enable = true;
       hardware.uinput.enable = true;
       hardware.steam-hardware.enable = cfg.steamHardwareSupport;
-    } // lib.optionalAttrs cfg."8bitdoFix" {
+    } // lib.mkIf cfg."8bitdoFix" {
     # Udev rules to start or stop systemd service when controller is connected or disconnected
     services.udev.extraRules = ''
       # May vary depending on your controller model, find product id using 'lsusb'

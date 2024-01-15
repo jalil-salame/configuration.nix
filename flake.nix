@@ -7,9 +7,12 @@
   inputs.stylix.url = "https://flakehub.com/f/danth/stylix/0.1.282.tar.gz";
   inputs.stylix.inputs.nixpkgs.follows = "nixpkgs";
   inputs.stylix.inputs.home-manager.follows = "home-manager";
+
   inputs.nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.*.tar.gz";
+
   inputs.home-manager.url = "https://flakehub.com/f/nix-community/home-manager/0.1.*.tar.gz";
   inputs.home-manager.inputs.nixpkgs.follows = "nixpkgs";
+
   inputs.flake-schemas.url = "https://flakehub.com/f/DeterminateSystems/flake-schemas/*.tar.gz";
 
   # Flake outputs that other flakes can use
@@ -33,7 +36,7 @@
 
       nixosModules = rec {
         default = nixosModule;
-        nixosModule = import ./module { inherit stylix; };
+        nixosModule = import ./nixos { inherit stylix; };
       };
     };
 }
