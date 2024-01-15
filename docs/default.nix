@@ -1,7 +1,10 @@
 { pkgs, lib, markdown }:
 let
   eval = lib.evalModules { modules = [ ../nixos/options.nix ]; };
-  nixos-markdown = (pkgs.nixosOptionsDoc { inherit (eval) options; }).optionsCommonMark;
+  nixos-markdown = (pkgs.nixosOptionsDoc {
+    inherit (eval) options;
+    transformOptions = option: option // { visible = option.visible && builtins.elemAt option.loc 0 == "jconfig"; };
+    }).optionsCommonMark;
 in
 {
   markdown = nixos-markdown;
