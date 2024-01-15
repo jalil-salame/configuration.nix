@@ -4,7 +4,7 @@ let
   nixos-markdown = (pkgs.nixosOptionsDoc {
     inherit (eval) options;
     transformOptions = option: option // { visible = option.visible && builtins.elemAt option.loc 0 == "jconfig"; };
-    }).optionsCommonMark;
+  }).optionsCommonMark;
 in
 {
   markdown = nixos-markdown;
