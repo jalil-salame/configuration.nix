@@ -1,16 +1,19 @@
 { pkgs, lib, ... }:
 let
   eval = lib.evalModules { modules = [ ../nixos/options.nix ]; };
-  doc = (pkgs.nixosOptionsDoc { inherit (eval) options; }).optionsCommonMark;
+  markdown = (pkgs.nixosOptionsDoc { inherit (eval) options; }).optionsCommonMark;
 in
-pkgs.stdenvNoCC.mkDerivation {
-  name = "nixos-configuration-book";
-  src = ./.;
+{
+  inherit markdown;
+  docs = pkgs.stdenvNoCC.mkDerivation {
+    name = "nixos-configuration-book";
+    src = ./.;
 
-  patchPhase = ''
-    # copy generated options removing the declared by statement
-    sed '/^\*Declared by:\*$/,/^$/d' <${doc} >> src/options.md
-  '';
+    patchPhase = ''
+      # copy generated options removing the declared by statement
+      sed '/^\*Declared by:\*$/,/^$/d' <${markdown} >> src/options.md
+    '';
 
-  buildPhase = "${pkgs.mdbook}/bin/mdbook build --dest-dir $out";
+    buildPhase = "${pkgs.mdbook}/bin/mdbook build --dest-dir $out";
+  };
 }

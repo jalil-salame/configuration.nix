@@ -31,7 +31,7 @@
       supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
       forEachSupportedSystem = f: nixpkgs.lib.genAttrs supportedSystems (system: f { pkgs = import nixpkgs { inherit system; }; });
       # Module documentation
-      doc = forEachSupportedSystem ({ pkgs }: { doc = import ./docs { inherit pkgs lib; }; });
+      doc = forEachSupportedSystem ({ pkgs }: import ./docs { inherit pkgs lib; });
     in
     {
       # Schemas tell Nix about the structure of your flake's outputs
