@@ -7,11 +7,12 @@ in
     ./options.nix
     ./gui
     stylix.nixosModules.stylix
+    # FIXME(https://github.com/danth/stylix/issues/216): Must configure stylix
+    { stylix = import ./stylix-config.nix { inherit config pkgs; }; }
   ];
 
   config = lib.mkIf cfg.enable {
     boot.plymouth.enable = cfg.styling.enable;
-    stylix = lib.mkIf cfg.styling.enable (import ./stylix-config.nix { inherit config pkgs; });
 
     # Enable unlocking the gpg-agent at boot (configured through home.nix)
     security.pam.services.login.gnupg.enable = true;

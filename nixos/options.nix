@@ -27,7 +27,7 @@ let
   };
 
   styling.options = {
-    enable = mkDisableOption "jalil's default styling";
+    enable = mkDisableOption "jalil's default styling (cannot be disabled currently)";
     wallpaper = lib.mkOption {
       description = "The wallpaper to use.";
       type = types.str;
