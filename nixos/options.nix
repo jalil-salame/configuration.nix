@@ -56,6 +56,19 @@ let
       description = "Jalil's styling options";
       type = types.submodule styling;
     };
+    importSSHKeysFromGithub = lib.mkOption {
+      description = lib.mdDoc ''
+        Import public ssh keys from a github username.
+
+        This will fetch the keys from https://github.com/$${username}.keys.
+
+        The format is `"$${github-username}" = $${sha256-hash}`. The example
+        will try to fetch the keys from <https://github.com/jalil-salame.keys>.
+      '';
+      default = { };
+      example = { "jalil-salame" = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"; };
+      type = types.attrsOf types.str;
+    };
   };
 in
 {

@@ -46,6 +46,15 @@ in
       status.disabled = false;
       sudo.disabled = false;
     };
+
+    programs.ssh.knownHostsFiles =
+      lib.mapAttrsToList
+        (username: sha256: builtins.fetchurl {
+          inherit sha256;
+          url = "https://github.com/${username}.keys";
+        })
+        cfg.importSSHKeysFromGithub;
+
     # Default shell
     programs.zsh.enable = true;
     users.defaultUserShell = pkgs.zsh;
