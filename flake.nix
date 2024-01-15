@@ -126,7 +126,7 @@
             nix.registry.nixpkgs.flake = nixpkgs;
           };
 
-          machines = [ "capricorn" "gemini" "vm" ];
+          machines = [ "capricorn" "gemini" "libra" "vm" ];
           mkMachine = hostname: {
             imports = [
               nixosModule
