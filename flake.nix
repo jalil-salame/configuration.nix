@@ -21,8 +21,10 @@
 
   inputs.flake-schemas.url = "https://flakehub.com/f/DeterminateSystems/flake-schemas/*.tar.gz";
 
+  inputs.nixos-hardware.url = "https://flakehub.com/f/NixOS/nixos-hardware/0.1.*.tar.gz";
+
   # Flake outputs that other flakes can use
-  outputs = { flake-schemas, nixpkgs, stylix, home-manager, home-config, ... }:
+  outputs = { flake-schemas, nixpkgs, stylix, home-manager, home-config, nixos-hardware, ... }:
     let
       inherit (nixpkgs) lib;
       # Helpers for producing system-specific outputs
@@ -55,10 +57,17 @@
             # Pin nixpkgs
             nix.registry.nixpkgs.flake = nixpkgs;
           };
+
+          machines = [ "capricorn" "gemini" "vm" ];
+          mkMachine = hostname: {
+            imports = [ nixosModule (import ./machine + "${hostname}" nixos-hardware) ];
+            home-manager.sharedModules = [{ jhome.hostName = hostname; }];
+          };
+          machineModules = lib.genAttrs machines mkMachine;
         in
         {
           default = nixosModule;
           inherit nixosModule;
-        };
+        } // machineModules;
     };
 }
