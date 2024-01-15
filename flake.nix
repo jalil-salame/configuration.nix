@@ -23,8 +23,21 @@
 
   inputs.nixos-hardware.url = "https://flakehub.com/f/NixOS/nixos-hardware/0.1.*.tar.gz";
 
+  inputs.pre-commit-hooks.url = "github:cachix/pre-commit-hooks.nix";
+  inputs.pre-commit-hooks.inputs.nixpkgs.follows = "nixpkgs";
+
   # Flake outputs that other flakes can use
-  outputs = { self, flake-schemas, nixpkgs, stylix, home-manager, home-config, nixos-hardware, ... }:
+  outputs =
+    { self
+    , flake-schemas
+    , nixpkgs
+    , stylix
+    , home-manager
+    , home-config
+    , nixos-hardware
+    , pre-commit-hooks
+    , ...
+    }:
     let
       inherit (nixpkgs) lib;
       # Helpers for producing system-specific outputs
@@ -42,6 +55,13 @@
     {
       # Schemas tell Nix about the structure of your flake's outputs
       schemas = flake-schemas.schemas;
+
+      checks = forEachSupportedSystem ({ pkgs, system }: {
+        pre-commit-check = pre-commit-hooks.lib.${system}.run {
+          src = builtins.path { path = ./.; name = "configuration.nix"; };
+          hooks.nixpkgs-fmt.enable = true;
+        };
+      });
 
       packages = doc;
 
@@ -120,5 +140,12 @@
           default = nixosModule;
           inherit nixosModule;
         } // machineModules;
+
+      devShells = forEachSupportedSystem ({ pkgs, system }:
+        {
+          default = pkgs.mkShell {
+            inherit (self.checks.${system}.pre-commit-check) shellHook;
+          };
+        });
     };
 }
