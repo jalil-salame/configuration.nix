@@ -24,7 +24,7 @@
   inputs.nixos-hardware.url = "https://flakehub.com/f/NixOS/nixos-hardware/0.1.*.tar.gz";
 
   # Flake outputs that other flakes can use
-  outputs = { flake-schemas, nixpkgs, stylix, home-manager, home-config, nixos-hardware, ... }:
+  outputs = { self, flake-schemas, nixpkgs, stylix, home-manager, home-config, nixos-hardware, ... }:
     let
       inherit (nixpkgs) lib;
       # Helpers for producing system-specific outputs
@@ -48,6 +48,48 @@
       # Nix files formatter (run `nix fmt`)
       formatter = forEachSupportedSystem ({ pkgs, ... }: pkgs.nixpkgs-fmt);
 
+      # Example vm configuration
+      nixosConfigurations.vm =
+        let
+          system = "x86_64-linux";
+          overlays = [ home-config.overlays.${system} ];
+          pkgs = import nixpkgs { inherit system overlays; };
+        in
+        lib.nixosSystem
+          {
+            inherit system pkgs;
+            modules = [
+              self.nixosModules.vm # import vm module
+              home-manager.nixosModules.home-manager
+              {
+                time.timeZone = "Europe/Berlin";
+                i18n.defaultLocale = "en_US.UTF-8";
+
+                users.users.jdoe.password = "example";
+                users.users.jdoe.isNormalUser = true;
+                users.users.jdoe.extraGroups = [ "wheel" "video" "networkmanager" ];
+
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+                home-manager.users.jdoe = {
+                  home.username = "jdoe";
+                  home.homeDirectory = "/home/jdoe";
+                  home.stateVersion = "23.11";
+
+                  jhome.enable = true;
+                  jhome.gui.enable = true;
+                  jhome.dev.rust.enable = true;
+                };
+
+                nix.registry.nixpkgs.flake = nixpkgs;
+
+                jconfig.enable = true;
+                jconfig.gui.enable = true;
+              }
+            ];
+          };
+
+
       nixosModules =
         let
           nixosModule = {
@@ -66,7 +108,10 @@
 
           machines = [ "capricorn" "gemini" "vm" ];
           mkMachine = hostname: {
-            imports = [ nixosModule (import ./machine + "${hostname}" nixos-hardware) ];
+            imports = [
+              nixosModule
+              (import (./machines + "/${hostname}") nixos-hardware)
+            ];
             home-manager.sharedModules = [{ jhome.hostName = hostname; }];
           };
           machineModules = lib.genAttrs machines mkMachine;
