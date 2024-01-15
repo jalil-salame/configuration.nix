@@ -18,6 +18,7 @@ let
     steamHardwareSupport = mkDisableOption "steam hardware support";
     ydotool = lib.mkOption {
       description = lib.mdDoc "Jalil's default ydotool configuration.";
+      default = { };
       type = types.submodule {
         options.enable = mkDisableOption "ydotool";
         options.autoStart = mkDisableOption "autostarting ydotool at login";
@@ -50,10 +51,12 @@ let
     enable = lib.mkEnableOption "jalil's default configuration.";
     gui = lib.mkOption {
       description = lib.mdDoc "Jalil's default configuration for a NixOS gui.";
+      default = { };
       type = types.submodule gui;
     };
     styling = lib.mkOption {
       description = "Jalil's styling options";
+      default = { };
       type = types.submodule styling;
     };
     importSSHKeysFromGithub = lib.mkOption {
@@ -74,6 +77,7 @@ in
 {
   options.jconfig = lib.mkOption {
     description = lib.mdDoc "Jalil's default NixOS configuration.";
+    default = { };
     type = types.submodule config;
   };
 }
