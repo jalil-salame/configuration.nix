@@ -23,7 +23,7 @@ jobs:
     - uses: DeterminateSystems/nix-installer-action@v9
     - uses: DeterminateSystems/magic-nix-cache-action@v2
     - name: Build documentation
-      run: nix build .#doc --print-build-logs
+      run: nix build .#docs --print-build-logs
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v1
       with:
