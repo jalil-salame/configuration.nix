@@ -10,13 +10,19 @@
 
   inputs.nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.*.tar.gz";
 
+  inputs.home-config.url = "github:jalil-salame/home.nix";
+  inputs.home-config.inputs.stylix.follows = "stylix";
+  inputs.home-config.inputs.nixpkgs.follows = "nixpkgs";
+  inputs.home-config.inputs.home-manager.follows = "home-manager";
+  inputs.home-config.inputs.flake-schemas.follows = "flake-schemas";
+
   inputs.home-manager.url = "https://flakehub.com/f/nix-community/home-manager/0.1.*.tar.gz";
   inputs.home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
   inputs.flake-schemas.url = "https://flakehub.com/f/DeterminateSystems/flake-schemas/*.tar.gz";
 
   # Flake outputs that other flakes can use
-  outputs = { flake-schemas, nixpkgs, stylix, ... }:
+  outputs = { flake-schemas, nixpkgs, stylix, home-manager, home-config, ... }:
     let
       inherit (nixpkgs) lib;
       # Helpers for producing system-specific outputs
@@ -34,9 +40,25 @@
       # Nix files formatter (run `nix fmt`)
       formatter = forEachSupportedSystem ({ pkgs }: pkgs.nixpkgs-fmt);
 
-      nixosModules = rec {
-        default = nixosModule;
-        nixosModule = import ./nixos { inherit stylix; };
-      };
+      nixosModules =
+        let
+          nixosModule = {
+            imports = [
+              (import ./nixos { inherit stylix; })
+              home-manager.nixosModules.home-manager
+            ];
+
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.sharedModules = [ home-config.nixosModules.nixosModule ];
+
+            # Pin nixpkgs
+            nix.registry.nixpkgs.flake = nixpkgs;
+          };
+        in
+        {
+          default = nixosModule;
+          inherit nixosModule;
+        };
     };
 }
