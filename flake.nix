@@ -29,9 +29,15 @@
       inherit (nixpkgs) lib;
       # Helpers for producing system-specific outputs
       supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
-      forEachSupportedSystem = f: nixpkgs.lib.genAttrs supportedSystems (system: f { pkgs = import nixpkgs { inherit system; }; });
+      forEachSupportedSystem = f: nixpkgs.lib.genAttrs supportedSystems (system: f {
+        inherit system;
+        pkgs = import nixpkgs { inherit system; };
+      });
       # Module documentation
-      doc = forEachSupportedSystem ({ pkgs }: import ./docs { inherit pkgs lib; });
+      doc = forEachSupportedSystem ({ pkgs, system }: import ./docs {
+        inherit (home-config.packages.${system}) markdown;
+        inherit pkgs lib;
+      });
     in
     {
       # Schemas tell Nix about the structure of your flake's outputs
@@ -40,7 +46,7 @@
       packages = doc;
 
       # Nix files formatter (run `nix fmt`)
-      formatter = forEachSupportedSystem ({ pkgs }: pkgs.nixpkgs-fmt);
+      formatter = forEachSupportedSystem ({ pkgs, ... }: pkgs.nixpkgs-fmt);
 
       nixosModules =
         let
