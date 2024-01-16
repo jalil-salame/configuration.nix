@@ -80,7 +80,6 @@
             inherit system pkgs;
             modules = [
               self.nixosModules.vm # import vm module
-              home-manager.nixosModules.home-manager
               {
                 time.timeZone = "Europe/Berlin";
                 i18n.defaultLocale = "en_US.UTF-8";
@@ -89,8 +88,6 @@
                 users.users.jdoe.isNormalUser = true;
                 users.users.jdoe.extraGroups = [ "wheel" "video" "networkmanager" ];
 
-                home-manager.useGlobalPkgs = true;
-                home-manager.useUserPackages = true;
                 home-manager.users.jdoe = {
                   home.username = "jdoe";
                   home.homeDirectory = "/home/jdoe";
