@@ -67,6 +67,7 @@
 
       # Nix files formatter (run `nix fmt`)
       formatter = forEachSupportedSystem ({ pkgs, ... }: pkgs.nixpkgs-fmt);
+      overlays = forEachSupportedSystem ({ system, ... }: home-manager.overlays.${system});
 
       # Example vm configuration
       nixosConfigurations.vm =
