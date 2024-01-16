@@ -127,7 +127,7 @@
           mkMachine = hostname: {
             imports = [
               nixosModule
-              (import (./machines + "/${hostname}") nixos-hardware)
+              (import (./machines + "/${hostname}") { inherit nixos-hardware; })
             ];
             home-manager.sharedModules = [{ jhome.hostName = hostname; }];
           };
