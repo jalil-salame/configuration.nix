@@ -117,6 +117,8 @@
               home-manager.nixosModules.home-manager
             ];
 
+            nixpkgs.overlays = [ home-config.overlays.default ];
+
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.sharedModules = [ home-config.nixosModules.nixosModule ];
