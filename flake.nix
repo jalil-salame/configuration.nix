@@ -72,7 +72,13 @@
       nixosConfigurations.vm =
         let
           system = "x86_64-linux";
-          pkgs = import nixpkgs { inherit system; };
+          overlays = [
+            home-config.overlays.jpassmenu
+            home-config.overlays.audiomenu
+            home-config.overlays.nixneovim
+            home-config.overlays.neovim-nightly
+          ];
+          pkgs = import nixpkgs { inherit system overlays; };
         in
         lib.nixosSystem
           {
