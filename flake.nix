@@ -68,14 +68,11 @@
       # Nix files formatter (run `nix fmt`)
       formatter = forEachSupportedSystem ({ pkgs, ... }: pkgs.nixpkgs-fmt);
 
-      overlays = { inherit (home-config.overlays) default; };
-
       # Example vm configuration
       nixosConfigurations.vm =
         let
           system = "x86_64-linux";
-          overlays = [ home-config.overlays.${system} ];
-          pkgs = import nixpkgs { inherit system overlays; };
+          pkgs = import nixpkgs { inherit system; };
         in
         lib.nixosSystem
           {
@@ -116,8 +113,6 @@
               (import ./nixos { inherit stylix; })
               home-manager.nixosModules.home-manager
             ];
-
-            nixpkgs.overlays = [ home-config.overlays.default ];
 
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
