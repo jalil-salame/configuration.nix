@@ -18,6 +18,7 @@
     "/nix".options = [ "compress=zstd" "noatime" ];
   };
 
+  hardware.opengl.enable = true;
   hardware.bluetooth.enable = true;
 
   # Use the systemd-boot EFI boot loader.
