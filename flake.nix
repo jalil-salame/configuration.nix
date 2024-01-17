@@ -98,7 +98,6 @@
                 home-manager.users.jdoe = {
                   home.username = "jdoe";
                   home.homeDirectory = "/home/jdoe";
-                  home.stateVersion = "23.11";
 
                   jhome.enable = true;
                   jhome.gui.enable = true;
