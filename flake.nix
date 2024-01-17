@@ -54,7 +54,7 @@
     in
     {
       # Schemas tell Nix about the structure of your flake's outputs
-      schemas = flake-schemas.schemas;
+      inherit (flake-schemas) schemas;
 
       checks = forEachSupportedSystem ({ pkgs, system }: {
         pre-commit-check = pre-commit-hooks.lib.${system}.run {
@@ -145,11 +145,6 @@
           inherit nixosModule;
         } // machineModules;
 
-      devShells = forEachSupportedSystem ({ pkgs, system }:
-        {
-          default = pkgs.mkShell {
-            inherit (self.checks.${system}.pre-commit-check) shellHook;
-          };
-        });
+      devShells = forEachSupportedSystem ({ pkgs, system }: { default = pkgs.mkShell { inherit (self.checks.${system}.pre-commit-check) shellHook; }; });
     };
 }
