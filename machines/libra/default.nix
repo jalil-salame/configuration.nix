@@ -24,6 +24,8 @@
 
   hardware.opengl.enable = true;
   hardware.bluetooth.enable = true;
+  hardware.tuxedo-rs.enable = true;
+  hardware.tuxedo-rs.tailor-gui.enable = true;
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
