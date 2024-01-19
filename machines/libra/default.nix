@@ -9,7 +9,7 @@
     nixos-hardware.nixosModules.common-pc-laptop
     nixos-hardware.nixosModules.common-pc-laptop-ssd
     # nixos-hardware.nixosModules.common-cpu-amd-pstate
-    nixos-hardware.nixosModules.common-cpu-amd-raphael-igpu
+    nixos-hardware.nixosModules.common-cpu-amd-raphael-igpu # not working?
     nixos-hardware.nixosModules.common-gpu-amd
   ];
 
@@ -20,6 +20,7 @@
   };
 
   boot.kernelPackages = pkgs.linuxPackages_6_6;
+  boot.kernelParams = [ "amdgpu.sg_display=0" ];
 
   hardware.opengl.enable = true;
   hardware.bluetooth.enable = true;
