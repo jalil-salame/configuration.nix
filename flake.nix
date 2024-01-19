@@ -4,7 +4,7 @@
   description = "My NixOS configuration";
 
   # Flake inputs
-  inputs.stylix.url = "https://flakehub.com/f/danth/stylix/0.1.282.tar.gz";
+  inputs.stylix.url = "github:jalil-salame/stylix/fallback-fonts-v2";
   inputs.stylix.inputs.nixpkgs.follows = "nixpkgs";
   inputs.stylix.inputs.home-manager.follows = "home-manager";
 

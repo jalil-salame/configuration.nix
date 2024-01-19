@@ -952,16 +952,18 @@
         ]
       },
       "locked": {
-        "lastModified": 1705504375,
-        "narHash": "sha256-oRVxuJ6sCljsgfoWb+SsIK2MvUjsxrXQHRoVTUDVC40=",
-        "rev": "2d59480b4531ce8d062d20a42560a266cb42b9d0",
-        "revCount": 284,
-        "type": "tarball",
-        "url": "https://api.flakehub.com/f/pinned/danth/stylix/0.1.284%2Brev-2d59480b4531ce8d062d20a42560a266cb42b9d0/018d17fc-7f4a-7884-85a4-4ae334668130/source.tar.gz"
+        "lastModified": 1705527118,
+        "narHash": "sha256-b9diiSFXVsn3sDG8W6vw6d7QixdVvcPb6iOaGAPSz2Q=",
+        "owner": "jalil-salame",
+        "repo": "stylix",
+        "rev": "9c6809baa7232a3ce9c7d8ffcc1f9ac7ae9dd9d1",
+        "type": "github"
       },
       "original": {
-        "type": "tarball",
-        "url": "https://flakehub.com/f/danth/stylix/0.1.282.tar.gz"
+        "owner": "jalil-salame",
+        "ref": "fallback-fonts-v2",
+        "repo": "stylix",
+        "type": "github"
       }
     },
     "systems": {
