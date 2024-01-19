@@ -8,7 +8,7 @@
     ./hardware-configuration.nix
     nixos-hardware.nixosModules.common-pc-laptop
     nixos-hardware.nixosModules.common-pc-laptop-ssd
-    nixos-hardware.nixosModules.common-cpu-amd-pstate
+    # nixos-hardware.nixosModules.common-cpu-amd-pstate
     nixos-hardware.nixosModules.common-cpu-amd-raphael-igpu
     nixos-hardware.nixosModules.common-gpu-amd
   ];
