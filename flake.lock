@@ -490,11 +490,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1705686226,
-        "narHash": "sha256-RYEfabAoDAuse5gc3WfmRYbEEVw3K0b7+3rzEAOfq/A=",
+        "lastModified": 1705689735,
+        "narHash": "sha256-VlVZjrNWYFu4AxTwVTkFeh5Fa3EX/BciJFX+A/VSzhU=",
         "owner": "jalil-salame",
         "repo": "home.nix",
-        "rev": "6a8a4c8e2648cd3b4e02078347648ef33f143349",
+        "rev": "ac659d85eac97c3f189a0674c090148e782edc41",
         "type": "github"
       },
       "original": {
