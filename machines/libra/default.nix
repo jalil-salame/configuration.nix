@@ -2,7 +2,7 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ nixos-hardware }: {
+{ nixos-hardware }: { pkgs, ... }: {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -18,6 +18,8 @@
     "/home".options = [ "compress=zstd" ];
     "/nix".options = [ "compress=zstd" "noatime" ];
   };
+
+  boot.kernelPackages = pkgs.linuxPackages_6_6;
 
   hardware.opengl.enable = true;
   hardware.bluetooth.enable = true;
