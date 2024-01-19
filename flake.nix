@@ -80,7 +80,11 @@
             home-config.overlays.nixneovim
             home-config.overlays.neovim-nightly
           ];
-          pkgs = import nixpkgs { inherit system overlays; };
+          config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+            "steam-original"
+          ];
+          # config.allowUnfree = true;
+          pkgs = import nixpkgs { inherit system overlays config; };
         in
         lib.nixosSystem
           {
