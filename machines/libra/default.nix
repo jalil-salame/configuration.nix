@@ -34,7 +34,7 @@
 
   networking.hostName = "libra";
   networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
-  networking.networkmanager.wifi.backend = "iwd";
+  # networking.networkmanager.wifi.backend = "iwd"; # Seems to cause problems
   networking.networkmanager.appendNameservers = [ "1.1.1.1" "1.0.0.1" "8.8.8.8" "8.4.4.8" ];
 
   # Select internationalisation properties.
