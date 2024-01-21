@@ -32,14 +32,14 @@ let
 
   tempInfo.options.hwmon-path = lib.mkOption {
     description = "Path to the hardware sensor whose temperature to monitor.";
-    type = lib.types.str;
+    type = types.str;
     example = "/sys/class/hwmon/hwmon2/temp1_input";
   };
 
   sway.options = {
     background = lib.mkOption {
       description = lib.mdDoc "The wallpaper to use.";
-      type = lib.types.path;
+      type = types.path;
       default = builtins.fetchurl {
         url = "https://raw.githubusercontent.com/lunik1/nixos-logo-gruvbox-wallpaper/d4937c424fad79c1136a904599ba689fcf8d0fad/png/gruvbox-dark-rainbow.png";
         sha256 = "036gqhbf6s5ddgvfbgn6iqbzgizssyf7820m5815b2gd748jw8zc";
@@ -54,24 +54,24 @@ let
         you can switch TTYs when logging in by using CTRL+ALT+F2 (for TTY2,
         F3 for TTY3, etc).
       '';
-      type = lib.types.bool;
+      type = types.bool;
       default = true;
       example = false;
     };
     exec = lib.mkOption {
       description = "Run commands when starting sway.";
       default = { };
-      type = lib.types.submodule {
+      type = types.submodule {
         options = {
           once = lib.mkOption {
             description = lib.mdDoc "Programs to start only once (`exec`).";
-            type = lib.types.listOf lib.types.str;
+            type = types.listOf types.str;
             default = [ ];
             example = [ "signal-desktop --start-in-tray" ];
           };
           always = lib.mkOption {
             description = lib.mdDoc "Programs to start whenever the config is sourced (`exec_always`).";
-            type = lib.types.listOf lib.types.str;
+            type = types.listOf types.str;
             default = [ ];
             example = [ "signal-desktop --start-in-tray" ];
           };
@@ -85,12 +85,18 @@ let
     tempInfo = lib.mkOption {
       description = lib.mdDoc "Temperature info to display in the statusbar.";
       default = null;
-      type = lib.types.nullOr (lib.types.submodule tempInfo);
+      type = types.nullOr (types.submodule tempInfo);
     };
     sway = lib.mkOption {
       description = "Sway window manager configuration.";
       default = { };
-      type = lib.types.submodule sway;
+      type = types.submodule sway;
+    };
+    terminal = lib.mkOption {
+      description = "The terminal emulator to use.";
+      default = "alacritty";
+      example = "wezterm";
+      type = types.enum [ "wezterm" "alacritty" ];
     };
   };
 in
@@ -128,7 +134,7 @@ in
         gui = lib.mkOption {
           description = lib.mdDoc "Jalil's default GUI configuration.";
           default = { };
-          type = lib.types.submodule gui;
+          type = types.submodule gui;
         };
       };
     };

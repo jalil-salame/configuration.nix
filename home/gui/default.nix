@@ -37,13 +37,14 @@ in
     programs.waybar.systemd.enable = true;
     programs.waybar.settings = import ./waybar-settings.nix { inherit config lib; };
     # Terminal
-    programs.wezterm.enable = true;
+    programs.wezterm.enable = cfg.terminal == "wezterm";
     programs.wezterm.extraConfig = ''
       config = {}
       config.hide_tab_bar_if_only_one_tab = true
       config.window_padding = { left = 1, right = 1, top = 1, bottom = 1 }
       return config
     '';
+    programs.alacritty.enable = cfg.terminal == "alacritty";
     # PDF reader
     programs.zathura.enable = true;
     # Auto start sway

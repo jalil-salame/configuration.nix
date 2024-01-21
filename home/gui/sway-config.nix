@@ -2,8 +2,15 @@
 let
   cfg = config.jhome.gui.sway;
   modifier = "Mod4";
-  terminal = "wezterm";
-  menu = "${pkgs.fuzzel}/bin/fuzzel --terminal 'wezterm start'";
+  terminal = config.jhome.gui.terminal;
+  termCmd =
+    if terminal == "wezterm" then
+      "wezterm start"
+    else if terminal == "alacritty" then
+      "alacritty -e"
+    else
+      builtins.abort "no command configured for ${terminal}";
+  menu = "${pkgs.fuzzel}/bin/fuzzel --terminal '${termCmd}'";
   # currently, there is some friction between sway and gtk:
   # https://github.com/swaywm/sway/wiki/GTK-3-settings-on-Wayland
   # the suggested way to set gtk settings is with gsettings
