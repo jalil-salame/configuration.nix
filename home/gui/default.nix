@@ -45,6 +45,7 @@ in
       return config
     '';
     programs.alacritty.enable = cfg.terminal == "alacritty";
+    programs.zellij.enable = cfg.terminal == "alacritty"; # alacritty has no terminal multiplexerr built in
     # PDF reader
     programs.zathura.enable = true;
     # Auto start sway
