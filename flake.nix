@@ -10,11 +10,18 @@
 
   inputs.nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.*.tar.gz";
 
-  inputs.home-config.url = "github:jalil-salame/home.nix";
-  inputs.home-config.inputs.stylix.follows = "stylix";
-  inputs.home-config.inputs.nixpkgs.follows = "nixpkgs";
-  inputs.home-config.inputs.home-manager.follows = "home-manager";
-  inputs.home-config.inputs.flake-schemas.follows = "flake-schemas";
+  inputs.jpassmenu.url = "github:jalil-salame/jpassmenu";
+  inputs.jpassmenu.inputs.nixpkgs.follows = "nixpkgs";
+  inputs.jpassmenu.inputs.flake-schemas.follows = "flake-schemas";
+
+  inputs.audiomenu.url = "github:jalil-salame/audiomenu";
+  inputs.audiomenu.inputs.nixpkgs.follows = "nixpkgs";
+  inputs.audiomenu.inputs.flake-schemas.follows = "flake-schemas";
+
+  inputs.nvim-config.url = "github:jalil-salame/nvim-config";
+  inputs.nvim-config.inputs.nixpkgs.follows = "nixpkgs";
+  inputs.nvim-config.inputs.home-manager.follows = "home-manager";
+  inputs.nvim-config.inputs.flake-schemas.follows = "flake-schemas";
 
   inputs.home-manager.url = "https://flakehub.com/f/nix-community/home-manager/0.1.*.tar.gz";
   inputs.home-manager.inputs.nixpkgs.follows = "nixpkgs";
@@ -33,10 +40,11 @@
     , nixpkgs
     , stylix
     , home-manager
-    , home-config
     , nixos-hardware
     , pre-commit-hooks
-    , ...
+    , jpassmenu
+    , audiomenu
+    , nvim-config
     }:
     let
       inherit (nixpkgs) lib;
@@ -47,10 +55,7 @@
         pkgs = import nixpkgs { inherit system; };
       });
       # Module documentation
-      doc = forEachSupportedSystem ({ pkgs, system }: import ./docs {
-        inherit (home-config.packages.${system}) markdown;
-        inherit pkgs lib;
-      });
+      doc = forEachSupportedSystem ({ pkgs, system }: import ./docs { inherit pkgs lib; });
     in
     {
       # Schemas tell Nix about the structure of your flake's outputs
@@ -65,21 +70,22 @@
 
       packages = doc;
 
+      # Provide necessary overlays
+      overlays = {
+        nixneovim = nvim-config.overlays.nixneovim;
+        neovim-nightly = nvim-config.overlays.neovim-nightly;
+        jpassmenu = jpassmenu.overlays.default;
+        audiomenu = audiomenu.overlays.default;
+      };
+
       # Nix files formatter (run `nix fmt`)
       formatter = forEachSupportedSystem ({ pkgs, ... }: pkgs.nixpkgs-fmt);
-
-      inherit (home-config) overlays;
 
       # Example vm configuration
       nixosConfigurations.vm =
         let
           system = "x86_64-linux";
-          overlays = [
-            home-config.overlays.jpassmenu
-            home-config.overlays.audiomenu
-            home-config.overlays.nixneovim
-            home-config.overlays.neovim-nightly
-          ];
+          overlays = builtins.attrValues self.overlays;
           config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
             "steam-original"
           ];
@@ -119,6 +125,9 @@
 
       nixosModules =
         let
+          overlays = builtins.attrValues self.overlays;
+          homeManagerModuleSandalone = import ./home { inherit overlays nvim-config stylix; };
+          homeManagerModuleNixOS = import ./home { inherit overlays nvim-config; };
           nixosModule = {
             imports = [
               (import ./nixos { inherit stylix; })
@@ -127,7 +136,7 @@
 
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.sharedModules = [ home-config.nixosModules.nixosModule ];
+            home-manager.sharedModules = [ homeManagerModuleNixOS ];
 
             # Pin nixpkgs
             nix.registry.nixpkgs.flake = nixpkgs;
@@ -145,7 +154,7 @@
         in
         {
           default = nixosModule;
-          inherit nixosModule;
+          inherit nixosModule homeManagerModuleNixOS homeManagerModuleSandalone;
         } // machineModules;
 
       devShells = forEachSupportedSystem ({ pkgs, system }: { default = pkgs.mkShell { inherit (self.checks.${system}.pre-commit-check) shellHook; }; });
