@@ -2,8 +2,9 @@
 let
   inherit (config) jhome;
   flatpakEnabled = if osConfig != null then osConfig.services.flatpak.enable else false;
+  osSway = osConfig == null && !osConfig.programs.sway.enable;
+  swayPkg = if osSway then pkgs.sway else null;
   cfg = jhome.gui;
-  swaycfg = config.wayland.windowManager.sway.config;
   cursor.package = pkgs.nordzy-cursor-theme;
   cursor.name = "Nordzy-cursors";
   iconTheme.name = "Papirus-Dark";
@@ -27,7 +28,7 @@ in
     # Dynamic Menu
     programs.fuzzel.enable = true;
     programs.fuzzel.settings.main.icon-theme = "Papirus-Dark";
-    programs.fuzzel.settings.main.terminal = swaycfg.terminal;
+    programs.fuzzel.settings.main.terminal = cfg.terminal;
     programs.fuzzel.settings.main.layer = "overlay";
     # Video player
     programs.mpv.enable = true;
@@ -66,6 +67,7 @@ in
 
     # Window Manager
     wayland.windowManager.sway.enable = true;
+    wayland.windowManager.sway.package = swayPkg; # no sway package if it comes from the OS
     wayland.windowManager.sway.config = import ./sway-config.nix { inherit config pkgs; };
 
     # Set cursor style

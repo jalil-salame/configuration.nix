@@ -1,10 +1,11 @@
 { config, lib, pkgs, ... }:
 let
   cfg = config.jconfig.gui;
+  enable = config.jconfig.enable && cfg.enable;
 in
 {
   config = lib.mkMerge [
-    (lib.mkIf (config.jconfig.enable && cfg.enable) {
+    (lib.mkIf enable {
       environment.systemPackages = [
         pkgs.gnome.adwaita-icon-theme
         pkgs.adwaita-qt
@@ -33,6 +34,10 @@ in
       programs.light.enable = true;
       programs.dconf.enable = true;
 
+      programs.sway.enable = cfg.sway;
+      programs.sway.wrapperFeatures.base = true;
+      programs.sway.wrapperFeatures.gtk = true;
+
       security.polkit.enable = true;
       security.rtkit.enable = true; # Recommended for pipewire
 
@@ -57,7 +62,7 @@ in
       hardware.uinput.enable = true;
       hardware.steam-hardware.enable = cfg.steamHardwareSupport;
     })
-    (lib.mkIf cfg."8bitdoFix" {
+    (lib.mkIf (enable && cfg."8bitdoFix") {
       # Udev rules to start or stop systemd service when controller is connected or disconnected
       services.udev.extraRules = ''
         # May vary depending on your controller model, find product id using 'lsusb'
