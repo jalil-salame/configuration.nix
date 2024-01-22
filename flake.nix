@@ -23,7 +23,9 @@
   inputs.nvim-config.inputs.home-manager.follows = "home-manager";
   inputs.nvim-config.inputs.flake-schemas.follows = "flake-schemas";
 
-  inputs.home-manager.url = "https://flakehub.com/f/nix-community/home-manager/0.1.*.tar.gz";
+  # WARN: Flakehub is outdated (39 days out of date)
+  # inputs.home-manager.url = "https://flakehub.com/f/nix-community/home-manager/0.1.*.tar.gz";
+  inputs.home-manager.url = "github:nix-community/home-manager";
   inputs.home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
   inputs.flake-schemas.url = "https://flakehub.com/f/DeterminateSystems/flake-schemas/*.tar.gz";
