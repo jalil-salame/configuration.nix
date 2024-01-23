@@ -97,7 +97,7 @@ builtins.foldl' (l: r: l // r)
   "XF86AudioRaiseVolume" = "exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ && ${audio-source-notify}";
   "XF86AudioLowerVolume" = "exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- && ${audio-source-notify}";
   "XF86AudioMute" = "exec wpctl set-mute   @DEFAULT_AUDIO_SINK@ toggle && ${audio-source-notify}";
-  "XF86ScreenSaver" = "exec swaylock --image ${cfg.background}";
+  "XF86ScreenSaver" = "exec swaylock --image ${config.jhome.gui.background}";
   "XF86MonBrightnessUp" = "exec ${pkgs.light}/bin/light -A 5 && ${brightness-notify}";
   "XF86MonBrightnessDown" = "exec ${pkgs.light}/bin/light -U 5 && ${brightness-notify}";
   # Floating

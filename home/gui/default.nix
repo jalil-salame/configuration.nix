@@ -66,9 +66,11 @@ in
     services.mako.defaultTimeout = 15000;
 
     # Window Manager
-    wayland.windowManager.sway.enable = true;
+    wayland.windowManager.sway.enable = cfg.windowManager == "sway";
     wayland.windowManager.sway.package = swayPkg; # no sway package if it comes from the OS
     wayland.windowManager.sway.config = import ./sway-config.nix { inherit config pkgs; };
+
+    wayland.windowManager.hyprland.enable = cfg.windowManager == "hyprland";
 
     # Set cursor style
     stylix.cursor = cursor;

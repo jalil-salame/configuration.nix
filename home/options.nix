@@ -37,14 +37,6 @@ let
   };
 
   sway.options = {
-    background = lib.mkOption {
-      description = lib.mdDoc "The wallpaper to use.";
-      type = types.path;
-      default = builtins.fetchurl {
-        url = "https://raw.githubusercontent.com/lunik1/nixos-logo-gruvbox-wallpaper/d4937c424fad79c1136a904599ba689fcf8d0fad/png/gruvbox-dark-rainbow.png";
-        sha256 = "036gqhbf6s5ddgvfbgn6iqbzgizssyf7820m5815b2gd748jw8zc";
-      };
-    };
     autostart = lib.mkOption {
       description = lib.mdDoc ''
         Autostart Sway when logging in to /dev/tty1.
@@ -92,11 +84,25 @@ let
       default = { };
       type = types.submodule sway;
     };
+    background = lib.mkOption {
+      description = lib.mdDoc "The wallpaper to use.";
+      type = types.path;
+      default = builtins.fetchurl {
+        url = "https://raw.githubusercontent.com/lunik1/nixos-logo-gruvbox-wallpaper/d4937c424fad79c1136a904599ba689fcf8d0fad/png/gruvbox-dark-rainbow.png";
+        sha256 = "036gqhbf6s5ddgvfbgn6iqbzgizssyf7820m5815b2gd748jw8zc";
+      };
+    };
     terminal = lib.mkOption {
       description = "The terminal emulator to use.";
       default = "alacritty";
       example = "wezterm";
       type = types.enum [ "wezterm" "alacritty" ];
+    };
+    windowManager = lib.mkOption {
+      description = "The window manager to use.";
+      default = "sway";
+      example = "hyprland";
+      type = types.enum [ "sway" "hyprland" ];
     };
   };
 in

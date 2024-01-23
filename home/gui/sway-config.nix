@@ -55,7 +55,7 @@ in
     smartBorders = "on";
     inner = 4;
   };
-  output."*".bg = "${cfg.background} fill";
+  output."*".bg = "${config.jhome.gui.background} fill";
   # Window Appearance
   window.border = 2;
   # Make certain windows floating
