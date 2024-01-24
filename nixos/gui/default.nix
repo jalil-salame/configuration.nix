@@ -30,8 +30,6 @@ in
 
       fonts.fontDir.enable = true;
 
-      # Backlight control
-      programs.light.enable = true;
       programs.dconf.enable = true;
 
       programs.sway.enable = cfg.sway;

@@ -19,7 +19,8 @@ let
     [ -f "$msgid_file" ] && msgid="$(cat "$msgid_file")"
     msgid="''${msgid:-0}"
     # Get brightness
-    brightness="$(xbacklight -perceived -get)"
+    brightness="$(${pkgs.brightnessctl}/bin/brightnessctl --machine-readable info | awk -F "\"*,\"*" '{print $4}')"
+    brightness="$${brightnes%\%}" # strip % sign
     # Send notification
     ${pkgs.libnotify}/bin/notify-send -pu low -r "$msgid" -a "$app" -i "$icon" -h int:value:"$brightness" "Brightness: $brightness%" >"$msgid_file"
   '';
@@ -98,8 +99,8 @@ builtins.foldl' (l: r: l // r)
   "XF86AudioLowerVolume" = "exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- && ${audio-source-notify}";
   "XF86AudioMute" = "exec wpctl set-mute   @DEFAULT_AUDIO_SINK@ toggle && ${audio-source-notify}";
   "XF86ScreenSaver" = "exec swaylock --image ${cfg.background}";
-  "XF86MonBrightnessUp" = "exec ${pkgs.light}/bin/light -A 5 && ${brightness-notify}";
-  "XF86MonBrightnessDown" = "exec ${pkgs.light}/bin/light -U 5 && ${brightness-notify}";
+  "XF86MonBrightnessUp" = "exec ${pkgs.brightnessctl}/bin/brightnessctl set +5% && ${brightness-notify}";
+  "XF86MonBrightnessDown" = "exec ${pkgs.brightnessctl}/bin/brightnessctl set 5%- && ${brightness-notify}";
   # Floating
   "${mod}+Space" = "floating toggle";
   "${mod}+Shift+Space" = "focus mode_toggle";
