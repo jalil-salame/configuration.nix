@@ -19,6 +19,8 @@ in
       pkgs.signal-desktop
       pkgs.lxqt.pcmanfm-qt
       pkgs.wl-clipboard
+      # Extra fonts
+      pkgs.noto-fonts-cjk # Chinese, Japanese and Korean characters
     ] ++ lib.optional flatpakEnabled pkgs.flatpak;
 
     fonts.fontconfig.enable = true;
