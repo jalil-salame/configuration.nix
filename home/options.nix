@@ -94,8 +94,8 @@ let
     };
     terminal = lib.mkOption {
       description = "The terminal emulator to use.";
-      default = "alacritty";
-      example = "wezterm";
+      default = "wezterm";
+      example = "alacritty";
       type = types.enum [ "wezterm" "alacritty" ];
     };
   };
