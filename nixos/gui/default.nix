@@ -33,6 +33,7 @@ in
       programs.dconf.enable = true;
 
       programs.sway.enable = cfg.sway;
+      programs.sway.extraPackages = [ ]; # No extra packages (by default it adds foot, dmenu, and other stuff)
       programs.sway.wrapperFeatures.base = true;
       programs.sway.wrapperFeatures.gtk = true;
 
