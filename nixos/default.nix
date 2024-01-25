@@ -30,6 +30,8 @@ in
       pkgs.curl
       pkgs.wget
       pkgs.eza
+      pkgs.zip
+      pkgs.unzip
     ];
 
     # Shell prompt
