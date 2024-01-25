@@ -25,6 +25,8 @@ in
 
     fonts.fontconfig.enable = true;
 
+    # Volume/Backlight control and notifications
+    programs.avizo.enable = true;
     # Browser
     programs.firefox.enable = true;
     # Dynamic Menu

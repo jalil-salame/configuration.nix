@@ -3,48 +3,6 @@ let
   cfg = config.jhome.gui.sway;
   passmenu = "${pkgs.jpassmenu}/bin/jpassmenu";
   selectAudio = "${pkgs.audiomenu}/bin/audiomenu --menu 'fuzzel --dmenu'";
-  cacheFile = ''
-    cache_file() {
-      cache_dir="''${XDG_CACHE_HOME:-$HOME/.cache}/scripts"
-      [ -d "$cache_dir" ] || mkdir -p "$cache_dir"
-      echo "$cache_dir/$1"
-    }
-  '';
-  brightness-notify = pkgs.writeShellScript "birghtness-notify" ''
-    app='changedBrightness'
-    icon='brightnesssettings'
-    # Cache msgid
-    ${cacheFile}
-    msgid_file="$(cache_file "$app.msgid")"
-    [ -f "$msgid_file" ] && msgid="$(cat "$msgid_file")"
-    msgid="''${msgid:-0}"
-    # Get brightness
-    brightness="$(${pkgs.brightnessctl}/bin/brightnessctl --machine-readable info | awk -F "\"*,\"*" '{print $4}')"
-    brightness="$${brightnes%\%}" # strip % sign
-    # Send notification
-    ${pkgs.libnotify}/bin/notify-send -pu low -r "$msgid" -a "$app" -i "$icon" -h int:value:"$brightness" "Brightness: $brightness%" >"$msgid_file"
-  '';
-  audio-source-notify = pkgs.writeShellScript "audio-source-notify" ''
-    app='volumeChanged'
-    icon='audio-volume'
-    # Cache msgid
-    ${cacheFile}
-    msgid_file="$(cache_file "$app.msgid")"
-    [ -f "$msgid_file" ] && msgid="$(cat "$msgid_file")"
-    msgid="''${msgid:-0}"
-    # Process volume info
-    volume="$(wpctl get-volume @DEFAULT_SINK@)"
-    if [ "''${volume#*MUTED}" = "$volume" ]; then muted=false; else muted=true; fi
-    volume="''${volume#Volume: }"
-    int_volume="$(printf '%.0f' "$(echo "100*$volume" | "${pkgs.bc}/bin/bc")")"
-    if [ "$int_volume" -eq 0 ]; then muted=true; fi
-    # Send notification
-    if [ "$muted" = true ]; then
-      ${pkgs.libnotify}/bin/notify-send -pu low -r "$msgid" -a "$app" -i "$icon-muted" "Volume Muted" >"$msgid_file"
-    else
-      ${pkgs.libnotify}/bin/notify-send -pu low -r "$msgid" -a "$app" -i "$icon-high" -h "int:value:$int_volume" "Volume: $int_volume%" >"$msgid_file"
-    fi
-  '';
   swayconf = config.wayland.windowManager.sway.config;
   mod = swayconf.modifier;
   workspaces = map toString [ 1 2 3 4 5 6 7 8 9 ];
@@ -95,12 +53,12 @@ builtins.foldl' (l: r: l // r)
   # Media Controls
   "${mod}+F10" = "exec ${selectAudio} select-sink";
   "${mod}+Shift+F10" = "exec ${selectAudio} select-source";
-  "XF86AudioRaiseVolume" = "exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ && ${audio-source-notify}";
-  "XF86AudioLowerVolume" = "exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- && ${audio-source-notify}";
-  "XF86AudioMute" = "exec wpctl set-mute   @DEFAULT_AUDIO_SINK@ toggle && ${audio-source-notify}";
+  "XF86AudioRaiseVolume" = "exec ${pkgs.avizo}/bin/volumectl up";
+  "XF86AudioLowerVolume" = "exec ${pkgs.avizo}/bin/volumectl down";
+  "XF86AudioMute" = "exec ${pkgs.avizo}/bin/volumectl toggle-mute";
   "XF86ScreenSaver" = "exec swaylock --image ${cfg.background}";
-  "XF86MonBrightnessUp" = "exec ${pkgs.brightnessctl}/bin/brightnessctl set +5% && ${brightness-notify}";
-  "XF86MonBrightnessDown" = "exec ${pkgs.brightnessctl}/bin/brightnessctl set 5%- && ${brightness-notify}";
+  "XF86MonBrightnessUp" = "exec ${pkgs.avizo}/bin/lightctl up";
+  "XF86MonBrightnessDown" = "exec ${pkgs.avizo}/bin/lightctl down";
   # Floating
   "${mod}+Space" = "floating toggle";
   "${mod}+Shift+Space" = "focus mode_toggle";
