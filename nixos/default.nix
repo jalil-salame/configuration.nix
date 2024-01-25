@@ -20,7 +20,6 @@ in
     environment.systemPackages = [
       # Dev tools
       pkgs.gcc
-      pkgs.just
       pkgs.clang
       # CLI tools
       pkgs.fd

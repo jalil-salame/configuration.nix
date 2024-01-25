@@ -82,7 +82,7 @@ in
       pkgs.sshfs
       pkgs.gitoxide
       pkgs.xplr
-    ] ++ lib.optional devcfg.rust.enable pkgs.rustup;
+    ] ++ devcfg.extraPackages ++ lib.optionals devcfg.rust.enable ([ pkgs.rustup ] ++ devcfg.rust.extraPackages);
 
     # Extra variables
     home.sessionVariables.CARGO_HOME = "${config.xdg.dataHome}/cargo";

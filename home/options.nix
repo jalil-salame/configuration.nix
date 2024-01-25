@@ -1,6 +1,13 @@
-{ lib, ... }:
+{ lib, pkgs, ... }:
 let
   inherit (lib) types;
+
+  mkExtraPackagesOption = name: default: lib.mkOption {
+    description = "Extra ${name} Packages.";
+    type = types.listOf types.package;
+    inherit default;
+    example = [ ];
+  };
 
   identity.options = {
     email = lib.mkOption {
@@ -117,11 +124,13 @@ in
           description = lib.mdDoc "Setup development environment for programming languages.";
           default = { };
           type = types.submodule {
+            options.extraPackages = mkExtraPackagesOption "dev" [ pkgs.typos pkgs.just ];
             options.rust = lib.mkOption {
               description = "Jalil's default rust configuration.";
               default = { };
               type = types.submodule {
                 options.enable = lib.mkEnableOption "rust dev environment";
+                options.extraPackages = mkExtraPackagesOption "Rust" [ pkgs.cargo-nextest pkgs.cargo-sort pkgs.cargo-msrv pkgs.cargo-kcov pkgs.cargo-watch ];
               };
             };
           };
