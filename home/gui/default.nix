@@ -25,8 +25,6 @@ in
 
     fonts.fontconfig.enable = true;
 
-    # Volume/Backlight control and notifications
-    programs.avizo.enable = true;
     # Browser
     programs.firefox.enable = true;
     # Dynamic Menu
@@ -61,6 +59,8 @@ in
       fi
     '';
 
+    # Volume/Backlight control and notifications
+    services.avizo.enable = true;
     # Auto configure displays
     services.kanshi.enable = lib.mkDefault true;
     # Notifications
