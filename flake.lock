@@ -807,11 +807,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1705917158,
-        "narHash": "sha256-geB3Avwuz5JedLmOKF0NFOzYPz9UgKfSMKJVMrlR1SY=",
+        "lastModified": 1706366229,
+        "narHash": "sha256-Km/pCva9b4bleLJprVoNdl5X99v2b8GwT3dVKL6gp4k=",
         "owner": "jalil-salame",
         "repo": "stylix",
-        "rev": "025e1da389982f451da75b8080174d2757606c8b",
+        "rev": "2ec5b632a868aa901a77bf8eb746722b0f2bc2bd",
         "type": "github"
       },
       "original": {
