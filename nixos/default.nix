@@ -49,7 +49,7 @@ in
       sudo.disabled = false;
     };
 
-    programs.ssh.knownHostsFiles =
+    services.openssh.authorizedKeysFiles =
       lib.mapAttrsToList
         (username: sha256: builtins.fetchurl {
           inherit sha256;
