@@ -20,6 +20,8 @@ let
       type = types.str;
       example = "John Doe";
     };
+    # FIXME: The keygrip is only useful for pam-gnupg, git needs another way to
+    #        identify the key.
     gpgKey = lib.mkOption {
       description = "The keygrip of your GPG key.";
       type = types.nullOr types.str;
