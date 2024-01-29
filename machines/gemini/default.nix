@@ -35,21 +35,6 @@
     useXkbConfig = true; # use xkbOptions in tty.
   };
 
-  # Fix PoE switch going to sleep
-  systemd.services."ping-router" = {
-    enable = true;
-    description = "Continiuosly ping router to prevent PoE switch from going to sleep";
-    script = ''
-      ${pkgs.iputils}/bin/ping \
-          "$(${pkgs.iproute2}/bin/ip route list default | sed 's/.*via \(\S\+\) .*/\1/')"
-    '';
-    wantedBy = [ "network-online.target" ];
-    after = [ "network-online.target" ];
-    serviceConfig = {
-      Type = "simple";
-    };
-  };
-
   # Configure keymap in X11
   # services.xserver.xkbOptions = {
   #   "caps:swapescape" # map caps to escape.
