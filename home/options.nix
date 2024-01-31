@@ -11,7 +11,7 @@ let
 
   identity.options = {
     email = lib.mkOption {
-      description = "Primary email adderss";
+      description = "Primary email address";
       type = types.str;
       example = "email@example.org";
     };
