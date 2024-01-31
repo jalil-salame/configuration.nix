@@ -1,5 +1,10 @@
 { pkgs, lib }:
 let
+  # can be removed once https://github.com/rust-lang/mdBook/pull/2262 lands
+  highlight = pkgs.fetchurl {
+    url = "https://raw.githubusercontent.com/rust-lang/mdBook/7b9bd5049ce15ae5f301d5a40c50ce8359d9e9a8/src/theme/highlight.js";
+    hash = "sha256-pLP73zlmGkbC/zV6bwnB6ijRf9gVkj5/VYMGLhiQ1/Q=";
+  };
   filterVisible = toplevelOption: option: option // { visible = option.visible && builtins.elemAt option.loc 0 == toplevelOption; };
   nixos-eval = lib.evalModules { modules = [ ../nixos/options.nix ]; };
   home-eval = lib.evalModules {
@@ -22,6 +27,9 @@ in
     src = ./.;
 
     patchPhase = ''
+      mkdir -p ./theme
+      ln -s ${highlight} ./theme/highlight.js
+
       # copy generated options removing the declared by statement
       sed '/^\*Declared by:\*$/,/^$/d' <${home-markdown} >> src/home-options.md
       sed '/^\*Declared by:\*$/,/^$/d' <${nixos-markdown} >> src/nixos-options.md
