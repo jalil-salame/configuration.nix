@@ -1,6 +1,18 @@
 { stylix }: { config, pkgs, lib, ... }:
 let
   cfg = config.jconfig;
+  keysFromGithub = lib.attrsets.mapAttrs'
+    (username: sha256: {
+      name = "pubkeys/${username}";
+      value = {
+        mode = "0755";
+        source = builtins.fetchurl {
+          inherit sha256;
+          url = "https://github.com/${username}.keys";
+        };
+      };
+    })
+    cfg.importSSHKeysFromGithub;
 in
 {
   imports = [
@@ -49,13 +61,8 @@ in
       sudo.disabled = false;
     };
 
-    services.openssh.authorizedKeysFiles =
-      lib.mapAttrsToList
-        (username: sha256: builtins.fetchurl {
-          inherit sha256;
-          url = "https://github.com/${username}.keys";
-        })
-        cfg.importSSHKeysFromGithub;
+    environment.etc = keysFromGithub;
+    services.openssh.authorizedKeysFiles = builtins.map (path: "/etc/${path}") (builtins.attrNames keysFromGithub);
 
     # Default shell
     programs.zsh.enable = true;
