@@ -68,9 +68,14 @@ let
 
         The format is `"$${github-username}" = $${sha256-hash}`. The example
         will try to fetch the keys from <https://github.com/jalil-salame.keys>.
+
+        **Warning**: this will interfere with services like gitea that override
+        the default ssh behaviour. In that case you want to use
+        `users.users.<name>.openssh.authorizedKeys.keyFiles` on the users you
+        want to allow ssh logins.
       '';
       default = { };
-      example = { "jalil-salame" = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"; };
+      example = { "jalil-salame" = "sha256:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"; };
       type = types.attrsOf types.str;
     };
   };
