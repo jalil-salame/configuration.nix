@@ -1,14 +1,18 @@
 { pkgs, lib }:
 let
+  filterVisible = toplevelOption: option: option // { visible = option.visible && builtins.elemAt option.loc 0 == toplevelOption; };
   nixos-eval = lib.evalModules { modules = [ ../nixos/options.nix ]; };
-  home-eval = lib.evalModules { modules = [ ../home/options.nix ]; };
+  home-eval = lib.evalModules {
+    modules = [ ../home/options.nix ];
+    specialArgs = { inherit pkgs; };
+  };
   nixos-markdown = (pkgs.nixosOptionsDoc {
     inherit (nixos-eval) options;
-    transformOptions = option: option // { visible = option.visible && builtins.elemAt option.loc 0 == "jconfig"; };
+    transformOptions = filterVisible "jconfig";
   }).optionsCommonMark;
   home-markdown = (pkgs.nixosOptionsDoc {
     inherit (home-eval) options;
-    transformOptions = option: option // { visible = option.visible && builtins.elemAt option.loc 0 == "jconfig"; };
+    transformOptions = filterVisible "jhome";
   }).optionsCommonMark;
 in
 {
