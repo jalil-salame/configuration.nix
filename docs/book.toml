@@ -4,3 +4,7 @@ language = "en"
 multilingual = false
 src = "src"
 title = "Jalil's NixOS configuration module"
+
+[preprocessor.toc]
+command = "mdbook-toc"
+renderer = ["html"]

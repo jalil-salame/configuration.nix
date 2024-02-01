@@ -5,6 +5,8 @@ I use [NixOS](https://nixos.org) and
 system and user configuration respectively. You can see what options I have
 added to configure the system and user configuration in the next chapters.
 
+## Table of Contents
+
 <!-- toc -->
 
 ## How to Use
