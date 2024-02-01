@@ -35,6 +35,7 @@ in
       sed '/^\*Declared by:\*$/,/^$/d' <${nixos-markdown} >> src/nixos-options.md
     '';
 
+    nativeBuildInputs = [ pkgs.mdbook-toc ];
     buildPhase = "${pkgs.mdbook}/bin/mdbook build --dest-dir $out";
   };
 }

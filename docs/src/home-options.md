@@ -8,4 +8,6 @@ Manual](https://nix-community.github.io/home-manager/) or search the available
 options through [home-manager option
 search](https://mipmip.github.io/home-manager-option-search/)
 
+## Table of Contents
+
 <!-- toc -->
