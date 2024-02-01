@@ -5,6 +5,8 @@ I use [NixOS](https://nixos.org) and
 system and user configuration respectively. You can see what options I have
 added to configure the system and user configuration in the next chapters.
 
+<!-- toc -->
+
 ## How to Use
 
 If you are not me, then you probably shouldn't use this, but feel free to draw
@@ -69,6 +71,8 @@ based configuration. This is the general structure you'll want:
           # Add users to use with home-manager
           users.users = {};
 
+          # You should probably also enable wifi if needed
+
           # Add home-manager users configuration (here you can enable jhome options)
           home-manager.users = {};
           # home-manager globally set options
@@ -80,9 +84,54 @@ based configuration. This is the general structure you'll want:
 }
 ```
 
+Now you should be ready to do `sudo nixos-rebuild switch --flake .#$hostname`
+and use the configuration c:.
+
 ### home-manager Module Setup
 
 If you are not using NixOS, then you probably want to only use the home-manager
 configuration. In that case, you want to use the
 `nixosModules.homeManagerModuleSandalone` in your `home-manager` configuration,
 and probably disable GUI applications all together `jhome.gui.enable = false`.
+
+Your flake should then look like this (follow the [home-manager
+Manual](https://nix-community.github.io/home-manager/index.xhtml#sec-flakes-standalone)
+for more information):
+
+```nix
+{
+  inputs.nixpkgs.url = "nixpkgs/nixos-unstable";
+  inputs.home-manager.url = "github:nixos-community/home-manager";
+  inputs.home-manager.inputs.follows.nixpkgs = "nixpkgs";
+
+  # My custom configuration module
+  inputs.config.url = "github:jalil-salame/configuration.nix";
+  inputs.config.inputs.follows.nixpkgs = "nixpkgs";
+  inputs.config.inputs.follows.home-manager = "home-manager";
+
+  outputs = { self, nixpkgs, home-manager, config }: let
+    hostname = "nixos";
+    username = "jdoe";
+    system = "x86_64-linux";
+    overlays = builtins.attrValues config.overlays;
+    pkgs = import nixpkgs { inherit system overlays; };
+  in {
+    homeConfigurations.${username} = home-manager.lib.homeManagerConfiguration {
+      inherit pkgs;
+      modules = [
+        # My configuration module (includes home-manager)
+        config.nixosModules.homeManagerModuleSandalone
+        # Custom options (see module configuration options and home-manager options)
+        {
+          # Enable my custom configuration
+          jhome.enable = true;
+          jhome.hostName = hostname;
+          jhome.gui.enable = false;
+
+          # Extra configuration options
+        }
+      ];
+    };
+  };
+}
+```
