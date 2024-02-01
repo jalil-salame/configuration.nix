@@ -66,6 +66,7 @@
       checks = forEachSupportedSystem ({ pkgs, system }: {
         pre-commit-check = pre-commit-hooks.lib.${system}.run {
           src = builtins.path { path = ./.; name = "configuration.nix"; };
+          hooks.typos.enable = true;
           hooks.nixpkgs-fmt.enable = true;
         };
       });
