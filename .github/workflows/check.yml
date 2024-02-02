@@ -1,6 +1,7 @@
 name: Check flake
 on:
   push:
+    branches: [main]
     path:
       - ./**.nix
       - ./flake.lock
