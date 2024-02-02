@@ -15,7 +15,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/nix-installer-action@v9
-      - uses: DeterminateSystems/magic-nix-cache-action@v3
+      - if: ${{ github.event_name != 'pull_request' }} # Do not cache pull requests
+        uses: DeterminateSystems/magic-nix-cache-action@v3
       - name: Run `nix flake check`
         run: nix flake check
   lockfile:
