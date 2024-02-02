@@ -9,9 +9,9 @@ jobs:
   build-website:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: DeterminateSystems/nix-installer-action@v9
-    - uses: DeterminateSystems/magic-nix-cache-action@v2
+    - uses: DeterminateSystems/magic-nix-cache-action@v3
     - name: Build documentation
       run: nix build .#docs --print-build-logs
     - name: Upload artifact
