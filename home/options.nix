@@ -20,19 +20,34 @@ let
       type = types.str;
       example = "John Doe";
     };
-    # FIXME: The keygrip is only useful for pam-gnupg, git needs another way to
-    #        identify the key.
-    gpgKey = lib.mkOption {
-      description = "The keygrip of your GPG key.";
+    signingKey = lib.mkOption {
+      description = "The signing key programs should use (i.e. git).";
       type = types.nullOr types.str;
       default = null;
-      example = "6F4ABB77A88E922406BCE6627AFEEE2363914B76";
+      example = "F016B9E770737A0B";
+    };
+    encryptionKey = lib.mkOption {
+      description = "The encryption key programs should use (i.e. pass).";
+      type = types.nullOr types.str;
+      default = null;
+      example = "F016B9E770737A0B";
     };
   };
 
   user.options = {
     enable = lib.mkEnableOption "Jalil's default user configuration";
-    unlockGpgKeyOnLogin = lib.mkEnableOption "unlocking the gpg key on login";
+    gpg = lib.mkOption {
+      description = "GnuPG Configuration.";
+      default = { };
+      type = types.submodule {
+        options.unlockKeys = lib.mkOption {
+          description = "Keygrips of keys to unlock through `pam-gnupg` when logging in.";
+          default = [ ];
+          example = [ "6F4ABB77A88E922406BCE6627AFEEE2363914B76" ];
+          type = types.listOf types.str;
+        };
+      };
+    };
     defaultIdentity = lib.mkOption {
       description = "The default identity to use in things like git.";
       type = types.submodule identity;
