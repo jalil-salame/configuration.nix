@@ -54,8 +54,12 @@ in
       xdg.portal.enable = true;
       xdg.portal.wlr.enable = true;
       xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-      xdg.portal.config.preferred.default = "wlr"; # Default to wlr
-      xdg.portal.config.preferred."org.freedesktop.impl.portal.FileChooser" = "gtk"; # But choose files with "gtk"
+      # Default to the gtk portal
+      xdg.portal.config.preferred.default = "gtk";
+      # Use wlr for screenshots and screen recording
+      xdg.portal.config.preferred."org.freedesktop.impl.portal.Screenshot" = "wlr";
+      xdg.portal.config.preferred."org.freedesktop.impl.portal.ScreenCast" = "wlr";
+      # Consider using darkman like upstream
 
       hardware.opengl.enable = true;
       hardware.uinput.enable = true;
