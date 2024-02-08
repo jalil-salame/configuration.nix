@@ -39,7 +39,14 @@ in
     programs.git.difftastic.background = "dark";
     programs.git.lfs.enable = true;
     programs.git.extraConfig.init.defaultBranch = "main";
+    # Better conflicts (also shows parent commit state)
     programs.git.extraConfig.merge.conflictStyle = "zdiff3";
+    # Do not create merge commits when pulling (rebase but abort on conflict)
+    programs.git.extraConfig.pull.ff = "only";
+    # Use `--set-upstream` if the remote does not have the branch
+    programs.git.extraConfig.push.autoSetupRemote = true;
+    # If there are uncommitted changes, stash them before rebasing
+    programs.git.extraConfig.rebase.autoStash = true;
     programs.lazygit.enable = true;
     # Mail client
     programs.himalaya.enable = true;
