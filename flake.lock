@@ -367,6 +367,23 @@
         "type": "github"
       }
     },
+    "gnome-shell": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1698794309,
+        "narHash": "sha256-/TIkZ8y5Wv3QHLFp79Poao9fINurKs5pa4z0CRe+F8s=",
+        "owner": "GNOME",
+        "repo": "gnome-shell",
+        "rev": "a7c169c6c29cf02a4c392fa0acbbc5f5072823e7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "GNOME",
+        "ref": "45.1",
+        "repo": "gnome-shell",
+        "type": "github"
+      }
+    },
     "haumea": {
       "inputs": {
         "nixpkgs": "nixpkgs_2"
@@ -416,11 +433,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1706798041,
-        "narHash": "sha256-BbvuF4CsVRBGRP8P+R+JUilojk0M60D7hzqE0bEvJBQ=",
+        "lastModified": 1707175763,
+        "narHash": "sha256-0MKHC6tQ4KEuM5rui6DjKZ/VNiSANB4E+DJ/+wPS1PU=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "4d53427bce7bf3d17e699252fd84dc7468afc46e",
+        "rev": "f99eace7c167b8a6a0871849493b1c613d0f1b80",
         "type": "github"
       },
       "original": {
@@ -602,12 +619,12 @@
     },
     "nixos-hardware": {
       "locked": {
-        "lastModified": 1706834982,
-        "narHash": "sha256-3CfxA7gZ+DVv/N9Pvw61bV5Oe/mWfxYPyVQGqp9TMJA=",
-        "rev": "83e571bb291161682b9c3ccd48318f115143a550",
-        "revCount": 1558,
+        "lastModified": 1707211557,
+        "narHash": "sha256-LTKTzZ6fM5j8XWXf51IMBzDaOaJg9kYWLUZxoIhzRN8=",
+        "rev": "6e5cc385fc8cf5ca6495d70243074ccdea9f64c7",
+        "revCount": 1563,
         "type": "tarball",
-        "url": "https://api.flakehub.com/f/pinned/NixOS/nixos-hardware/0.1.1558%2Brev-83e571bb291161682b9c3ccd48318f115143a550/018d674b-740c-710e-9fe6-832f56de0985/source.tar.gz"
+        "url": "https://api.flakehub.com/f/pinned/NixOS/nixos-hardware/0.1.1563%2Brev-6e5cc385fc8cf5ca6495d70243074ccdea9f64c7/018d7dbd-8f5c-772c-9072-324572b824f3/source.tar.gz"
       },
       "original": {
         "type": "tarball",
@@ -616,12 +633,12 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1706550542,
-        "narHash": "sha256-UcsnCG6wx++23yeER4Hg18CXWbgNpqNXcHIo5/1Y+hc=",
-        "rev": "97b17f32362e475016f942bbdfda4a4a72a8a652",
-        "revCount": 577948,
+        "lastModified": 1707268954,
+        "narHash": "sha256-2en1kvde3cJVc3ZnTy8QeD2oKcseLFjYPLKhIGDanQ0=",
+        "rev": "f8e2ebd66d097614d51a56a755450d4ae1632df1",
+        "revCount": 581229,
         "type": "tarball",
-        "url": "https://api.flakehub.com/f/pinned/NixOS/nixpkgs/0.1.577948%2Brev-97b17f32362e475016f942bbdfda4a4a72a8a652/018d5e85-4e02-7200-b411-d764d60cd44e/source.tar.gz"
+        "url": "https://api.flakehub.com/f/pinned/NixOS/nixpkgs/0.1.581229%2Brev-f8e2ebd66d097614d51a56a755450d4ae1632df1/018d8a37-bd05-79cb-a42f-290c1f0ca0ce/source.tar.gz"
       },
       "original": {
         "type": "tarball",
@@ -707,11 +724,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1707172116,
-        "narHash": "sha256-C60u4zU6mEiSJJBaHrxK/8mRXcXVbtotoInjJt49sm4=",
+        "lastModified": 1707281113,
+        "narHash": "sha256-oTXMa8knvHwdxT73il1lVc9k/jR1gj9dBrDeLdrJ0Rs=",
         "owner": "jalil-salame",
         "repo": "nvim-config",
-        "rev": "1edc2c0796fb0528e9ad43927c2dec80660af854",
+        "rev": "506e6c81f9ef7fa6b251e4db5316a38307476c63",
         "type": "github"
       },
       "original": {
@@ -761,11 +778,11 @@
         "nixpkgs-stable": "nixpkgs-stable"
       },
       "locked": {
-        "lastModified": 1706424699,
-        "narHash": "sha256-Q3RBuOpZNH2eFA1e+IHgZLAOqDD9SKhJ/sszrL8bQD4=",
+        "lastModified": 1707297608,
+        "narHash": "sha256-ADjo/5VySGlvtCW3qR+vdFF4xM9kJFlRDqcC9ZGI8EA=",
         "owner": "cachix",
         "repo": "pre-commit-hooks.nix",
-        "rev": "7c54e08a689b53c8a1e5d70169f2ec9e2a68ffaf",
+        "rev": "0db2e67ee49910adfa13010e7f012149660af7f0",
         "type": "github"
       },
       "original": {
@@ -799,6 +816,7 @@
         "base16-tmux": "base16-tmux",
         "base16-vim": "base16-vim",
         "flake-compat": "flake-compat_3",
+        "gnome-shell": "gnome-shell",
         "home-manager": [
           "home-manager"
         ],
@@ -807,11 +825,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1706875757,
-        "narHash": "sha256-X7g0sEhSa3PO9Rw/1zPACyCgl/ghRleYsKg9mcDTdts=",
+        "lastModified": 1707375805,
+        "narHash": "sha256-grnOUpc5LfT1Jmv9S7m5BKM4yvlp7X6Kf9V3RIKKA8g=",
         "owner": "jalil-salame",
         "repo": "stylix",
-        "rev": "a492a0ae8c752be6ba25fda1dcd13e6270b900d2",
+        "rev": "8059347a40023ba7ce2a2b79ed5d17c205a9fb88",
         "type": "github"
       },
       "original": {
