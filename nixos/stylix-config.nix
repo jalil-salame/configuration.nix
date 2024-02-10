@@ -24,6 +24,7 @@ in
     { name = "Noto Serif"; package = pkgs.noto-fonts; }
     fallbackSymbols
   ];
+  fonts.emoji = { package = pkgs.noto-fonts-emoji; name = "Noto Color Emoji"; };
   fonts.sizes.popups = 12;
   targets.plymouth.logoAnimated = false;
   targets.plymouth.logo = cfg.bootLogo;
