@@ -28,9 +28,10 @@
   hardware.tuxedo-rs.tailor-gui.enable = true;
 
   # Use the systemd-boot EFI boot loader.
+  boot.loader.timeout = 0; # Press Space to show the menu
+  boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.systemd-boot.enable = true;
   boot.loader.systemd-boot.configurationLimit = 10;
-  boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = "libra";
   networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
