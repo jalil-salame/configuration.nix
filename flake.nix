@@ -8,29 +8,27 @@
   inputs.stylix.inputs.nixpkgs.follows = "nixpkgs";
   inputs.stylix.inputs.home-manager.follows = "home-manager";
 
-  inputs.nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.*.tar.gz";
+  inputs.nixpkgs.url = "nixpkgs/nixos-unstable";
 
   inputs.jpassmenu.url = "github:jalil-salame/jpassmenu";
   inputs.jpassmenu.inputs.nixpkgs.follows = "nixpkgs";
-  inputs.jpassmenu.inputs.flake-schemas.follows = "flake-schemas";
 
   inputs.audiomenu.url = "github:jalil-salame/audiomenu";
   inputs.audiomenu.inputs.nixpkgs.follows = "nixpkgs";
-  inputs.audiomenu.inputs.flake-schemas.follows = "flake-schemas";
 
-  inputs.nvim-config.url = "github:jalil-salame/nvim-config";
-  inputs.nvim-config.inputs.nixpkgs.follows = "nixpkgs";
-  inputs.nvim-config.inputs.home-manager.follows = "home-manager";
-  inputs.nvim-config.inputs.flake-schemas.follows = "flake-schemas";
+  inputs.nixneovim.url = "github:NixNeovim/NixNeovim";
+  inputs.nixneovim.inputs.nixpkgs.follows = "nixpkgs";
+  inputs.nixneovim.inputs.home-manager.follows = "home-manager";
 
   # WARN: Flakehub is outdated (39 days out of date)
   # inputs.home-manager.url = "https://flakehub.com/f/nix-community/home-manager/0.1.*.tar.gz";
   inputs.home-manager.url = "github:nix-community/home-manager";
   inputs.home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-  inputs.flake-schemas.url = "https://flakehub.com/f/DeterminateSystems/flake-schemas/*.tar.gz";
+  inputs.nixos-hardware.url = "github:NixOS/nixos-hardware";
 
-  inputs.nixos-hardware.url = "https://flakehub.com/f/NixOS/nixos-hardware/0.1.*.tar.gz";
+  inputs.neovim-nightly.url = "github:nix-community/neovim-nightly-overlay";
+  inputs.neovim-nightly.inputs.nixpkgs.follows = "nixpkgs";
 
   inputs.pre-commit-hooks.url = "github:cachix/pre-commit-hooks.nix";
   inputs.pre-commit-hooks.inputs.nixpkgs.follows = "nixpkgs";
@@ -38,7 +36,6 @@
   # Flake outputs that other flakes can use
   outputs =
     { self
-    , flake-schemas
     , nixpkgs
     , stylix
     , home-manager
@@ -46,7 +43,8 @@
     , pre-commit-hooks
     , jpassmenu
     , audiomenu
-    , nvim-config
+    , nixneovim
+    , neovim-nightly
     }:
     let
       inherit (nixpkgs) lib;
@@ -60,9 +58,6 @@
       doc = forEachSupportedSystem ({ pkgs, system }: import ./docs { inherit pkgs lib; });
     in
     {
-      # Schemas tell Nix about the structure of your flake's outputs
-      inherit (flake-schemas) schemas;
-
       checks = forEachSupportedSystem ({ pkgs, system }: {
         pre-commit-check = pre-commit-hooks.lib.${system}.run {
           src = builtins.path { path = ./.; name = "configuration.nix"; };
@@ -75,8 +70,8 @@
 
       # Provide necessary overlays
       overlays = {
-        nixneovim = nvim-config.overlays.nixneovim;
-        neovim-nightly = nvim-config.overlays.neovim-nightly;
+        nixneovim = nixneovim.overlays.default;
+        neovim-nightly = neovim-nightly.overlays.default;
         jpassmenu = jpassmenu.overlays.default;
         audiomenu = audiomenu.overlays.default;
       };
@@ -128,6 +123,10 @@
 
       nixosModules =
         let
+          nvim-config.imports = [
+            nixneovim.nixosModules.homeManager
+            ./nvim
+          ];
           overlays = builtins.attrValues self.overlays;
           homeManagerModuleSandalone = import ./home { inherit overlays nvim-config stylix; };
           homeManagerModuleNixOS = import ./home { inherit overlays nvim-config; };
