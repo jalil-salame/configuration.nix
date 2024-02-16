@@ -28,11 +28,11 @@
         "fromYaml": "fromYaml"
       },
       "locked": {
-        "lastModified": 1689633990,
-        "narHash": "sha256-iwvQg2Vx0IIDWZaKo8Xmzxlv1YPHg+Kp/QSv8dRv0RY=",
+        "lastModified": 1705180696,
+        "narHash": "sha256-6TwTHERD+2SX21zvBwmm58mtmgVXHLPu273i04JdH9Y=",
         "owner": "SenchoPens",
         "repo": "base16.nix",
-        "rev": "dddf2e1c04845d43c89a8e9e37d574519649a404",
+        "rev": "b390e87cd404e65ab4d786666351f1292e89162a",
         "type": "github"
       },
       "original": {
@@ -825,11 +825,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1707499046,
-        "narHash": "sha256-KTAvqoFbvUmzfPgN3vxlr8FABlbJ9gbwRTYtSQ3HfWw=",
+        "lastModified": 1708064599,
+        "narHash": "sha256-zEDyFBmMc2nuiQEj5efN9xbjiHi5MuRADWmTuUTdsH4=",
         "owner": "jalil-salame",
         "repo": "stylix",
-        "rev": "20e410269dc0432e6884a1a31403951abf6c155f",
+        "rev": "15ffecfd8374c5b2d4c77d94fa568727c7b4c769",
         "type": "github"
       },
       "original": {
