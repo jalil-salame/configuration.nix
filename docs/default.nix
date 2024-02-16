@@ -6,22 +6,15 @@ let
     hash = "sha256-pLP73zlmGkbC/zV6bwnB6ijRf9gVkj5/VYMGLhiQ1/Q=";
   };
   filterVisible = toplevelOption: option: option // { visible = option.visible && builtins.elemAt option.loc 0 == toplevelOption; };
+  home-eval = lib.evalModules { modules = [ ../home/options.nix ]; specialArgs = { inherit pkgs; }; };
+  nvim-eval = lib.evalModules { modules = [ ../nvim/options.nix ]; };
   nixos-eval = lib.evalModules { modules = [ ../nixos/options.nix ]; };
-  home-eval = lib.evalModules {
-    modules = [ ../home/options.nix ];
-    specialArgs = { inherit pkgs; };
-  };
-  nixos-markdown = (pkgs.nixosOptionsDoc {
-    inherit (nixos-eval) options;
-    transformOptions = filterVisible "jconfig";
-  }).optionsCommonMark;
-  home-markdown = (pkgs.nixosOptionsDoc {
-    inherit (home-eval) options;
-    transformOptions = filterVisible "jhome";
-  }).optionsCommonMark;
+  home-markdown = (pkgs.nixosOptionsDoc { inherit (home-eval) options; transformOptions = filterVisible "jhome"; }).optionsCommonMark;
+  nvim-markdown = (pkgs.nixosOptionsDoc { inherit (nvim-eval) options; transformOptions = filterVisible "jhome"; }).optionsCommonMark;
+  nixos-markdown = (pkgs.nixosOptionsDoc { inherit (nixos-eval) options; transformOptions = filterVisible "jconfig"; }).optionsCommonMark;
 in
 {
-  inherit nixos-markdown home-markdown;
+  inherit nixos-markdown nvim-markdown home-markdown;
   docs = pkgs.stdenvNoCC.mkDerivation {
     name = "nixos-configuration-book";
     src = ./.;
@@ -31,8 +24,9 @@ in
       ln -s ${highlight} ./theme/highlight.js
 
       # copy generated options removing the declared by statement
-      sed '/^\*Declared by:\*$/,/^$/d' <${home-markdown} >> src/home-options.md
-      sed '/^\*Declared by:\*$/,/^$/d' <${nixos-markdown} >> src/nixos-options.md
+      sed '/^\*Declared by:\*$/,/^$/d' <${home-markdown} >> ./src/home-options.md
+      sed '/^\*Declared by:\*$/,/^$/d' <${nvim-markdown} >> ./src/nvim-options.md
+      sed '/^\*Declared by:\*$/,/^$/d' <${nixos-markdown} >> ./src/nixos-options.md
     '';
 
     nativeBuildInputs = [ pkgs.mdbook-toc ];
