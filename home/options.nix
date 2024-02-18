@@ -147,7 +147,7 @@ in
           description = lib.mdDoc "Setup development environment for programming languages.";
           default = { };
           type = types.submodule {
-            options.extraPackages = mkExtraPackagesOption "dev" [ [ "typos" ] [ "just" ] ];
+            options.extraPackages = mkExtraPackagesOption "dev" [ [ "typos" ] [ "just" ] [ "git-absorb" ] ];
             options.rust = lib.mkOption {
               description = "Jalil's default rust configuration.";
               default = { };
