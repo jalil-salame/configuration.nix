@@ -31,7 +31,7 @@ jobs:
         run: nix flake check
   build-documentation:
     runs-on: ubuntu-latest
-    if: ${{ github.event_name != 'schedule' }} # only run when scheduled
+    if: ${{ github.event_name != 'schedule' }} # only run when not scheduled
     steps:
     - uses: actions/checkout@v4
     - uses: DeterminateSystems/nix-installer-action@v9
@@ -45,6 +45,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build-documentation
+    if: ${{ github.event_name == 'push' && github.ref == 'main' }} # only run triggered by a push on main
     permissions:
       pages: write
       id-token: write
