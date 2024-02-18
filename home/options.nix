@@ -2,12 +2,18 @@
 let
   inherit (lib) types;
 
-  mkExtraPackagesOption = name: default: lib.mkOption {
-    description = "Extra ${name} Packages.";
-    type = types.listOf types.package;
-    inherit default;
-    example = [ ];
-  };
+  mkExtraPackagesOption = name: defaultPkgsPath:
+    let
+      text = lib.strings.concatMapStringsSep " " (pkgPath: "pkgs." + (lib.strings.concatStringsSep "." pkgPath)) defaultPkgsPath;
+      defaultText = lib.literalExpression "[ ${text} ]";
+      default = builtins.map (pkgPath: lib.attrsets.getAttrFromPath pkgPath pkgs) defaultPkgsPath;
+    in
+    lib.mkOption {
+      description = "Extra ${name} Packages.";
+      type = types.listOf types.package;
+      inherit default defaultText;
+      example = [ ];
+    };
 
   identity.options = {
     email = lib.mkOption {
@@ -141,13 +147,13 @@ in
           description = lib.mdDoc "Setup development environment for programming languages.";
           default = { };
           type = types.submodule {
-            options.extraPackages = mkExtraPackagesOption "dev" [ pkgs.typos pkgs.just ];
+            options.extraPackages = mkExtraPackagesOption "dev" [ [ "typos" ] [ "just" ] ];
             options.rust = lib.mkOption {
               description = "Jalil's default rust configuration.";
               default = { };
               type = types.submodule {
                 options.enable = lib.mkEnableOption "rust dev environment";
-                options.extraPackages = mkExtraPackagesOption "Rust" [ pkgs.cargo-nextest pkgs.cargo-sort pkgs.cargo-msrv pkgs.cargo-kcov pkgs.cargo-watch ];
+                options.extraPackages = mkExtraPackagesOption "Rust" [ [ "cargo-nextest" ] [ "cargo-sort" ] [ "cargo-msrv" ] [ "cargo-kcov" ] [ "cargo-watch" ] ];
               };
             };
           };
