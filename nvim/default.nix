@@ -89,7 +89,7 @@ in
             sh = { require("formatter.filetypes.sh").shfmt },
             cpp = { require("formatter.filetypes.cpp").clangformat },
             lua = { require("formatter.filetypes.lua").stylua },
-            nix = { require("formatter.filetypes.nix").nixpkgs-fmt },
+            nix = { require("formatter.filetypes.nix").nixpkgs_fmt },
             zig = { require("formatter.filetypes.zig").zigfmt },
             rust = { require("formatter.filetypes.rust").rustfmt },
             toml = { require("formatter.filetypes.toml").taplo },
