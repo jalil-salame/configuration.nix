@@ -45,7 +45,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build-documentation
-    if: ${{ github.event_name == 'push' && github.ref == 'main' }} # only run triggered by a push on main
+    if: ${{ github.ref == 'main' }} # only run on main branch
     permissions:
       pages: write
       id-token: write
