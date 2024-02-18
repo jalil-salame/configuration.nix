@@ -20,12 +20,38 @@ jobs:
       - name: Run `nix flake check`
         run: nix flake check
   lockfile:
+    runs-on: ubuntu-22.04
     needs: check
     if: ${{ github.event_name == 'schedule' }} # only run when scheduled
-    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/nix-installer-action@v9
       - uses: DeterminateSystems/update-flake-lock@v20
       - name: Run `nix flake check`
         run: nix flake check
+  build-documentation:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'schedule' }} # only run when scheduled
+    steps:
+    - uses: actions/checkout@v4
+    - uses: DeterminateSystems/nix-installer-action@v9
+    - uses: DeterminateSystems/magic-nix-cache-action@v3
+    - name: Build documentation
+      run: nix build .#docs --print-build-logs
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v1
+      with:
+        path: ./result
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build-documentation
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
