@@ -11,3 +11,5 @@ search](https://nixneovim.github.io/nixneovim-option-search/).
 ## Table of Contents
 
 <!-- toc -->
+
+## Options

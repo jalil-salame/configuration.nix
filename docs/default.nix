@@ -23,10 +23,16 @@ in
       mkdir -p ./theme
       ln -s ${highlight} ./theme/highlight.js
 
+      cat > sed-cmds <<EOF
+      # Replace nix store path to github url
+      s:\[/nix/store/[^\\]*-source/\(.*\)\\.nix\](.*):[\1\\.nix](https\://github.com/jalil-salame/configuration.nix/blob/main/\1.nix):
+      # Make <h2> <h3>
+      s/^## /### /
+      EOF
       # copy generated options removing the declared by statement
-      sed '/^\*Declared by:\*$/,/^$/d' <${home-markdown} >> ./src/home-options.md
-      sed '/^\*Declared by:\*$/,/^$/d' <${nvim-markdown} >> ./src/nvim-options.md
-      sed '/^\*Declared by:\*$/,/^$/d' <${nixos-markdown} >> ./src/nixos-options.md
+      sed -f sed-cmds <${home-markdown} >> ./src/home-options.md
+      sed -f sed-cmds <${nvim-markdown} >> ./src/nvim-options.md
+      sed -f sed-cmds <${nixos-markdown} >> ./src/nixos-options.md
     '';
 
     nativeBuildInputs = [ pkgs.mdbook-toc ];

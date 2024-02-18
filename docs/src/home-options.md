@@ -11,3 +11,5 @@ search](https://mipmip.github.io/home-manager-option-search/)
 ## Table of Contents
 
 <!-- toc -->
+
+## Options

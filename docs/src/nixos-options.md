@@ -10,3 +10,5 @@ through [NixOS Options](https://search.nixos.org/options).
 ## Table of Contents
 
 <!-- toc -->
+
+## Options
