@@ -8,7 +8,7 @@ let
   filterVisible = toplevelOption: option: option // { visible = option.visible && builtins.elemAt option.loc 0 == toplevelOption; };
   home-eval = lib.evalModules { modules = [ ../home/options.nix ]; specialArgs = { inherit pkgs; }; };
   nvim-eval = lib.evalModules { modules = [ ../nvim/options.nix ]; };
-  nixos-eval = lib.evalModules { modules = [ ../nixos/options.nix ]; };
+  nixos-eval = lib.evalModules { modules = [ ../system/options.nix ]; };
   home-markdown = (pkgs.nixosOptionsDoc { inherit (home-eval) options; transformOptions = filterVisible "jhome"; }).optionsCommonMark;
   nvim-markdown = (pkgs.nixosOptionsDoc { inherit (nvim-eval) options; transformOptions = filterVisible "jhome"; }).optionsCommonMark;
   nixos-markdown = (pkgs.nixosOptionsDoc { inherit (nixos-eval) options; transformOptions = filterVisible "jconfig"; }).optionsCommonMark;

@@ -132,7 +132,7 @@
           homeManagerModuleNixOS = import ./home { inherit overlays nvim-config; };
           nixosModule = {
             imports = [
-              (import ./nixos { inherit stylix; })
+              (import ./system { inherit stylix; })
               home-manager.nixosModules.home-manager
             ];
 
