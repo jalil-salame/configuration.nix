@@ -2,11 +2,12 @@
 let
   inherit (lib) types;
   # Like mkEnableOption but defaults to true
-  mkDisableOption = option: lib.mkOption {
-    description = lib.mdDoc "Whether to enable ${option}.";
-    type = types.bool;
-    default = true;
-    example = false;
+  mkDisableOption = option: (lib.mkEnableOption option) // { default = true; example = false; };
+  mkImageOption = { description, url, sha256 ? "" }: lib.mkOption {
+    inherit description;
+    type = types.path;
+    default = builtins.fetchurl { inherit url sha256; };
+    defaultText = lib.literalMD "![${description}](${url})";
   };
 
   gui.options = {
@@ -29,22 +30,16 @@ let
 
   styling.options = {
     enable = mkDisableOption "jalil's default styling (cannot be disabled currently)";
-    wallpaper = lib.mkOption {
+    wallpaper = mkImageOption {
       description = "The wallpaper to use.";
-      type = types.str;
-      default = builtins.fetchurl {
-        url = "https://raw.githubusercontent.com/lunik1/nixos-logo-gruvbox-wallpaper/d4937c424fad79c1136a904599ba689fcf8d0fad/png/gruvbox-dark-rainbow.png";
-        sha256 = "036gqhbf6s5ddgvfbgn6iqbzgizssyf7820m5815b2gd748jw8zc";
-      };
+      url = "https://raw.githubusercontent.com/lunik1/nixos-logo-gruvbox-wallpaper/d4937c424fad79c1136a904599ba689fcf8d0fad/png/gruvbox-dark-rainbow.png";
+      sha256 = "036gqhbf6s5ddgvfbgn6iqbzgizssyf7820m5815b2gd748jw8zc";
     };
-    bootLogo = lib.mkOption {
+    bootLogo = mkImageOption {
       description = "The logo used by plymouth at boot.";
-      type = types.str;
       # http://xenia-linux-site.glitch.me/images/cathodegaytube-splash.png
-      default = builtins.fetchurl {
-        url = "https://efimero.github.io/xenia-images/cathodegaytube-splash.png";
-        sha256 = "qKugUfdRNvMwSNah+YmMepY3Nj6mWlKFh7jlGlAQDo8=";
-      };
+      url = "https://efimero.github.io/xenia-images/cathodegaytube-splash.png";
+      sha256 = "qKugUfdRNvMwSNah+YmMepY3Nj6mWlKFh7jlGlAQDo8=";
     };
   };
 
