@@ -156,7 +156,6 @@ in
               type = types.submodule {
                 options.enable = lib.mkEnableOption "rust development settings";
                 options.extraPackages = mkExtraPackagesOption "Rust" [
-                  [ "rust-analyzer" ]
                   [ "cargo-nextest" ]
                   [ "cargo-sort" ]
                   [ "cargo-msrv" ]

@@ -41,10 +41,29 @@ in
       mappings = import ./mappings.nix;
       augroups = import ./augroups.nix;
       extraPlugins =
-        (with pkgs.vimExtraPlugins; [ dressing-nvim rustaceanvim idris2-nvim nui-nvim nvim-lint ])
-        ++ (with pkgs.vimPlugins; [ lualine-lsp-progress nvim-web-devicons FTerm-nvim cmp-cmdline formatter-nvim ]);
+        (with pkgs.vimExtraPlugins; [
+          dressing-nvim
+          rustaceanvim
+          idris2-nvim
+          nui-nvim
+          nvim-lint
+        ])
+        ++ (with pkgs.vimPlugins; [
+          lualine-lsp-progress
+          nvim-web-devicons
+          FTerm-nvim
+          cmp-cmdline
+          formatter-nvim
+        ]);
       # Formatting
-      extraPackages = with pkgs; [ stylua shfmt taplo yamlfmt nixpkgs-fmt ];
+      extraPackages = with pkgs; [
+        stylua
+        shfmt
+        taplo
+        yamlfmt
+        nixpkgs-fmt
+        rust-analyzer
+      ];
       extraLuaPreConfig = ''
         -- Lua Pre Config
         if vim.fn.has 'termguicolors' then
