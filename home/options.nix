@@ -147,13 +147,22 @@ in
           description = lib.mdDoc "Setup development environment for programming languages.";
           default = { };
           type = types.submodule {
+            options.enable = lib.mkEnableOption "development settings";
+            options.neovimAsManPager = lib.mkEnableOption "neovim as the man pager";
             options.extraPackages = mkExtraPackagesOption "dev" [ [ "typos" ] [ "just" ] [ "git-absorb" ] ];
             options.rust = lib.mkOption {
               description = "Jalil's default rust configuration.";
               default = { };
               type = types.submodule {
-                options.enable = lib.mkEnableOption "rust dev environment";
-                options.extraPackages = mkExtraPackagesOption "Rust" [ [ "cargo-nextest" ] [ "cargo-sort" ] [ "cargo-msrv" ] [ "cargo-kcov" ] [ "cargo-watch" ] ];
+                options.enable = lib.mkEnableOption "rust development settings";
+                options.extraPackages = mkExtraPackagesOption "Rust" [
+                  [ "rust-analyzer" ]
+                  [ "cargo-nextest" ]
+                  [ "cargo-sort" ]
+                  [ "cargo-msrv" ]
+                  [ "cargo-kcov" ]
+                  [ "cargo-watch" ]
+                ];
               };
             };
           };
