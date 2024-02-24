@@ -70,14 +70,18 @@ in
     ++ (builtins.map cmdAlways cfg.exec.always)
     ++ (builtins.map cmdOnce cfg.exec.once);
   # Keyboard configuration
-  input."type:keyboard".repeat_delay = "300";
-  input."type:keyboard".repeat_rate = "50";
-  input."type:keyboard".xkb_options = "caps:swapescape";
-  input."type:keyboard".xkb_numlock = "enabled";
+  input."type:keyboard" = {
+    repeat_delay = "300";
+    repeat_rate = "50";
+    xkb_options = "caps:swapescape,compose:ralt";
+    xkb_numlock = "enabled";
+  };
   # Touchpad
-  input."type:touchpad".click_method = "clickfinger";
-  input."type:touchpad".natural_scroll = "enabled";
-  input."type:touchpad".scroll_method = "two_finger";
-  input."type:touchpad".tap = "enabled";
-  input."type:touchpad".tap_button_map = "lrm";
+  input."type:touchpad" = {
+    click_method = "clickfinger";
+    natural_scroll = "enabled";
+    scroll_method = "two_finger";
+    tap = "enabled";
+    tap_button_map = "lrm";
+  };
 }
