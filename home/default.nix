@@ -23,6 +23,14 @@ in
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
+      programs.bat = {
+        # Better cat (bat)
+        enable = true;
+        config = {
+          style = "plain"; # Disable headers and numbers
+          theme = "gruvbox-dark"; # TODO: Follow light/dark polarity
+        };
+      };
       # Direnv
       programs.direnv.enable = true;
       programs.direnv.nix-direnv.enable = true;
