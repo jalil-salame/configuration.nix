@@ -14,10 +14,10 @@ in
       defaultEditor = true;
       globals.mapleader = " ";
       # Appearance
-      colorschemes.gruvbox-nvim.enable = true;
-      colorschemes.gruvbox-nvim.bold = true;
-      colorschemes.gruvbox-nvim.transparentBg = true;
-      colorschemes.gruvbox-nvim.trueColor = true;
+      colorschemes.gruvbox.enable = true;
+      colorschemes.gruvbox.settings.bold = true;
+      colorschemes.gruvbox.settings.transparent_mode = true;
+      colorschemes.gruvbox.settings.terminal_colors = true;
       options.number = true;
       options.relativenumber = true;
       options.colorcolumn = "+1";
