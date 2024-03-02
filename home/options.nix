@@ -149,7 +149,13 @@ in
           type = types.submodule {
             options.enable = lib.mkEnableOption "development settings";
             options.neovimAsManPager = lib.mkEnableOption "neovim as the man pager";
-            options.extraPackages = mkExtraPackagesOption "dev" [ [ "typos" ] [ "just" ] [ "git-absorb" ] ];
+            options.extraPackages = mkExtraPackagesOption "dev" [
+              [ "typos" ]
+              [ "just" ]
+              [ "git-absorb" ]
+              [ "man-pages" ]
+              [ "man-pages-posix" ]
+            ];
             options.rust = lib.mkOption {
               description = "Jalil's default rust configuration.";
               default = { };
