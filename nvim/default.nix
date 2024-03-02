@@ -61,7 +61,7 @@ in
         nixpkgs-fmt
         rust-analyzer
       ];
-      extraLuaPreConfig = ''
+      extraConfigLuaPre = ''
         -- Lua Pre Config
         if vim.fn.has 'termguicolors' then
           -- Enable RGB colors
@@ -77,7 +77,8 @@ in
         end
         -- END: Lua Pre Config
       '';
-      extraLuaPostConfig = ''
+      extraConfigLuaPost = ''
+        -- Lua Post Config
         do -- Setup cmp-cmdline
           local cmp = require "cmp"
           cmp.setup.cmdline("/", {
@@ -97,6 +98,7 @@ in
         do -- Setup idris2-nvim
           require("idris2").setup { }
         end
+        -- END: Lua Post Config
       '';
     };
   };
