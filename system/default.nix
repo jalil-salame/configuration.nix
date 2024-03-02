@@ -46,6 +46,9 @@ in
       pkgs.unzip
     ];
 
+    # Enable dev documentation
+    documentation.dev.enable = cfg.dev.enable;
+
     # Shell prompt
     programs.starship.enable = true;
     programs.starship.settings = lib.mkIf cfg.styling.enable {

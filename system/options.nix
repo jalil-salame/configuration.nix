@@ -45,6 +45,13 @@ let
 
   config.options = {
     enable = lib.mkEnableOption "jalil's default configuration.";
+    dev = lib.mkOption {
+      description = lib.mdDoc "Options for setting up a dev environment";
+      default = { };
+      type = types.submodule {
+        options.enable = lib.mkEnableOption "dev configuration";
+      };
+    };
     gui = lib.mkOption {
       description = lib.mdDoc "Jalil's default configuration for a NixOS gui.";
       default = { };
