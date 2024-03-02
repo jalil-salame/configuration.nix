@@ -18,7 +18,16 @@
     };
   };
   lspkind.enable = true;
-  lualine = import ./lualine.nix;
+  lualine = {
+    enable = true;
+    theme = "gruvbox";
+    sections = {
+      lualine_a = [{ name = "mode"; }];
+      lualine_b = [{ name = "filename"; } { name = "branch"; }];
+      lualine_y = [{ name = "encoding"; } { name = "fileformat"; } { name = "filetype"; }];
+      lualine_z = [{ name = "location"; }];
+    };
+  };
   luasnip = {
     enable = true;
     extraConfig = { update_events = "TextChanged,TextChangedI"; };
