@@ -1,91 +1,147 @@
-{
+[
   # Quickfix
-  normal."<leader>qo" = {
-    action = "'<cmd>Copen<CR>'";
-    desc = "Quickfix Open";
-  };
-  normal."<leader>qq" = {
-    action = "'<cmd>cclose<CR>'";
-    desc = "Quickfix Quit";
-  };
-  normal."<leader>qj" = {
-    action = "'<cmd>cnext<CR>'";
-    desc = "Quickfix next [J]";
-  };
-  normal."<leader>qk" = {
-    action = "'<cmd>cprev<CR>'";
-    desc = "Quickfix previous [K]";
-  };
+  {
+    mode = "n";
+    key = "<leader>qo";
+    action = "<cmd>Copen<CR>";
+    options.desc = "Quickfix Open";
+  }
+  {
+    mode = "n";
+    key = "<leader>qq";
+    action = "<cmd>cclose<CR>";
+    options.desc = "Quickfix Quit";
+  }
+  {
+    mode = "n";
+    key = "<leader>qj";
+    action = "<cmd>cnext<CR>";
+    options.desc = "Quickfix next [J]";
+  }
+  {
+    mode = "n";
+    key = "<leader>qk";
+    action = "<cmd>cprev<CR>";
+    options.desc = "Quickfix previous [K]";
+  }
   # Open or create file
-  normal."<leader>gf" = {
-    action = "'<cmd>e <cfile><CR>'";
-    desc = "Go to File";
-  };
+  {
+    mode = "n";
+    key = "<leader>gf";
+    action = "<cmd>e <cfile><CR>";
+    options.desc = "Go to File";
+  }
   # Keep Selection when indenting
-  visualOnly.">" = {
-    action = "'>gv'";
-    desc = "Indent Selection";
-  };
-  visualOnly."<" = {
-    action = "'<gv'";
-    desc = "Deindent Selection";
-  };
+  {
+    mode = "x";
+    key = ">";
+    action = ">gv";
+    options.desc = "Indent Selection";
+  }
+  {
+    mode = "x";
+    key = "<";
+    action = "<gv";
+    options.desc = "Deindent Selection";
+  }
   # Diagnostics
-  normal."<leader>dj" = {
+  {
+    mode = "n";
+    key = "<leader>dj";
     action = "vim.diagnostic.goto_next";
-    desc = "Diagnostics next [J]";
-  };
-  normal."<leader>dk" = {
+    lua = true;
+    options.desc = "Diagnostics next [J]";
+  }
+  {
+    mode = "n";
+    key = "<leader>dk";
     action = "vim.diagnostic.goto_prev";
-    desc = "Diagnostics previous [K]";
-  };
-  normal."<leader>xx" = {
+    lua = true;
+    options.desc = "Diagnostics previous [K]";
+  }
+  {
+    mode = "n";
+    key = "<leader>xx";
     action = "require('trouble').toggle";
-    desc = "Toggle trouble";
-  };
-  normal."<leader>xw" = {
+    lua = true;
+    options.desc = "Toggle trouble";
+  }
+  {
+    mode = "n";
+    key = "<leader>xw";
     action = "function() require('trouble').toggle('workspace_diagnostics') end";
-    desc = "Toggle Workspace trouble";
-  };
-  normal."<leader>xd" = {
+    lua = true;
+    options.desc = "Toggle Workspace trouble";
+  }
+  {
+    mode = "n";
+    key = "<leader>xd";
     action = "function() require('trouble').toggle('document_diagnostics') end";
-    desc = "Toggle Document trouble";
-  };
-  normal."<leader>xq" = {
+    lua = true;
+    options.desc = "Toggle Document trouble";
+  }
+  {
+    mode = "n";
+    key = "<leader>xq";
     action = "function() require('trouble').toggle('quickfix') end";
-    desc = "Toggle Quickfix trouble";
-  };
-  normal."<leader>xl" = {
+    lua = true;
+    options.desc = "Toggle Quickfix trouble";
+  }
+  {
+    mode = "n";
+    key = "<leader>xl";
     action = "function() require('trouble').toggle('loclist') end";
-    desc = "Toggle Loclist trouble";
-  };
-  normal."gR" = {
+    lua = true;
+    options.desc = "Toggle Loclist trouble";
+  }
+  {
+    mode = "n";
+    key = "gR";
     action = "function() require('trouble').toggle('lsp_references') end";
-    desc = "Toggle lsp References trouble";
-  };
+    lua = true;
+    options.desc = "Toggle lsp References trouble";
+  }
   # Telescope
-  normal."<leader>ff" = {
+  {
+    mode = "n";
+    key = "<leader>ff";
     action = "require('telescope.builtin').find_files";
-    desc = "Find Files";
-  };
-  normal."<leader>fg" = {
+    lua = true;
+    options.desc = "Find Files";
+  }
+  {
+    mode = "n";
+    key = "<leader>fg";
     action = "require('telescope.builtin').live_grep";
-    desc = "Find Grep";
-  };
-  normal."<leader>fh" = {
+    lua = true;
+    options.desc = "Find Grep";
+  }
+  {
+    mode = "n";
+    key = "<leader>fh";
     action = "require('telescope.builtin').help_tags";
-    desc = "Find Help";
-  };
-  normal."<leader>fb" = {
+    lua = true;
+    options.desc = "Find Help";
+  }
+  {
+    mode = "n";
+    key = "<leader>fb";
     action = "require('telescope.builtin').buffers";
-    desc = "Find Buffer";
-  };
-  normal."<leader>fd" = {
+    lua = true;
+    options.desc = "Find Buffer";
+  }
+  {
+    mode = "n";
+    key = "<leader>fd";
     action = "require('telescope.builtin').diagnostics";
-    desc = "Find Diagnostics";
-  };
-  normal."<leader>fq" = {
+    lua = true;
+    options.desc = "Find Diagnostics";
+  }
+  {
+    mode = "n";
+    key = "<leader>fq";
     action = "require('telescope.builtin').quickfix";
-    desc = "Find Quickfix";
-  };
-}
+    lua = true;
+    options.desc = "Find Quickfix";
+  }
+]

@@ -38,8 +38,8 @@ in
       # Enable local configuration :h 'exrc'
       options.exrc = true; # safe since nvim 0.9
       plugins = import ./plugins;
-      mappings = import ./mappings.nix;
       augroups = import ./augroups.nix;
+      keymaps = import ./mappings.nix;
       extraPlugins =
         (with pkgs.vimExtraPlugins; [
           dressing-nvim
