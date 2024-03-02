@@ -1,6 +1,22 @@
 {
   gitsigns.enable = true;
-  lspconfig = import ./lspconfig.nix;
+  lsp = {
+    enable = true;
+    servers = {
+      bashls.enable = true;
+      clangd.enable = true;
+      html.enable = true;
+      jsonls.enable = true;
+      nil.enable = true;
+      pyright.enable = true;
+      rnix-lsp.enable = true;
+      ruff-lsp.enable = true;
+      taplo.enable = true;
+      texlab.enable = true;
+      typos-lsp.enable = true;
+      typst-lsp.enable = true;
+    };
+  };
   lspkind.enable = true;
   lualine = import ./lualine.nix;
   luasnip = {
