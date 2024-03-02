@@ -37,7 +37,7 @@ in
       options.smartcase = true; # Unless it has a capital letter
       # Enable local configuration :h 'exrc'
       options.exrc = true; # safe since nvim 0.9
-      plugins = import ./plugins;
+      plugins = import ./plugins.nix { inherit lib; };
       keymaps = import ./mappings.nix;
       inherit (import ./augroups.nix) autoGroups autoCmd;
       extraPlugins =
