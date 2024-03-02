@@ -118,6 +118,9 @@ in
           ++ lib.optionals devcfg.rust.enable ([ pkgs.rustup ] ++ devcfg.rust.extraPackages);
       };
 
+      # Github CLI
+      programs.gh.enable = true;
+      programs.gh-dash.enable = true;
       # Git
       programs.git = {
         enable = true;
