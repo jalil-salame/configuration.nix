@@ -16,9 +16,10 @@
   inputs.audiomenu.url = "github:jalil-salame/audiomenu";
   inputs.audiomenu.inputs.nixpkgs.follows = "nixpkgs";
 
-  inputs.nixneovim.url = "github:NixNeovim/NixNeovim";
-  inputs.nixneovim.inputs.nixpkgs.follows = "nixpkgs";
-  inputs.nixneovim.inputs.home-manager.follows = "home-manager";
+  inputs.nixvim.url = "github:nix-community/nixvim";
+  inputs.nixvim.inputs.nixpkgs.follows = "nixpkgs";
+  inputs.nixvim.inputs.home-manager.follows = "home-manager";
+  inputs.nixvim.inputs.pre-commit-hooks.follows = "pre-commit-hooks";
 
   # WARN: Flakehub is outdated (39 days out of date)
   # inputs.home-manager.url = "https://flakehub.com/f/nix-community/home-manager/0.1.*.tar.gz";
@@ -43,7 +44,7 @@
     , pre-commit-hooks
     , jpassmenu
     , audiomenu
-    , nixneovim
+    , nixvim
     , neovim-nightly
     }:
     let
@@ -70,7 +71,7 @@
 
       # Provide necessary overlays
       overlays = {
-        nixneovim = nixneovim.overlays.default;
+        nixvim = nixvim.overlays.default;
         neovim-nightly = neovim-nightly.overlays.default;
         jpassmenu = jpassmenu.overlays.default;
         audiomenu = audiomenu.overlays.default;
@@ -124,7 +125,7 @@
       nixosModules =
         let
           nvim-config.imports = [
-            nixneovim.nixosModules.homeManager
+            nixvim.homeManagerModules.nixvim
             ./nvim
           ];
           overlays = builtins.attrValues self.overlays;

@@ -8,7 +8,7 @@ in
   ];
 
   config = lib.mkIf cfg.enable {
-    programs.nixneovim = {
+    programs.nixvim = {
       enable = true;
       package = pkgs.neovim-nightly;
       defaultEditor = true;
