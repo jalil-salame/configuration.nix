@@ -142,7 +142,10 @@
     incrementalSelection.enable = true;
   };
   treesitter-context.enable = true;
-  trouble.enable = true;
+  trouble = {
+    enable = true;
+    autoClose = true;
+  };
   lint = {
     enable = true;
     lintersByFt = {
