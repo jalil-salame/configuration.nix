@@ -40,18 +40,12 @@ in
       plugins = import ./plugins.nix { inherit lib; };
       keymaps = import ./mappings.nix;
       inherit (import ./augroups.nix) autoGroups autoCmd;
-      extraPlugins =
-        (with pkgs.vimExtraPlugins; [
-          dressing-nvim
-          idris2-nvim
-          nui-nvim
-        ])
-        ++ (with pkgs.vimPlugins; [
-          lualine-lsp-progress
-          nvim-web-devicons
-          FTerm-nvim
-          cmp-cmdline
-        ]);
+      extraPlugins = with pkgs.vimPlugins; [
+        lualine-lsp-progress
+        nvim-web-devicons
+        FTerm-nvim
+        cmp-cmdline
+      ];
       # Formatting
       extraPackages = with pkgs; [
         stylua
@@ -90,15 +84,6 @@ in
             sources = cmp.config.sources({ { name = "path" } }, { { name = "cmdline" } })
           })
         end
-
-        do -- Setup dressing.nvim
-          -- require("dressing").setup()
-        end
-
-        do -- Setup idris2-nvim
-          require("idris2").setup { }
-        end
-        -- END: Lua Post Config
       '';
     };
   };
