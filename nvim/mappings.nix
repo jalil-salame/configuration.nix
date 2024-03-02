@@ -144,4 +144,11 @@
     lua = true;
     options.desc = "Find Quickfix";
   }
+  {
+    mode = "n";
+    key = "<leader>w";
+    action = "require'conform'.format";
+    lua = true;
+    options.desc = "Format buffer";
+  }
 ]

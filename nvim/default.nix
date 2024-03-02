@@ -52,7 +52,6 @@ in
           nvim-web-devicons
           FTerm-nvim
           cmp-cmdline
-          formatter-nvim
         ]);
       # Formatting
       extraPackages = with pkgs; [
@@ -94,25 +93,6 @@ in
 
         do -- Setup dressing.nvim
           -- require("dressing").setup()
-        end
-
-        do -- Setup formatter.nvim
-          -- local util = require "formatter.util"
-          require("formatter").setup {
-            logging = true,
-            log_level = vim.log.levels.WARN,
-            ["*"] = { require("formatter.filetypes.any").remove_trailing_whitespace },
-            -- Filetype Formatting
-            c = { require("formatter.filetypes.c").clangformat },
-            sh = { require("formatter.filetypes.sh").shfmt },
-            cpp = { require("formatter.filetypes.cpp").clangformat },
-            lua = { require("formatter.filetypes.lua").stylua },
-            nix = { require("formatter.filetypes.nix").nixpkgs_fmt },
-            zig = { require("formatter.filetypes.zig").zigfmt },
-            rust = { require("formatter.filetypes.rust").rustfmt },
-            toml = { require("formatter.filetypes.toml").taplo },
-            yaml = { require("formatter.filetypes.yaml").yamlfmt },
-          }
         end
 
         do -- Setup idris2-nvim
