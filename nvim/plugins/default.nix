@@ -134,6 +134,7 @@
       mode = "virtualtext";
     };
   };
+  rustaceannvim.enable = true;
   telescope.enable = true;
   treesitter = {
     enable = true;

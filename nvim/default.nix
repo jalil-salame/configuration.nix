@@ -43,7 +43,6 @@ in
       extraPlugins =
         (with pkgs.vimExtraPlugins; [
           dressing-nvim
-          rustaceanvim
           idris2-nvim
           nui-nvim
         ])
