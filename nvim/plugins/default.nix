@@ -1,9 +1,4 @@
 {
-  colorizer = {
-    enable = true;
-    # disable named colors (i.e. red)
-    userDefaultOptions.names = false;
-  };
   gitsigns.enable = true;
   lspconfig = import ./lspconfig.nix;
   lspkind.enable = true;
@@ -13,6 +8,13 @@
     extraConfig = { update_events = "TextChanged,TextChangedI"; };
   };
   nvim-cmp = import ./cmp.nix;
+  nvim-colorizer = {
+    enable = true;
+    userDefaultOptions = {
+      names = false; # disable named colors (i.e. red)
+      mode = "virtualtext";
+    };
+  };
   telescope.enable = true;
   treesitter = {
     enable = true;
