@@ -14,4 +14,12 @@
   treesitter.incrementalSelection.enable = true;
   treesitter-context.enable = true;
   trouble.enable = true;
+  lint = {
+    enable = true;
+    lintersByFt = {
+      rust = [ "typos" ];
+      latex = [ "chktex" "typos" ];
+      markdown = [ "typos" ];
+    };
+  };
 }

@@ -46,7 +46,6 @@ in
           rustaceanvim
           idris2-nvim
           nui-nvim
-          nvim-lint
         ])
         ++ (with pkgs.vimPlugins; [
           lualine-lsp-progress
@@ -118,12 +117,6 @@ in
 
         do -- Setup idris2-nvim
           require("idris2").setup { }
-        end
-
-        do -- Setup nvim-lint
-          require("lint").linters_by_ft = {
-            latex = { "chktex", "typos" },
-          }
         end
       '';
     };

@@ -1,6 +1,5 @@
 {
   autoGroups."highlightOnYank" = { };
-  autoGroups."runLinter" = { };
   autoGroups."lspConfig" = { };
   autoGroups."restoreCursorPosition" = { };
   autoCmd = [
@@ -18,16 +17,6 @@
               timeout = 200,
             }
           end
-        '';
-      };
-    }
-    {
-      group = "runLinter";
-      event = "BufWritePost";
-      pattern = "*";
-      callback = {
-        __raw = ''
-          require("lint").try_lint()
         '';
       };
     }
