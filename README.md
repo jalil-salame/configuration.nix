@@ -3,6 +3,11 @@
 This is only intended for my use, but you can see how I overengineer stuff by
 looking at it :p (maybe you can also learn some stuff on the way).
 
+This README only has a small amount of information, if you want to see the full
+documentation then go to <https://jalil-salame.github.com/configuration.nix>. I
+also overengineerd this c: (if you want to copy this for your own project, then
+take a look at [the docs folder](./docs/default.nix).
+
 ## Try out in a VM
 
 If you already have nix you can run the following commands:

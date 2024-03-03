@@ -55,11 +55,14 @@
         inherit system;
         pkgs = import nixpkgs { inherit system; };
       });
-      # Module documentation
-      doc = forEachSupportedSystem ({ pkgs, system }: import ./docs { inherit pkgs lib; });
+      overlays = builtins.attrValues self.overlays;
     in
     {
       checks = forEachSupportedSystem ({ pkgs, system }: {
+        nvim = nixvim.lib.${system}.check.mkTestDerivationFromNixvimModule {
+          pkgs = import nixpkgs { inherit system overlays; };
+          module = ./nvim/nixvim.nix;
+        };
         pre-commit-check = pre-commit-hooks.lib.${system}.run {
           src = builtins.path { path = ./.; name = "configuration.nix"; };
           hooks.typos.enable = true;
@@ -67,7 +70,14 @@
         };
       });
 
-      packages = doc;
+      packages = forEachSupportedSystem ({ pkgs, system }: {
+        inherit (import ./docs { inherit pkgs lib; }) docs nixos-markdown nvim-markdown home-markdown;
+        # Nvim standalone module
+        nvim = nixvim.legacyPackages.${system}.makeNixvimWithModule {
+          pkgs = import nixpkgs { inherit system overlays; };
+          module = ./nvim/nixvim.nix;
+        };
+      });
 
       # Provide necessary overlays
       overlays = {
@@ -84,11 +94,9 @@
       nixosConfigurations.vm =
         let
           system = "x86_64-linux";
-          overlays = builtins.attrValues self.overlays;
           config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
             "steam-original"
           ];
-          # config.allowUnfree = true;
           pkgs = import nixpkgs { inherit system overlays config; };
         in
         lib.nixosSystem
@@ -163,7 +171,7 @@
       devShells = forEachSupportedSystem ({ pkgs, system }: {
         default = pkgs.mkShell {
           inherit (self.checks.${system}.pre-commit-check) shellHook;
-          buildInputs = with pkgs; [ just ];
+          buildInputs = with pkgs; [ just self.packages.${system}.nvim ];
         };
       });
     };

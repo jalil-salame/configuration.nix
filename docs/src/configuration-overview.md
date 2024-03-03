@@ -20,7 +20,9 @@ inspiration from what I have done c:.
 First you want to see what your environment is; if you are using NixOS then you
 want to look at the [NixOS Module Setup](#nixos-module-setup), if you are just
 using home-manager, then you should look at the [homa-manager Module
-Setup](#home-manager-module-setup).
+Setup](#home-manager-module-setup). Or if you just want to use my NeoVIM
+configuration then look at the [NeoVIM standalone
+setup](#neovim-standalone-setup).
 
 ### NixOS Module Setup
 
@@ -140,3 +142,22 @@ for more information):
   };
 }
 ```
+
+### NeoVIM Standalone setup
+
+My NeoVIM configuration is managed by
+[NixVIM](https://github.com/nix-community/nixvim), so check that project out if
+you want to understand how it works. You can use [this
+tutorial](https://nix-community.github.io/nixvim/user-guide/extending-config.html)
+to extend my configuration without forking this repo or copying its files.
+
+If you want to test out my configuration then you can run this handy nix
+command:
+
+```console
+$ nix run github:jalil-salame/configuration.nix#nvim
+```
+
+It will download and build my NeoVIM configuration and run NeoVIM. Alternatively
+you can replace `nix run` with `nix shell` which will temporarily add my NeoVIM
+configuration to your shell and when you run `nvim` it will launch it.
