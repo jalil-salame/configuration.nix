@@ -62,6 +62,21 @@
     enable = true;
     extraConfig = { update_events = "TextChanged,TextChangedI"; };
   };
+  noice = {
+    enable = true;
+    presets = {
+      # use a classic bottom cmdline for search
+      bottom_search = true;
+      # position the cmdline and popupmenu together
+      command_palette = true;
+      # long messages will be sent to a split
+      long_message_to_split = true;
+      # enables an input dialog for inc-rename.nvim
+      inc_rename = false;
+      # add a border to hover docs and signature help
+      lsp_doc_border = false;
+    };
+  };
   nvim-cmp = {
     enable = true;
     # Snippets

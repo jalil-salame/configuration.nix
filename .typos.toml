@@ -1,0 +1,2 @@
+[default.extend-words]
+noice = "noice" # nvim package name :c
