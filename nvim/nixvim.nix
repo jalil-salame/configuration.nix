@@ -46,10 +46,7 @@ in
       keymaps = import ./mappings.nix;
       inherit (import ./augroups.nix) autoGroups autoCmd;
       extraPlugins = with pkgs.vimPlugins; [
-        lualine-lsp-progress
         nvim-web-devicons
-        FTerm-nvim
-        cmp-cmdline
       ];
       # Formatting
       extraPackages = with pkgs; [
