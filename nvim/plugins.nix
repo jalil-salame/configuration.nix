@@ -153,7 +153,13 @@
     };
   };
   rustaceanvim.enable = true;
-  telescope.enable = true;
+  telescope = {
+    enable = true;
+    extensions = {
+      ui-select.enable = true;
+      fzy-native.enable = true;
+    };
+  };
   treesitter = {
     enable = true;
     indent = true;
