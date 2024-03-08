@@ -73,20 +73,6 @@ in
         end
         -- END: Lua Pre Config
       '';
-      extraConfigLuaPost = ''
-        -- Lua Post Config
-        do -- Setup cmp-cmdline
-          local cmp = require "cmp"
-          cmp.setup.cmdline("/", {
-            mapping = cmp.mapping.preset.cmdline(),
-            sources = cmp.config.sources { {name = "rg" }, { name = "buffer" } },
-          })
-          cmp.setup.cmdline(":", {
-            mapping = cmp.mapping.preset.cmdline(),
-            sources = cmp.config.sources({ { name = "path" } }, { { name = "cmdline" } })
-          })
-        end
-      '';
     })
   ];
 }

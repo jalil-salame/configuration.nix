@@ -1,15 +1,72 @@
 { lib }: {
-  cmp-buffer.enable = true;
-  cmp-clippy.enable = true;
-  cmp-cmdline.enable = true;
-  cmp-nvim-lsp.enable = true;
-  cmp-nvim-lsp-document-symbol.enable = true;
-  cmp-nvim-lsp-signature-help.enable = true;
-  cmp-path.enable = true;
-  cmp-rg.enable = true;
-  cmp-spell.enable = true;
-  cmp-treesitter.enable = true;
-  cmp-zsh.enable = true;
+  cmp = {
+    enable = true;
+    cmdline = {
+      "/" = {
+        mapping.__raw = "cmp.mapping.preset.cmdline()";
+        sources = [{ name = "rg"; } { name = "buffer"; }];
+      };
+      ":" = {
+        mapping.__raw = "cmp.mapping.preset.cmdline()";
+        sources = [{ name = "path"; } { name = "cmdline"; }];
+      };
+    };
+    settings = {
+      # Snippets
+      snippet.expand = "function(args) require('luasnip').lsp_expand(args.body) end";
+      # Completion Sources
+      sources = [
+        { name = "buffer"; groupIndex = 3; }
+        { name = "calc"; groupIndex = 2; }
+        { name = "conventionalcommits"; groupIndex = 1; }
+        { name = "crates"; groupIndex = 1; }
+        { name = "luasnip"; groupIndex = 1; }
+        { name = "nvim_lsp"; groupIndex = 1; }
+        { name = "nvim_lsp_document_symbol"; groupIndex = 1; }
+        { name = "nvim_lsp_signature_help"; groupIndex = 1; }
+        { name = "path"; groupIndex = 2; }
+        { name = "spell"; groupIndex = 2; }
+        { name = "treesitter"; groupIndex = 2; }
+        { name = "zsh"; groupIndex = 1; }
+      ];
+      mapping.__raw = ''
+        cmp.mapping.preset.insert({
+          ["<C-n>"] = function(fallback)
+            if cmp.visible() then
+              cmp.select_next_item()
+            elseif require("luasnip").expand_or_jumpable() then
+              require("luasnip").expand_or_jump()
+            elseif has_words_before() then
+              cmp.complete()
+            else
+              fallback()
+            end
+          end,
+          ["<C-p>"] = function(fallback)
+            if cmp.visible() then
+              cmp.select_prev_item()
+            elseif require("luasnip").jumpable(-1) then
+              require("luasnip").jump(-1)
+            else
+              fallback()
+            end
+          end,
+          ["<C-u>"] = cmp.mapping(function(fallback)
+            if require("luasnip").choice_active() then
+              require("luasnip").next_choice()
+            else
+              fallback()
+            end
+          end),
+          ["<C-b>"] = cmp.mapping.scroll_docs(-4),
+          ["<C-f>"] = cmp.mapping.scroll_docs(4),
+          ["<C-Space>"] = cmp.mapping.complete { },
+          ["<C-e>"] = cmp.mapping.close(),
+          ["<CR>"] = cmp.mapping.confirm { select = true },
+        })
+      '';
+    };
+  };
   conform-nvim = {
     enable = true;
     formattersByFt = {
@@ -75,74 +132,6 @@
       inc_rename = false;
       # add a border to hover docs and signature help
       lsp_doc_border = false;
-    };
-  };
-  nvim-cmp = {
-    enable = true;
-    # Snippets
-    snippet.expand = "luasnip";
-    # Completion Sources
-    sources = [
-      { name = "buffer"; groupIndex = 3; }
-      { name = "calc"; groupIndex = 2; }
-      { name = "conventionalcommits"; groupIndex = 1; }
-      { name = "crates"; groupIndex = 1; }
-      { name = "luasnip"; groupIndex = 1; }
-      { name = "nvim_lsp"; groupIndex = 1; }
-      { name = "nvim_lsp_document_symbol"; groupIndex = 1; }
-      { name = "nvim_lsp_signature_help"; groupIndex = 1; }
-      { name = "path"; groupIndex = 2; }
-      { name = "spell"; groupIndex = 2; }
-      { name = "treesitter"; groupIndex = 2; }
-      { name = "zsh"; groupIndex = 1; }
-    ];
-    # Menu Icons
-    mappingPresets = [ "insert" ];
-    mapping = {
-      "<C-n>" = {
-        modes = [ "i" "s" ];
-        action = ''
-          function(fallback)
-            if cmp.visible() then
-              cmp.select_next_item()
-            elseif require("luasnip").expand_or_jumpable() then
-              require("luasnip").expand_or_jump()
-            elseif has_words_before() then
-              cmp.complete()
-            else
-              fallback()
-            end
-          end
-        '';
-      };
-      "<C-p>" = {
-        modes = [ "i" "s" ];
-        action = ''
-          function(fallback)
-            if cmp.visible() then
-              cmp.select_prev_item()
-            elseif require("luasnip").jumpable(-1) then
-              require("luasnip").jump(-1)
-            else
-              fallback()
-            end
-          end
-        '';
-      };
-      "<C-u>" = ''
-        cmp.mapping(function(fallback)
-          if require("luasnip").choice_active() then
-            require("luasnip").next_choice()
-          else
-            fallback()
-          end
-        end)
-      '';
-      "<C-b>" = "cmp.mapping.scroll_docs(-4)";
-      "<C-f>" = "cmp.mapping.scroll_docs(4)";
-      "<C-Space>" = "cmp.mapping.complete {}";
-      "<C-e>" = "cmp.mapping.close()";
-      "<CR>" = "cmp.mapping.confirm { select = true }";
     };
   };
   nvim-colorizer = {
