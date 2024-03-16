@@ -36,7 +36,6 @@ in
       programs.direnv.nix-direnv.enable = true;
       # ls replacement
       programs.eza.enable = true;
-      programs.eza.enableAliases = true;
       programs.eza.git = true;
       programs.eza.icons = true;
       # GnuPG
@@ -66,7 +65,7 @@ in
       # GPG Agent
       services.gpg-agent.enable = true;
       services.gpg-agent.maxCacheTtl = 86400;
-      services.gpg-agent.pinentryFlavor = if config.jhome.gui.enable then "qt" else "curses";
+      services.gpg-agent.pinentryPackage = if config.jhome.gui.enable then pkgs.pinentry-qt else pkgs.pinentry-curses;
       services.gpg-agent.extraConfig = "allow-preset-passphrase";
       # Spotifyd
       services.spotifyd.enable = true;
