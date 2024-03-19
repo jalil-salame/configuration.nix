@@ -85,6 +85,8 @@
         neovim-nightly = neovim-nightly.overlays.default;
         jpassmenu = jpassmenu.overlays.default;
         audiomenu = audiomenu.overlays.default;
+        # Pin to v0.9 due to https://github.com/Alexays/Waybar/issues/3009
+        "waybar-0.9" = final: prev: { waybar = final.callPackage ./waybar.nix { }; };
       };
 
       # Nix files formatter (run `nix fmt`)
