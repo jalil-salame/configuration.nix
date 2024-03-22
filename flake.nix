@@ -85,10 +85,10 @@
         neovim-nightly = neovim-nightly.overlays.default;
         jpassmenu = jpassmenu.overlays.default;
         audiomenu = audiomenu.overlays.default;
-        # Pin to v0.9 due to https://github.com/Alexays/Waybar/issues/3009
         "waybar-sway-patch" = final: prev: {
           waybar = prev.waybar.overrideAttrs (old: {
             patches = (old.patches or [ ]) ++ [
+              # Fixes https://github.com/Alexays/Waybar/issues/3009
               (final.fetchpatch {
                 url = "https://patch-diff.githubusercontent.com/raw/Alexays/Waybar/pull/3037.patch";
                 hash = "sha256-u87t6zzslk1mzSfi4HQ6zDPFr7qMfsvymTy3HBxVTJQ=";
