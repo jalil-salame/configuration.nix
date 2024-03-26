@@ -151,7 +151,7 @@
   treesitter-context.enable = true;
   trouble = {
     enable = true;
-    autoClose = true;
+    settings.auto_close = true;
   };
   lint = {
     enable = true;
