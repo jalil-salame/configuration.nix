@@ -183,6 +183,7 @@
         default = pkgs.mkShell {
           inherit (self.checks.${system}.pre-commit-check) shellHook;
           buildInputs = with pkgs; [ just self.packages.${system}.nvim ];
+          QEMU_OPTS_WL = "-smp 4 -device virtio-gpu-rutabaga,gfxstream-vulkan=on,cross-domain=on,hostmem=2G,wsi=headless";
         };
       });
     };
