@@ -7,8 +7,8 @@ update input:
 
 # Amend Update flake.lock PR
 flake-pr:
-    git branch -D update_flake_lock_action
-    gix fetch origin
+    git branch -D update_flake_lock_action || echo "no previous update branch"
+    gix fetch -r origin
     git switch update_flake_lock_action
     git commit --amend --no-edit
     git push origin update_flake_lock_action --force-with-lease
