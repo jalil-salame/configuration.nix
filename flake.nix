@@ -97,7 +97,7 @@
               # Deduplicate patch
               present = builtins.elem patch prevPatches;
             in
-            { patches = prevPatches ++ final.lib.optional present patch; });
+            { patches = prevPatches ++ final.lib.optional (!present) patch; });
         };
       };
 
