@@ -86,15 +86,18 @@
         jpassmenu = jpassmenu.overlays.default;
         audiomenu = audiomenu.overlays.default;
         "waybar-sway-patch" = final: prev: {
-          waybar = prev.waybar.overrideAttrs (old: {
-            patches = (old.patches or [ ]) ++ [
+          waybar = prev.waybar.overrideAttrs (old:
+            let
               # Fixes https://github.com/Alexays/Waybar/issues/3009
-              (final.fetchpatch {
+              patch = final.fetchpatch {
                 url = "https://patch-diff.githubusercontent.com/raw/Alexays/Waybar/pull/3037.patch";
                 hash = "sha256-u87t6zzslk1mzSfi4HQ6zDPFr7qMfsvymTy3HBxVTJQ=";
-              })
-            ];
-          });
+              };
+              prevPatches = old.patches or [ ];
+              # Deduplicate patch
+              present = builtins.elem patch prevPatches;
+            in
+            { patches = prevPatches ++ final.lib.optional present patch; });
         };
       };
 
