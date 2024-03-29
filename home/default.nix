@@ -55,7 +55,7 @@ in
       programs.zoxide.enable = true;
       # Shell
       programs.zsh.enable = true;
-      programs.zsh.enableAutosuggestions = true;
+      programs.zsh.autosuggestion.enable = true;
       programs.zsh.enableCompletion = true;
       programs.zsh.autocd = true;
       programs.zsh.dotDir = ".config/zsh";
