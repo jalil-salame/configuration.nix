@@ -1,4 +1,8 @@
 { lib }: {
+  bacon = {
+    enable = true;
+    settings.quickfix.enabled = true;
+  };
   cmp = {
     enable = true;
     cmdline = {
