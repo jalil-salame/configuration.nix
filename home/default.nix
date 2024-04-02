@@ -148,6 +148,8 @@ in
         extraConfig.status.submoduleSummary = true;
       };
       programs.lazygit.enable = true;
+      # Jujutsu (alternative DVCS (git-compatible))
+      programs.jujutsu.enable = true;
     })
   ];
 }
