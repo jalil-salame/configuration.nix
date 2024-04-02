@@ -113,8 +113,7 @@ in
     (lib.mkIf (cfg.enable && devcfg.enable) {
       home = {
         sessionVariables.MANPAGER = lib.optionalString devcfg.neovimAsManPager "nvim -c 'Man!' -o -";
-        packages = devcfg.extraPackages
-          ++ lib.optionals devcfg.rust.enable ([ pkgs.rustup ] ++ devcfg.rust.extraPackages);
+        packages = devcfg.extraPackages;
       };
 
       # Github CLI
@@ -150,6 +149,11 @@ in
       programs.lazygit.enable = true;
       # Jujutsu (alternative DVCS (git-compatible))
       programs.jujutsu.enable = true;
+    })
+    (lib.mkIf (cfg.enable && devcfg.enable && devcfg.rust.enable) {
+      home.packages = [ pkgs.rustup ] ++ devcfg.rust.extraPackages;
+      # Background code checker (for Rust)
+      programs.bacon.enable = true;
     })
   ];
 }
