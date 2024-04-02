@@ -150,6 +150,7 @@ in
             options.enable = lib.mkEnableOption "development settings";
             options.neovimAsManPager = lib.mkEnableOption "neovim as the man pager";
             options.extraPackages = mkExtraPackagesOption "dev" [
+              [ "jq" ] # json parser
               [ "just" ] # just a command runner
               [ "typos" ] # low false positive rate typo checker
               [ "git-absorb" ] # fixup! but automatic
