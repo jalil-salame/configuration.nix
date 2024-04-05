@@ -2,13 +2,25 @@
 let
   inherit (lib) types;
   # Like mkEnableOption but defaults to true
-  mkDisableOption = option: (lib.mkEnableOption option) // { default = true; example = false; };
-  mkImageOption = { description, url, sha256 ? "" }: lib.mkOption {
-    inherit description;
-    type = types.path;
-    default = builtins.fetchurl { inherit url sha256; };
-    defaultText = lib.literalMD "![${description}](${url})";
-  };
+  mkDisableOption =
+    option:
+    (lib.mkEnableOption option)
+    // {
+      default = true;
+      example = false;
+    };
+  mkImageOption =
+    {
+      description,
+      url,
+      sha256 ? "",
+    }:
+    lib.mkOption {
+      inherit description;
+      type = types.path;
+      default = builtins.fetchurl { inherit url sha256; };
+      defaultText = lib.literalMD "![${description}](${url})";
+    };
 
   gui.options = {
     enable = lib.mkEnableOption "jalil's default gui configuration.";
@@ -48,9 +60,7 @@ let
     dev = lib.mkOption {
       description = lib.mdDoc "Options for setting up a dev environment";
       default = { };
-      type = types.submodule {
-        options.enable = lib.mkEnableOption "dev configuration";
-      };
+      type = types.submodule { options.enable = lib.mkEnableOption "dev configuration"; };
     };
     gui = lib.mkOption {
       description = lib.mdDoc "Jalil's default configuration for a NixOS gui.";
@@ -77,7 +87,9 @@ let
         want to allow ssh logins.
       '';
       default = { };
-      example = { "jalil-salame" = "sha256:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"; };
+      example = {
+        "jalil-salame" = "sha256:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+      };
       type = types.attrsOf types.str;
     };
   };

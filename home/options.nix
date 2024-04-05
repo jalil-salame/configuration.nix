@@ -2,9 +2,12 @@
 let
   inherit (lib) types;
 
-  mkExtraPackagesOption = name: defaultPkgsPath:
+  mkExtraPackagesOption =
+    name: defaultPkgsPath:
     let
-      text = lib.strings.concatMapStringsSep " " (pkgPath: "pkgs." + (lib.strings.concatStringsSep "." pkgPath)) defaultPkgsPath;
+      text = lib.strings.concatMapStringsSep " " (
+        pkgPath: "pkgs." + (lib.strings.concatStringsSep "." pkgPath)
+      ) defaultPkgsPath;
       defaultText = lib.literalExpression "[ ${text} ]";
       default = builtins.map (pkgPath: lib.attrsets.getAttrFromPath pkgPath pkgs) defaultPkgsPath;
     in
@@ -126,7 +129,10 @@ let
       description = "The terminal emulator to use.";
       default = "wezterm";
       example = "alacritty";
-      type = types.enum [ "wezterm" "alacritty" ];
+      type = types.enum [
+        "wezterm"
+        "alacritty"
+      ];
     };
   };
 in

@@ -1,5 +1,7 @@
 { config, lib }:
-let cfg = config.jhome.gui; in
+let
+  cfg = config.jhome.gui;
+in
 {
   mainBar.layer = "top";
   mainBar.position = "top";
@@ -7,9 +9,13 @@ let cfg = config.jhome.gui; in
   # Choose the order of the modules
   mainBar.modules-left = [ "sway/workspaces" ];
   mainBar.modules-center = [ "clock" ];
-  mainBar.modules-right = [ "pulseaudio" "backlight" "battery" "sway/language" "memory" ]
-    ++ lib.optional (cfg.tempInfo != null) "temperature"
-    ++ [ "tray" ];
+  mainBar.modules-right = [
+    "pulseaudio"
+    "backlight"
+    "battery"
+    "sway/language"
+    "memory"
+  ] ++ lib.optional (cfg.tempInfo != null) "temperature" ++ [ "tray" ];
   mainBar."sway/workspaces".disable-scroll = true;
   mainBar."sway/workspaces".persistent-workspaces."1" = [ ];
   mainBar."sway/workspaces".persistent-workspaces."2" = [ ];
@@ -41,20 +47,37 @@ let cfg = config.jhome.gui; in
   mainBar.pulseaudio.format-icons.phone = "󰘂";
   mainBar.pulseaudio.format-icons.portable = "";
   mainBar.pulseaudio.format-icons.car = "";
-  mainBar.pulseaudio.format-icons.default = [ "󰕿" "󰖀" "󰕾" ];
+  mainBar.pulseaudio.format-icons.default = [
+    "󰕿"
+    "󰖀"
+    "󰕾"
+  ];
   mainBar.pulseaudio.on-click = "pavucontrol";
   mainBar.pulseaudio.min-length = 13;
-  mainBar.temperature =
-    lib.optionalAttrs (cfg.tempInfo != null) {
-      inherit (cfg.tempInfo) hwmon-path;
-      critical-threshold = 80;
-      format = "{temperatureC}°C {icon}";
-      format-icons = [ "" "" "" "" "" ];
-      tooltip = false;
-    };
+  mainBar.temperature = lib.optionalAttrs (cfg.tempInfo != null) {
+    inherit (cfg.tempInfo) hwmon-path;
+    critical-threshold = 80;
+    format = "{temperatureC}°C {icon}";
+    format-icons = [
+      ""
+      ""
+      ""
+      ""
+      ""
+    ];
+    tooltip = false;
+  };
   mainBar.backlight.device = "intel_backlight";
   mainBar.backlight.format = "{percent}% {icon}";
-  mainBar.backlight.format-icons = [ "󰃚" "󰃛" "󰃜" "󰃝" "󰃞" "󰃟" "󰃠" ];
+  mainBar.backlight.format-icons = [
+    "󰃚"
+    "󰃛"
+    "󰃜"
+    "󰃝"
+    "󰃞"
+    "󰃟"
+    "󰃠"
+  ];
   mainBar.backlight.min-length = 7;
   mainBar.battery.states.warning = 30;
   mainBar.battery.states.critical = 15;
@@ -62,7 +85,18 @@ let cfg = config.jhome.gui; in
   mainBar.battery.format-charging = "{capacity}% 󰂄";
   mainBar.battery.format-plugged = "{capacity}% 󰚥";
   mainBar.battery.format-alt = "{time} {icon}";
-  mainBar.battery.format-icons = [ "󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹" ];
+  mainBar.battery.format-icons = [
+    "󰁺"
+    "󰁻"
+    "󰁼"
+    "󰁽"
+    "󰁾"
+    "󰁿"
+    "󰂀"
+    "󰂁"
+    "󰂂"
+    "󰁹"
+  ];
   mainBar.tray.icon-size = 16;
   mainBar.tray.spacing = 0;
 }

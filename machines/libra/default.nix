@@ -2,7 +2,9 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ nixos-hardware }: { pkgs, ... }: {
+{ nixos-hardware }:
+{ pkgs, ... }:
+{
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -16,7 +18,10 @@
   fileSystems = {
     "/".options = [ "compress=zstd" ];
     "/home".options = [ "compress=zstd" ];
-    "/nix".options = [ "compress=zstd" "noatime" ];
+    "/nix".options = [
+      "compress=zstd"
+      "noatime"
+    ];
   };
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -36,7 +41,12 @@
   networking.hostName = "libra";
   networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
   # networking.networkmanager.wifi.backend = "iwd"; # Seems to cause problems
-  networking.networkmanager.appendNameservers = [ "1.1.1.1" "1.0.0.1" "8.8.8.8" "8.4.4.8" ];
+  networking.networkmanager.appendNameservers = [
+    "1.1.1.1"
+    "1.0.0.1"
+    "8.8.8.8"
+    "8.4.4.8"
+  ];
 
   # Select internationalisation properties.
   console.useXkbConfig = true; # use xkb.options in tty.
@@ -65,4 +75,3 @@
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
   system.stateVersion = "23.11"; # Did you read the comment?
 }
-

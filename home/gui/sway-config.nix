@@ -22,23 +22,22 @@ let
       schema = pkgs.gsettings-desktop-schemas;
       datadir = "${schema}/share/gsettings-schemas/${schema.name}";
     in
-    pkgs.writers.writeDashBin "configure-gtk"
-      ''
-        export XDG_DATA_DIRS=${datadir}:$XDG_DATA_DIRS
-        gnome_schema=org.gnome.desktop.interface
-        config="${config.xdg.configHome}/gtk-3.0/settings.ini"
-        if [ ! -f "$config" ]; then exit 1; fi
-        # Read settings from gtk3
-        gtk_theme="$(${pkgs.gnugrep}/bin/grep 'gtk-theme-name' "$config" | ${pkgs.gnused}/bin/sed 's/.*\s*=\s*//')"
-        icon_theme="$(${pkgs.gnugrep}/bin/grep 'gtk-icon-theme-name' "$config" | ${pkgs.gnused}/bin/sed 's/.*\s*=\s*//')"
-        cursor_theme="$(${pkgs.gnugrep}/bin/grep 'gtk-cursor-theme-name' "$config" | ${pkgs.gnused}/bin/sed 's/.*\s*=\s*//')"
-        font_name="$(grep 'gtk-font-name' "$config" | sed 's/.*\s*=\s*//')"
-        ${pkgs.glib}/bin/gsettings set "$gnome_schema" gtk-theme "$gtk_theme"
-        ${pkgs.glib}/bin/gsettings set "$gnome_schema" icon-theme "$icon_theme"
-        ${pkgs.glib}/bin/gsettings set "$gnome_schema" cursor-theme "$cursor_theme"
-        ${pkgs.glib}/bin/gsettings set "$gnome_schema" font-name "$font_name"
-        ${pkgs.glib}/bin/gsettings set "$gnome_schema" color-scheme prefer-dark
-      '';
+    pkgs.writers.writeDashBin "configure-gtk" ''
+      export XDG_DATA_DIRS=${datadir}:$XDG_DATA_DIRS
+      gnome_schema=org.gnome.desktop.interface
+      config="${config.xdg.configHome}/gtk-3.0/settings.ini"
+      if [ ! -f "$config" ]; then exit 1; fi
+      # Read settings from gtk3
+      gtk_theme="$(${pkgs.gnugrep}/bin/grep 'gtk-theme-name' "$config" | ${pkgs.gnused}/bin/sed 's/.*\s*=\s*//')"
+      icon_theme="$(${pkgs.gnugrep}/bin/grep 'gtk-icon-theme-name' "$config" | ${pkgs.gnused}/bin/sed 's/.*\s*=\s*//')"
+      cursor_theme="$(${pkgs.gnugrep}/bin/grep 'gtk-cursor-theme-name' "$config" | ${pkgs.gnused}/bin/sed 's/.*\s*=\s*//')"
+      font_name="$(grep 'gtk-font-name' "$config" | sed 's/.*\s*=\s*//')"
+      ${pkgs.glib}/bin/gsettings set "$gnome_schema" gtk-theme "$gtk_theme"
+      ${pkgs.glib}/bin/gsettings set "$gnome_schema" icon-theme "$icon_theme"
+      ${pkgs.glib}/bin/gsettings set "$gnome_schema" cursor-theme "$cursor_theme"
+      ${pkgs.glib}/bin/gsettings set "$gnome_schema" font-name "$font_name"
+      ${pkgs.glib}/bin/gsettings set "$gnome_schema" color-scheme prefer-dark
+    '';
   cmdOnce = command: { inherit command; };
   cmdAlways = command: {
     inherit command;
@@ -60,15 +59,23 @@ in
   window.border = 2;
   # Make certain windows floating
   window.commands = [
-    { command = "floating enable"; criteria.title = "zoom"; }
-    { command = "floating enable"; criteria.class = "floating"; }
-    { command = "floating enable"; criteria.app_id = "floating"; }
+    {
+      command = "floating enable";
+      criteria.title = "zoom";
+    }
+    {
+      command = "floating enable";
+      criteria.class = "floating";
+    }
+    {
+      command = "floating enable";
+      criteria.app_id = "floating";
+    }
   ];
   # Startup scripts
-  startup =
-    [ (cmdAlways "${configure-gtk}/bin/configure-gtk") ]
-    ++ (builtins.map cmdAlways cfg.exec.always)
-    ++ (builtins.map cmdOnce cfg.exec.once);
+  startup = [
+    (cmdAlways "${configure-gtk}/bin/configure-gtk")
+  ] ++ (builtins.map cmdAlways cfg.exec.always) ++ (builtins.map cmdOnce cfg.exec.once);
   # Keyboard configuration
   input."type:keyboard" = {
     repeat_delay = "300";

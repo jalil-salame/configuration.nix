@@ -1,4 +1,5 @@
-{ lib }: {
+{ lib }:
+{
   bacon = {
     enable = true;
     settings.quickfix.enabled = true;
@@ -8,11 +9,17 @@
     cmdline = {
       "/" = {
         mapping.__raw = "cmp.mapping.preset.cmdline()";
-        sources = [{ name = "rg"; } { name = "buffer"; }];
+        sources = [
+          { name = "rg"; }
+          { name = "buffer"; }
+        ];
       };
       ":" = {
         mapping.__raw = "cmp.mapping.preset.cmdline()";
-        sources = [{ name = "path"; } { name = "cmdline"; }];
+        sources = [
+          { name = "path"; }
+          { name = "cmdline"; }
+        ];
       };
     };
     settings = {
@@ -20,18 +27,54 @@
       snippet.expand = "function(args) require('luasnip').lsp_expand(args.body) end";
       # Completion Sources
       sources = [
-        { name = "buffer"; groupIndex = 3; }
-        { name = "calc"; groupIndex = 2; }
-        { name = "conventionalcommits"; groupIndex = 1; }
-        { name = "crates"; groupIndex = 1; }
-        { name = "luasnip"; groupIndex = 1; }
-        { name = "nvim_lsp"; groupIndex = 1; }
-        { name = "nvim_lsp_document_symbol"; groupIndex = 1; }
-        { name = "nvim_lsp_signature_help"; groupIndex = 1; }
-        { name = "path"; groupIndex = 2; }
-        { name = "spell"; groupIndex = 2; }
-        { name = "treesitter"; groupIndex = 2; }
-        { name = "zsh"; groupIndex = 1; }
+        {
+          name = "buffer";
+          groupIndex = 3;
+        }
+        {
+          name = "calc";
+          groupIndex = 2;
+        }
+        {
+          name = "conventionalcommits";
+          groupIndex = 1;
+        }
+        {
+          name = "crates";
+          groupIndex = 1;
+        }
+        {
+          name = "luasnip";
+          groupIndex = 1;
+        }
+        {
+          name = "nvim_lsp";
+          groupIndex = 1;
+        }
+        {
+          name = "nvim_lsp_document_symbol";
+          groupIndex = 1;
+        }
+        {
+          name = "nvim_lsp_signature_help";
+          groupIndex = 1;
+        }
+        {
+          name = "path";
+          groupIndex = 2;
+        }
+        {
+          name = "spell";
+          groupIndex = 2;
+        }
+        {
+          name = "treesitter";
+          groupIndex = 2;
+        }
+        {
+          name = "zsh";
+          groupIndex = 1;
+        }
       ];
       mapping.__raw = ''
         cmp.mapping.preset.insert({
@@ -116,7 +159,9 @@
   };
   luasnip = {
     enable = true;
-    extraConfig = { update_events = "TextChanged,TextChangedI"; };
+    extraConfig = {
+      update_events = "TextChanged,TextChangedI";
+    };
   };
   noice = {
     enable = true;
@@ -162,7 +207,10 @@
     enable = true;
     lintersByFt = {
       rust = [ "typos" ];
-      latex = [ "chktex" "typos" ];
+      latex = [
+        "chktex"
+        "typos"
+      ];
       markdown = [ "typos" ];
     };
   };

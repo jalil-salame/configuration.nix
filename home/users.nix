@@ -20,10 +20,12 @@ in
       };
     })
     (lib.mkIf unlockKey {
-      xdg.configFile.pam-gnupg.text = ''
-        ${gpgHome}
+      xdg.configFile.pam-gnupg.text =
+        ''
+          ${gpgHome}
 
-      '' + (lib.strings.concatLines cfg.gpg.unlockKeys);
+        ''
+        + (lib.strings.concatLines cfg.gpg.unlockKeys);
     })
   ];
 }

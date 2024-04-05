@@ -1,4 +1,10 @@
-{ config, lib, pkgs, osConfig ? null, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  osConfig ? null,
+  ...
+}:
 let
   inherit (config) jhome;
   flatpakEnabled = if osConfig != null then osConfig.services.flatpak.enable else false;

@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... } @ args:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}@args:
 let
   cfg = config.jhome.nvim;
   hmAvailable = args ? hmConfig;
@@ -8,9 +13,7 @@ let
   notStandalone = hmAvailable || nixosAvailable || darwinAvailable;
 in
 {
-  imports = [
-    ./options.nix
-  ];
+  imports = [ ./options.nix ];
 
   config = lib.mkMerge [
     (lib.optionalAttrs canSetAsDefault { defaultEditor = lib.mkDefault true; })
@@ -49,9 +52,7 @@ in
       plugins = import ./plugins.nix { inherit lib; };
       keymaps = import ./mappings.nix;
       inherit (import ./augroups.nix) autoGroups autoCmd;
-      extraPlugins = with pkgs.vimPlugins; [
-        nvim-web-devicons
-      ];
+      extraPlugins = with pkgs.vimPlugins; [ nvim-web-devicons ];
       # Formatting
       extraPackages = with pkgs; [
         stylua

@@ -36,48 +36,72 @@
 
   # Flake outputs that other flakes can use
   outputs =
-    { self
-    , nixpkgs
-    , stylix
-    , home-manager
-    , nixos-hardware
-    , pre-commit-hooks
-    , jpassmenu
-    , audiomenu
-    , nixvim
-    , neovim-nightly
+    {
+      self,
+      nixpkgs,
+      stylix,
+      home-manager,
+      nixos-hardware,
+      pre-commit-hooks,
+      jpassmenu,
+      audiomenu,
+      nixvim,
+      neovim-nightly,
     }:
     let
       inherit (nixpkgs) lib;
       # Helpers for producing system-specific outputs
-      supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
-      forEachSupportedSystem = f: nixpkgs.lib.genAttrs supportedSystems (system: f {
-        inherit system;
-        pkgs = import nixpkgs { inherit system; };
-      });
+      supportedSystems = [
+        "x86_64-linux"
+        "aarch64-linux"
+      ];
+      forEachSupportedSystem =
+        f:
+        nixpkgs.lib.genAttrs supportedSystems (
+          system:
+          f {
+            inherit system;
+            pkgs = import nixpkgs { inherit system; };
+          }
+        );
       overlays = builtins.attrValues self.overlays;
     in
     {
-      checks = forEachSupportedSystem ({ pkgs, system }: {
-        nvim = nixvim.lib.${system}.check.mkTestDerivationFromNixvimModule {
-          pkgs = import nixpkgs { inherit system overlays; };
-          module = ./nvim/nixvim.nix;
-        };
-        pre-commit-check = pre-commit-hooks.lib.${system}.run {
-          src = builtins.path { path = ./.; name = "configuration.nix"; };
-          hooks.typos.enable = true;
-          hooks.nixpkgs-fmt.enable = true;
-        };
-      });
+      checks = forEachSupportedSystem (
+        { pkgs, system }:
+        {
+          nvim = nixvim.lib.${system}.check.mkTestDerivationFromNixvimModule {
+            pkgs = import nixpkgs { inherit system overlays; };
+            module = ./nvim/nixvim.nix;
+          };
+          pre-commit-check = pre-commit-hooks.lib.${system}.run {
+            src = builtins.path {
+              path = ./.;
+              name = "configuration.nix";
+            };
+            hooks.typos.enable = true;
+            hooks.nixfmt.enable = true;
+            hooks.nixfmt.package = pkgs.nixfmt-rfc-style;
+          };
+        }
+      );
 
-      packages = forEachSupportedSystem ({ pkgs, system }: {
-        inherit (import ./docs { inherit pkgs lib; }) docs nixos-markdown nvim-markdown home-markdown;
-        # Nvim standalone module
-        nvim = nixvim.legacyPackages.${system}.makeNixvimWithModule {
-          pkgs = import nixpkgs { inherit system overlays; };
-          module = ./nvim/nixvim.nix;
-        };
-      });
+      packages = forEachSupportedSystem (
+        { pkgs, system }:
+        {
+          inherit (import ./docs { inherit pkgs lib; })
+            docs
+            nixos-markdown
+            nvim-markdown
+            home-markdown
+            ;
+          # Nvim standalone module
+          nvim = nixvim.legacyPackages.${system}.makeNixvimWithModule {
+            pkgs = import nixpkgs { inherit system overlays; };
+            module = ./nvim/nixvim.nix;
+          };
+        }
+      );
 
       # Provide necessary overlays
       overlays = {
@@ -86,7 +110,8 @@
         jpassmenu = jpassmenu.overlays.default;
         audiomenu = audiomenu.overlays.default;
         "waybar-sway-patch" = final: prev: {
-          waybar = prev.waybar.overrideAttrs (old:
+          waybar = prev.waybar.overrideAttrs (
+            old:
             let
               # Fixes https://github.com/Alexays/Waybar/issues/3009
               patch = final.fetchpatch {
@@ -97,7 +122,10 @@
               # Deduplicate patch
               present = builtins.elem patch prevPatches;
             in
-            { patches = prevPatches ++ final.lib.optional (!present) patch; });
+            {
+              patches = prevPatches ++ final.lib.optional (!present) patch;
+            }
+          );
         };
       };
 
@@ -108,41 +136,41 @@
       nixosConfigurations.vm =
         let
           system = "x86_64-linux";
-          config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-            "steam-original"
-          ];
+          config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ "steam-original" ];
           pkgs = import nixpkgs { inherit system overlays config; };
         in
-        lib.nixosSystem
-          {
-            inherit system pkgs;
-            modules = [
-              self.nixosModules.vm # import vm module
-              {
-                time.timeZone = "Europe/Berlin";
-                i18n.defaultLocale = "en_US.UTF-8";
+        lib.nixosSystem {
+          inherit system pkgs;
+          modules = [
+            self.nixosModules.vm # import vm module
+            {
+              time.timeZone = "Europe/Berlin";
+              i18n.defaultLocale = "en_US.UTF-8";
 
-                users.users.jdoe.password = "example";
-                users.users.jdoe.isNormalUser = true;
-                users.users.jdoe.extraGroups = [ "wheel" "video" "networkmanager" ];
+              users.users.jdoe.password = "example";
+              users.users.jdoe.isNormalUser = true;
+              users.users.jdoe.extraGroups = [
+                "wheel"
+                "video"
+                "networkmanager"
+              ];
 
-                home-manager.users.jdoe = {
-                  home.username = "jdoe";
-                  home.homeDirectory = "/home/jdoe";
+              home-manager.users.jdoe = {
+                home.username = "jdoe";
+                home.homeDirectory = "/home/jdoe";
 
-                  jhome.enable = true;
-                  jhome.gui.enable = true;
-                  jhome.dev.rust.enable = true;
-                };
+                jhome.enable = true;
+                jhome.gui.enable = true;
+                jhome.dev.rust.enable = true;
+              };
 
-                nix.registry.nixpkgs.flake = nixpkgs;
+              nix.registry.nixpkgs.flake = nixpkgs;
 
-                jconfig.enable = true;
-                jconfig.gui.enable = true;
-              }
-            ];
-          };
-
+              jconfig.enable = true;
+              jconfig.gui.enable = true;
+            }
+          ];
+        };
 
       nixosModules =
         let
@@ -167,27 +195,39 @@
             nix.registry.nixpkgs.flake = nixpkgs;
           };
 
-          machines = [ "capricorn" "gemini" "libra" "vm" ];
+          machines = [
+            "capricorn"
+            "gemini"
+            "libra"
+            "vm"
+          ];
           mkMachine = hostname: {
             imports = [
               nixosModule
               (import (./machines + "/${hostname}") { inherit nixos-hardware; })
             ];
-            home-manager.sharedModules = [{ jhome.hostName = hostname; }];
+            home-manager.sharedModules = [ { jhome.hostName = hostname; } ];
           };
           machineModules = lib.genAttrs machines mkMachine;
         in
         {
           default = nixosModule;
           inherit nixosModule homeManagerModuleNixOS homeManagerModuleSandalone;
-        } // machineModules;
+        }
+        // machineModules;
 
-      devShells = forEachSupportedSystem ({ pkgs, system }: {
-        default = pkgs.mkShell {
-          inherit (self.checks.${system}.pre-commit-check) shellHook;
-          buildInputs = with pkgs; [ just self.packages.${system}.nvim ];
-          QEMU_OPTS_WL = "-smp 4 -device virtio-gpu-rutabaga,gfxstream-vulkan=on,cross-domain=on,hostmem=2G,wsi=headless";
-        };
-      });
+      devShells = forEachSupportedSystem (
+        { pkgs, system }:
+        {
+          default = pkgs.mkShell {
+            inherit (self.checks.${system}.pre-commit-check) shellHook;
+            buildInputs = with pkgs; [
+              just
+              self.packages.${system}.nvim
+            ];
+            QEMU_OPTS_WL = "-smp 4 -device virtio-gpu-rutabaga,gfxstream-vulkan=on,cross-domain=on,hostmem=2G,wsi=headless";
+          };
+        }
+      );
     };
 }

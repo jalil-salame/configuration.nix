@@ -1,7 +1,9 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-{ nixos-hardware }: { pkgs, ... }: {
+{ nixos-hardware }:
+{ pkgs, ... }:
+{
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -15,7 +17,10 @@
   fileSystems."/".options = [ "compress=zstd" ];
   fileSystems."/steam".options = [ "compress=zstd" ];
   fileSystems."/home".options = [ "compress=zstd" ];
-  fileSystems."/nix".options = [ "compress=zstd" "noatime" ];
+  fileSystems."/nix".options = [
+    "compress=zstd"
+    "noatime"
+  ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;

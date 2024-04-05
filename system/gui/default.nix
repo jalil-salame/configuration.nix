@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   cfg = config.jconfig.gui;
   enable = config.jconfig.enable && cfg.enable;
@@ -17,7 +22,10 @@ in
         enable = cfg.ydotool.autoStart;
         wantedBy = [ "default.target" ];
         description = "Generic command-line automation tool";
-        documentation = [ "man:ydotool(1)" "man:ydotoold(8)" ];
+        documentation = [
+          "man:ydotool(1)"
+          "man:ydotoold(8)"
+        ];
         serviceConfig = {
           Type = "simple";
           Restart = "always";

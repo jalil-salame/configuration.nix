@@ -1,25 +1,41 @@
-{ overlays, nvim-config, stylix ? null }: { config, pkgs, lib, ... }:
+{
+  overlays,
+  nvim-config,
+  stylix ? null,
+}:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   cfg = config.jhome;
   devcfg = cfg.dev;
 in
 {
-  imports = [
-    # Apply overlays
-    { nixpkgs = { inherit overlays; }; }
-    nvim-config
-    ./options.nix
-    ./gui
-    ./users.nix
-  ] ++ lib.optionals (stylix != null) [
-    stylix.homeManagerModules.stylix
-    {
-      stylix.image = builtins.fetchurl {
-        url = "https://raw.githubusercontent.com/lunik1/nixos-logo-gruvbox-wallpaper/d4937c424fad79c1136a904599ba689fcf8d0fad/png/gruvbox-dark-rainbow.png";
-        sha256 = "036gqhbf6s5ddgvfbgn6iqbzgizssyf7820m5815b2gd748jw8zc";
-      };
-    }
-  ];
+  imports =
+    [
+      # Apply overlays
+      {
+        nixpkgs = {
+          inherit overlays;
+        };
+      }
+      nvim-config
+      ./options.nix
+      ./gui
+      ./users.nix
+    ]
+    ++ lib.optionals (stylix != null) [
+      stylix.homeManagerModules.stylix
+      {
+        stylix.image = builtins.fetchurl {
+          url = "https://raw.githubusercontent.com/lunik1/nixos-logo-gruvbox-wallpaper/d4937c424fad79c1136a904599ba689fcf8d0fad/png/gruvbox-dark-rainbow.png";
+          sha256 = "036gqhbf6s5ddgvfbgn6iqbzgizssyf7820m5815b2gd748jw8zc";
+        };
+      }
+    ];
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
@@ -65,7 +81,8 @@ in
       # GPG Agent
       services.gpg-agent.enable = true;
       services.gpg-agent.maxCacheTtl = 86400;
-      services.gpg-agent.pinentryPackage = if config.jhome.gui.enable then pkgs.pinentry-qt else pkgs.pinentry-curses;
+      services.gpg-agent.pinentryPackage =
+        if config.jhome.gui.enable then pkgs.pinentry-qt else pkgs.pinentry-curses;
       services.gpg-agent.extraConfig = "allow-preset-passphrase";
       # Spotifyd
       services.spotifyd.enable = true;

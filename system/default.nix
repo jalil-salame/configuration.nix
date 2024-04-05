@@ -1,18 +1,22 @@
-{ stylix }: { config, pkgs, lib, ... }:
+{ stylix }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   cfg = config.jconfig;
-  keysFromGithub = lib.attrsets.mapAttrs'
-    (username: sha256: {
-      name = "pubkeys/${username}";
-      value = {
-        mode = "0755";
-        source = builtins.fetchurl {
-          inherit sha256;
-          url = "https://github.com/${username}.keys";
-        };
+  keysFromGithub = lib.attrsets.mapAttrs' (username: sha256: {
+    name = "pubkeys/${username}";
+    value = {
+      mode = "0755";
+      source = builtins.fetchurl {
+        inherit sha256;
+        url = "https://github.com/${username}.keys";
       };
-    })
-    cfg.importSSHKeysFromGithub;
+    };
+  }) cfg.importSSHKeysFromGithub;
 in
 {
   imports = [
@@ -65,7 +69,9 @@ in
     };
 
     environment.etc = keysFromGithub;
-    services.openssh.authorizedKeysFiles = builtins.map (path: "/etc/${path}") (builtins.attrNames keysFromGithub);
+    services.openssh.authorizedKeysFiles = builtins.map (path: "/etc/${path}") (
+      builtins.attrNames keysFromGithub
+    );
 
     # Default shell
     programs.zsh.enable = true;
@@ -82,6 +88,9 @@ in
     # run between 0 and 45min after boot if run was missed
     nix.gc.randomizedDelaySec = "45min";
     nix.settings.auto-optimise-store = true;
-    nix.settings.experimental-features = [ "nix-command" "flakes" ];
+    nix.settings.experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
   };
 }
