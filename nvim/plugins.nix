@@ -71,6 +71,7 @@
       '';
     };
   };
+  # FIXME: doesn't include formatters
   conform-nvim = {
     enable = true;
     formattersByFt = {

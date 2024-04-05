@@ -102,7 +102,7 @@
       };
 
       # Nix files formatter (run `nix fmt`)
-      formatter = forEachSupportedSystem ({ pkgs, ... }: pkgs.nixpkgs-fmt);
+      formatter = forEachSupportedSystem ({ pkgs, ... }: pkgs.nixfmt-rfc-style);
 
       # Example vm configuration
       nixosConfigurations.vm =
