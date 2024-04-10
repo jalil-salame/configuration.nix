@@ -60,6 +60,8 @@ in
         taplo
         yamlfmt
         nixpkgs-fmt
+        alejandra
+        nixfmt-classic
         rust-analyzer
       ];
       extraConfigLuaPre = ''
