@@ -52,7 +52,15 @@ in
       plugins = import ./plugins.nix { inherit lib; };
       keymaps = import ./mappings.nix;
       inherit (import ./augroups.nix) autoGroups autoCmd;
-      extraPlugins = with pkgs.vimPlugins; [ nvim-web-devicons ];
+      extraPlugins =
+        let
+          jjdescription = pkgs.callPackage ./vim-jjdescription.nix { };
+        in
+        with pkgs.vimPlugins;
+        [
+          nvim-web-devicons
+          jjdescription
+        ];
       # Formatting
       extraPackages = with pkgs; [
         stylua
