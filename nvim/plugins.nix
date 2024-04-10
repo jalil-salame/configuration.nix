@@ -140,7 +140,6 @@
       jsonls.enable = true;
       nil_ls.enable = true;
       pyright.enable = true;
-      rnix-lsp.enable = true;
       ruff-lsp.enable = true;
       taplo.enable = true;
       texlab.enable = true;
