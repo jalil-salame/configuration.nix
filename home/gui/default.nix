@@ -64,34 +64,48 @@ in
         exec sway
       fi
     '';
-
     # Volume/Backlight control and notifications
-    services.avizo.enable = true;
+    services.avizo = {
+      enable = true;
+      settings.default = {
+        time = 0.8;
+        border-width = 0;
+        height = 176;
+        y-offset = 0.1;
+        block-spacing = 1;
+      };
+    };
     # Auto configure displays
     services.kanshi.enable = lib.mkDefault true;
     # Notifications
-    services.mako.enable = true;
-    services.mako.layer = "overlay";
-    services.mako.borderRadius = 8;
-    services.mako.defaultTimeout = 15000;
-
+    services.mako = {
+      enable = true;
+      layer = "overlay";
+      borderRadius = 8;
+      defaultTimeout = 15000;
+    };
     # Window Manager
-    wayland.windowManager.sway.enable = true;
-    wayland.windowManager.sway.package = swayPkg; # no sway package if it comes from the OS
-    wayland.windowManager.sway.config = import ./sway-config.nix { inherit config pkgs; };
+    wayland.windowManager.sway = {
+      enable = true;
+      package = swayPkg; # no sway package if it comes from the OS
+      config = import ./sway-config.nix { inherit config pkgs; };
+    };
 
     # Set cursor style
     stylix.cursor = cursor;
     home.pointerCursor.gtk.enable = true;
-
     # Set Gtk theme
-    gtk.enable = true;
-    gtk.iconTheme = iconTheme;
-    gtk.gtk3.extraConfig.gtk-application-prefer-dark-theme = 1;
-    gtk.gtk4.extraConfig.gtk-application-prefer-dark-theme = 1;
+    gtk = {
+      enable = true;
+      iconTheme = iconTheme;
+      gtk3.extraConfig.gtk-application-prefer-dark-theme = 1;
+      gtk4.extraConfig.gtk-application-prefer-dark-theme = 1;
+    };
     # Set Qt theme
-    qt.enable = true;
-    qt.platformTheme = "gtk";
+    qt = {
+      enable = true;
+      platformTheme = "gtk";
+    };
 
     xdg.systemDirs.data = [
       "/usr/share"
