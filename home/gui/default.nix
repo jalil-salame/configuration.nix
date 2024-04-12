@@ -88,6 +88,8 @@ in
         block-spacing = 1;
       };
     };
+    # Sound tuning
+    services.easyeffects.enable = true;
     # Auto configure displays
     services.kanshi.enable = lib.mkDefault true;
     # Notifications
