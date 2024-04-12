@@ -18,41 +18,54 @@ let
 in
 {
   config = lib.mkIf (jhome.enable && cfg.enable) {
-    home.packages = [
-      pkgs.webcord
-      pkgs.ferdium
-      pkgs.xournalpp
-      pkgs.signal-desktop
-      pkgs.lxqt.pcmanfm-qt
-      pkgs.wl-clipboard
-      # Extra fonts
-      pkgs.noto-fonts-cjk # Chinese, Japanese and Korean characters
-    ] ++ lib.optional flatpakEnabled pkgs.flatpak;
+    home.packages =
+      with pkgs;
+      [
+        webcord
+        ferdium
+        xournalpp
+        signal-desktop
+        lxqt.pcmanfm-qt
+        wl-clipboard
+        # Extra fonts
+        noto-fonts-cjk # Chinese, Japanese and Korean characters
+      ]
+      ++ lib.optional flatpakEnabled flatpak;
 
     fonts.fontconfig.enable = true;
 
     # Browser
     programs.firefox.enable = true;
     # Dynamic Menu
-    programs.fuzzel.enable = true;
-    programs.fuzzel.settings.main.icon-theme = "Papirus-Dark";
-    programs.fuzzel.settings.main.terminal = cfg.terminal;
-    programs.fuzzel.settings.main.layer = "overlay";
+    programs.fuzzel = {
+      enable = true;
+      settings.main = {
+        icon-theme = "Papirus-Dark";
+        terminal = cfg.terminal;
+        layer = "overlay";
+      };
+    };
     # Video player
-    programs.mpv.enable = true;
-    programs.mpv.scripts = builtins.attrValues { inherit (pkgs.mpvScripts) uosc thumbfast; };
+    programs.mpv = {
+      enable = true;
+      scripts = builtins.attrValues { inherit (pkgs.mpvScripts) uosc thumbfast; };
+    };
     # Status bar
-    programs.waybar.enable = true;
-    programs.waybar.systemd.enable = true;
-    programs.waybar.settings = import ./waybar-settings.nix { inherit config lib; };
+    programs.waybar = {
+      enable = true;
+      systemd.enable = true;
+      settings = import ./waybar-settings.nix { inherit config lib; };
+    };
     # Terminal
-    programs.wezterm.enable = cfg.terminal == "wezterm";
-    programs.wezterm.extraConfig = ''
-      config = {}
-      config.hide_tab_bar_if_only_one_tab = true
-      config.window_padding = { left = 1, right = 1, top = 1, bottom = 1 }
-      return config
-    '';
+    programs.wezterm = {
+      enable = cfg.terminal == "wezterm";
+      extraConfig = ''
+        config = {}
+        config.hide_tab_bar_if_only_one_tab = true
+        config.window_padding = { left = 1, right = 1, top = 1, bottom = 1 }
+        return config
+      '';
+    };
     programs.alacritty.enable = cfg.terminal == "alacritty";
     programs.zellij.enable = cfg.terminal == "alacritty"; # alacritty has no terminal multiplexerr built in
     # PDF reader
