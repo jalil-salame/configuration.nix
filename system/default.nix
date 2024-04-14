@@ -73,6 +73,13 @@ in
       builtins.attrNames keysFromGithub
     );
 
+    # Enable printer autodiscovery if printing is enabled
+    services.avahi = {
+      enable = config.services.printing.enable;
+      nssmdns4 = true;
+      openFirewall = true;
+    };
+
     # Default shell
     programs.zsh.enable = true;
     users.defaultUserShell = pkgs.zsh;
