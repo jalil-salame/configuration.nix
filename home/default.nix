@@ -165,7 +165,12 @@ in
       };
       programs.lazygit.enable = true;
       # Jujutsu (alternative DVCS (git-compatible))
-      programs.jujutsu.enable = true;
+      programs.jujutsu = {
+        enable = true;
+        settings = {
+          ui.pager = "bat";
+        };
+      };
     })
     (lib.mkIf (cfg.enable && devcfg.enable && devcfg.rust.enable) {
       home.packages = [ pkgs.rustup ] ++ devcfg.rust.extraPackages;
