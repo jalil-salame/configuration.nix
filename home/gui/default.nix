@@ -119,7 +119,7 @@ in
     # Set Qt theme
     qt = {
       enable = true;
-      platformTheme = "gtk";
+      platformTheme.name = "gtk";
     };
 
     xdg.systemDirs.data = [
