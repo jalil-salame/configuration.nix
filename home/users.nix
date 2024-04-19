@@ -24,7 +24,7 @@ in
         user = lib.mkIf (cfg.defaultIdentity != null) { inherit (cfg.defaultIdentity) name email; };
         signing = lib.mkIf hasKey {
           sign-all = true;
-          signing-backend = "gpg";
+          backend = "gpg";
           key = signingKey;
         };
       };
