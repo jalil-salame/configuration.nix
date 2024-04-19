@@ -12,11 +12,20 @@ in
 {
   config = lib.mkMerge [
     (lib.mkIf hasConfig {
-      programs.git.userName = cfg.defaultIdentity.name;
-      programs.git.userEmail = cfg.defaultIdentity.email;
-      programs.git.signing = lib.mkIf hasKey {
-        signByDefault = true;
-        key = signingKey;
+      programs.git = {
+        userName = cfg.defaultIdentity.name;
+        userEmail = cfg.defaultIdentity.email;
+        signing = lib.mkIf hasKey {
+          signByDefault = true;
+          key = signingKey;
+        };
+      };
+      programs.jujutsu.settings = {
+        user = lib.mkIf (cfg.defaultIdentity != null) { inherit (cfg.defaultIdentity) name email; };
+        signing = lib.mkIf hasKey {
+          signByDefault = true;
+          key = signingKey;
+        };
       };
     })
     (lib.mkIf unlockKey {
