@@ -30,7 +30,7 @@ let
     "8bitdoFix" = mkDisableOption "a fix for 8bitdo controllers";
     steamHardwareSupport = mkDisableOption "steam hardware support";
     ydotool = lib.mkOption {
-      description = lib.mdDoc "Jalil's default ydotool configuration.";
+      description = "Jalil's default ydotool configuration.";
       default = { };
       type = types.submodule {
         options.enable = mkDisableOption "ydotool";
@@ -58,12 +58,12 @@ let
   config.options = {
     enable = lib.mkEnableOption "jalil's default configuration.";
     dev = lib.mkOption {
-      description = lib.mdDoc "Options for setting up a dev environment";
+      description = "Options for setting up a dev environment";
       default = { };
       type = types.submodule { options.enable = lib.mkEnableOption "dev configuration"; };
     };
     gui = lib.mkOption {
-      description = lib.mdDoc "Jalil's default configuration for a NixOS gui.";
+      description = "Jalil's default configuration for a NixOS gui.";
       default = { };
       type = types.submodule gui;
     };
@@ -73,7 +73,7 @@ let
       type = types.submodule styling;
     };
     importSSHKeysFromGithub = lib.mkOption {
-      description = lib.mdDoc ''
+      description = ''
         Import public ssh keys from a github username.
 
         This will fetch the keys from https://github.com/$${username}.keys.
@@ -96,7 +96,7 @@ let
 in
 {
   options.jconfig = lib.mkOption {
-    description = lib.mdDoc "Jalil's default NixOS configuration.";
+    description = "Jalil's default NixOS configuration.";
     default = { };
     type = types.submodule config;
   };

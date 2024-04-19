@@ -71,7 +71,7 @@ let
 
   sway.options = {
     background = lib.mkOption {
-      description = lib.mdDoc "The wallpaper to use.";
+      description = "The wallpaper to use.";
       type = types.path;
       default = builtins.fetchurl {
         url = "https://raw.githubusercontent.com/lunik1/nixos-logo-gruvbox-wallpaper/d4937c424fad79c1136a904599ba689fcf8d0fad/png/gruvbox-dark-rainbow.png";
@@ -79,7 +79,7 @@ let
       };
     };
     autostart = lib.mkOption {
-      description = lib.mdDoc ''
+      description = ''
         Autostart Sway when logging in to /dev/tty1.
 
         This will make it so `exec sway` is run when logging in to TTY1, if
@@ -97,13 +97,13 @@ let
       type = types.submodule {
         options = {
           once = lib.mkOption {
-            description = lib.mdDoc "Programs to start only once (`exec`).";
+            description = "Programs to start only once (`exec`).";
             type = types.listOf types.str;
             default = [ ];
             example = [ "signal-desktop --start-in-tray" ];
           };
           always = lib.mkOption {
-            description = lib.mdDoc "Programs to start whenever the config is sourced (`exec_always`).";
+            description = "Programs to start whenever the config is sourced (`exec_always`).";
             type = types.listOf types.str;
             default = [ ];
             example = [ "signal-desktop --start-in-tray" ];
@@ -116,7 +116,7 @@ let
   gui.options = {
     enable = lib.mkEnableOption ("GUI applications");
     tempInfo = lib.mkOption {
-      description = lib.mdDoc "Temperature info to display in the statusbar.";
+      description = "Temperature info to display in the statusbar.";
       default = null;
       type = types.nullOr (types.submodule tempInfo);
     };
@@ -138,19 +138,19 @@ let
 in
 {
   options.jhome = lib.mkOption {
-    description = lib.mdDoc "Jalil's default home-manager configuration.";
+    description = "Jalil's default home-manager configuration.";
     default = { };
     type = types.submodule {
       options = {
         enable = lib.mkEnableOption "jalil's home defaults";
         hostName = lib.mkOption {
-          description = lib.mdDoc "The hostname of this system.";
+          description = "The hostname of this system.";
           type = types.str;
           default = "nixos";
           example = "my pc";
         };
         dev = lib.mkOption {
-          description = lib.mdDoc "Setup development environment for programming languages.";
+          description = "Setup development environment for programming languages.";
           default = { };
           type = types.submodule {
             options.enable = lib.mkEnableOption "development settings";
@@ -180,12 +180,12 @@ in
           };
         };
         user = lib.mkOption {
-          description = lib.mdDoc "User settings.";
+          description = "User settings.";
           default = null;
           type = types.nullOr (types.submodule user);
         };
         gui = lib.mkOption {
-          description = lib.mdDoc "Jalil's default GUI configuration.";
+          description = "Jalil's default GUI configuration.";
           default = { };
           type = types.submodule gui;
         };
