@@ -23,7 +23,8 @@ in
       programs.jujutsu.settings = {
         user = lib.mkIf (cfg.defaultIdentity != null) { inherit (cfg.defaultIdentity) name email; };
         signing = lib.mkIf hasKey {
-          signByDefault = true;
+          sign-all = true;
+          signing-backend = "gpg";
           key = signingKey;
         };
       };
