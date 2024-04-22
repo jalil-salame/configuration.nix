@@ -54,12 +54,11 @@
               end
               -- Enable inlay hints if supported
               if capabilities.inlayHintProvider then
-                vim.lsp.inlay_hint.enable(bufnr, true)
+                vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
               end
-              vim.keymap.set('n',  -- Some Lsp servers do not advertise inlay hints properly so enable this keybinding regardless
-                '<space>ht',
-                function()
-                  vim.lsp.inlay_hint.enable(0, not vim.lsp.inlay_hint.is_enabled())
+              -- Some Lsp servers do not advertise inlay hints properly so enable this keybinding regardless
+              vim.keymap.set('n', '<space>ht', function()
+                  vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled(), { bufnr = 0 })
                 end,
                 { desc = '[H]ints [T]oggle', ${opts} }
               )
