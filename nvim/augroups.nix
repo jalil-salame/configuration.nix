@@ -58,7 +58,7 @@
               end
               -- Some Lsp servers do not advertise inlay hints properly so enable this keybinding regardless
               vim.keymap.set('n', '<space>ht', function()
-                  vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled(), { bufnr = 0 })
+                  vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled(0), { bufnr = 0 })
                 end,
                 { desc = '[H]ints [T]oggle', ${opts} }
               )
