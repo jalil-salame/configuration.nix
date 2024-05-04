@@ -1,30 +1,29 @@
-{ stylix }:
-{
+{stylix}: {
   config,
   pkgs,
   lib,
   ...
-}:
-let
+}: let
   cfg = config.jconfig;
-  keysFromGithub = lib.attrsets.mapAttrs' (username: sha256: {
-    name = "pubkeys/${username}";
-    value = {
-      mode = "0755";
-      source = builtins.fetchurl {
-        inherit sha256;
-        url = "https://github.com/${username}.keys";
+  keysFromGithub =
+    lib.attrsets.mapAttrs' (username: sha256: {
+      name = "pubkeys/${username}";
+      value = {
+        mode = "0755";
+        source = builtins.fetchurl {
+          inherit sha256;
+          url = "https://github.com/${username}.keys";
+        };
       };
-    };
-  }) cfg.importSSHKeysFromGithub;
-in
-{
+    })
+    cfg.importSSHKeysFromGithub;
+in {
   imports = [
     ./options.nix
     ./gui
     stylix.nixosModules.stylix
     # FIXME(https://github.com/danth/stylix/issues/216): Must configure stylix
-    { stylix = import ./stylix-config.nix { inherit config pkgs; }; }
+    {stylix = import ./stylix-config.nix {inherit config pkgs;};}
   ];
 
   config = lib.mkIf cfg.enable {
@@ -85,8 +84,8 @@ in
     users.defaultUserShell = pkgs.zsh;
 
     # Open ports for spotifyd
-    networking.firewall.allowedUDPPorts = [ 5353 ];
-    networking.firewall.allowedTCPPorts = [ 2020 ];
+    networking.firewall.allowedUDPPorts = [5353];
+    networking.firewall.allowedTCPPorts = [2020];
 
     # Nix Settings
     nix.gc.automatic = true;

@@ -1,13 +1,14 @@
-{ config, pkgs }:
-let
+{
+  config,
+  pkgs,
+}: let
   cfg = config.jconfig.styling;
-  nerdFontSymbols = pkgs.nerdfonts.override { fonts = [ "NerdFontsSymbolsOnly" ]; };
+  nerdFontSymbols = pkgs.nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];};
   fallbackSymbols = {
     name = "Symbols Nerd Font";
     package = nerdFontSymbols;
   };
-in
-{
+in {
   autoEnable = cfg.enable;
   image = cfg.wallpaper;
   base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-dark-hard.yaml";

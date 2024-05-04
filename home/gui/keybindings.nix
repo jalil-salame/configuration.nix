@@ -1,5 +1,7 @@
-{ pkgs, config }:
-let
+{
+  pkgs,
+  config,
+}: let
   cfg = config.jhome.gui.sway;
   passmenu = "${pkgs.jpassmenu}/bin/jpassmenu";
   selectAudio = "${pkgs.audiomenu}/bin/audiomenu --menu 'fuzzel --dmenu'";
@@ -18,21 +20,21 @@ let
   ];
   dirs =
     map
-      (dir: {
-        key = swayconf.${dir};
-        arrow = dir;
-        direction = dir;
-      })
-      [
-        "up"
-        "down"
-        "left"
-        "right"
-      ];
+    (dir: {
+      key = swayconf.${dir};
+      arrow = dir;
+      direction = dir;
+    })
+    [
+      "up"
+      "down"
+      "left"
+      "right"
+    ];
   joinKeys = builtins.concatStringsSep "+";
   # Generate a keybind from a modifier prefix and a key
-  keycombo = prefix: key: joinKeys (prefix ++ [ key ]);
-  modKeybind = keycombo [ mod ];
+  keycombo = prefix: key: joinKeys (prefix ++ [key]);
+  modKeybind = keycombo [mod];
   modCtrlKeybind = keycombo [
     mod
     "Ctrl"
@@ -51,13 +53,10 @@ let
   dir2resize.right = "resize grow width";
   dir2resize.left = "resize shrink width";
   # Bind a key combo to an action
-  genKeybind = prefix: action: key: { "${prefix key}" = "${action key}"; };
-  genKey =
-    prefix: action: genKeybind ({ key, ... }: prefix key) ({ direction, ... }: action direction);
-  genArrow =
-    prefix: action: genKeybind ({ arrow, ... }: prefix arrow) ({ direction, ... }: action direction);
-  genArrowAndKey =
-    prefix: action: key:
+  genKeybind = prefix: action: key: {"${prefix key}" = "${action key}";};
+  genKey = prefix: action: genKeybind ({key, ...}: prefix key) ({direction, ...}: action direction);
+  genArrow = prefix: action: genKeybind ({arrow, ...}: prefix arrow) ({direction, ...}: action direction);
+  genArrowAndKey = prefix: action: key:
     (genKey prefix action key) // (genArrow prefix action key);
   # Move window
   moveWindowKeybinds = map (genArrowAndKey modShiftKeybind (dir: "move ${dir}")) dirs;
@@ -66,19 +65,25 @@ let
   # Resize window
   resizeWindowKeybinds = map (genArrowAndKey modCtrlKeybind (dir: dir2resize.${dir})) dirs;
   # Move container to workspace
-  moveWorkspaceKeybindings = map (genKeybind modShiftKeybind (
-    number: "move container to workspace number ${number}"
-  )) workspaces;
+  moveWorkspaceKeybindings =
+    map (genKeybind modShiftKeybind (
+      number: "move container to workspace number ${number}"
+    ))
+    workspaces;
   # Focus workspace
-  focusWorkspaceKeybindings = map (genKeybind modKeybind (
-    number: "workspace number ${number}"
-  )) workspaces;
+  focusWorkspaceKeybindings =
+    map (genKeybind modKeybind (
+      number: "workspace number ${number}"
+    ))
+    workspaces;
   # Move container to Workspace and focus on it
-  moveFocusWorkspaceKeybindings = map (genKeybind modCtrlShiftKeybind (
-    number: "move container to workspace number ${number}; workspace number ${number}"
-  )) workspaces;
+  moveFocusWorkspaceKeybindings =
+    map (genKeybind modCtrlShiftKeybind (
+      number: "move container to workspace number ${number}; workspace number ${number}"
+    ))
+    workspaces;
 in
-builtins.foldl' (l: r: l // r)
+  builtins.foldl' (l: r: l // r)
   {
     "${mod}+Return" = "exec ${swayconf.terminal}";
     "${mod}+D" = "exec ${swayconf.menu}";

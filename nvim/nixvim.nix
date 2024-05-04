@@ -3,21 +3,19 @@
   lib,
   config,
   ...
-}@args:
-let
+} @ args: let
   cfg = config.jhome.nvim;
   hmAvailable = args ? hmConfig;
   nixosAvailable = args ? nixosConfig;
   darwinAvailable = args ? darwinConfig;
   canSetAsDefault = hmAvailable || nixosAvailable;
   notStandalone = hmAvailable || nixosAvailable || darwinAvailable;
-in
-{
-  imports = [ ./options.nix ];
+in {
+  imports = [./options.nix];
 
   config = lib.mkMerge [
-    (lib.optionalAttrs canSetAsDefault { defaultEditor = lib.mkDefault true; })
-    (lib.optionalAttrs notStandalone { enable = lib.mkDefault true; })
+    (lib.optionalAttrs canSetAsDefault {defaultEditor = lib.mkDefault true;})
+    (lib.optionalAttrs notStandalone {enable = lib.mkDefault true;})
     (lib.mkIf cfg.enable {
       # package = pkgs.neovim-nightly;
       globals.mapleader = " ";
@@ -49,15 +47,13 @@ in
         # Enable local configuration :h 'exrc'
         exrc = true; # safe since nvim 0.9
       };
-      plugins = import ./plugins.nix { inherit lib pkgs; };
+      plugins = import ./plugins.nix {inherit lib pkgs;};
       keymaps = import ./mappings.nix;
       inherit (import ./augroups.nix) autoGroups autoCmd;
-      extraPlugins =
-        let
-          jjdescription = pkgs.callPackage ./vim-jjdescription.nix { };
-        in
-        with pkgs.vimPlugins;
-        [
+      extraPlugins = let
+        jjdescription = pkgs.callPackage ./vim-jjdescription.nix {};
+      in
+        with pkgs.vimPlugins; [
           nvim-web-devicons
           jjdescription
         ];

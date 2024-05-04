@@ -2,18 +2,15 @@
   overlays,
   nvim-config,
   stylix ? null,
-}:
-{
+}: {
   config,
   pkgs,
   lib,
   ...
-}:
-let
+}: let
   cfg = config.jhome;
   devcfg = cfg.dev;
-in
-{
+in {
   imports =
     [
       # Apply overlays
@@ -82,7 +79,9 @@ in
       services.gpg-agent.enable = true;
       services.gpg-agent.maxCacheTtl = 86400;
       services.gpg-agent.pinentryPackage =
-        if config.jhome.gui.enable then pkgs.pinentry-qt else pkgs.pinentry-curses;
+        if config.jhome.gui.enable
+        then pkgs.pinentry-qt
+        else pkgs.pinentry-curses;
       services.gpg-agent.extraConfig = "allow-preset-passphrase";
       # Spotifyd
       services.spotifyd.enable = true;
@@ -173,7 +172,7 @@ in
       };
     })
     (lib.mkIf (cfg.enable && devcfg.enable && devcfg.rust.enable) {
-      home.packages = [ pkgs.rustup ] ++ devcfg.rust.extraPackages;
+      home.packages = [pkgs.rustup] ++ devcfg.rust.extraPackages;
       # Background code checker (for Rust)
       programs.bacon = {
         enable = true;

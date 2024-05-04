@@ -1,5 +1,4 @@
-{ nixos-hardware }:
-{
+{nixos-hardware}: {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -10,8 +9,8 @@
   ];
 
   # Setup extra filesystem options
-  fileSystems."/".options = [ "compress=zstd" ];
-  fileSystems."/home".options = [ "compress=zstd" ];
+  fileSystems."/".options = ["compress=zstd"];
+  fileSystems."/home".options = ["compress=zstd"];
   fileSystems."/nix".options = [
     "compress=zstd"
     "noatime"

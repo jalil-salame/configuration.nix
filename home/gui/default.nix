@@ -4,22 +4,25 @@
   pkgs,
   osConfig ? null,
   ...
-}:
-let
+}: let
   inherit (config) jhome;
-  flatpakEnabled = if osConfig != null then osConfig.services.flatpak.enable else false;
+  flatpakEnabled =
+    if osConfig != null
+    then osConfig.services.flatpak.enable
+    else false;
   osSway = osConfig == null && !osConfig.programs.sway.enable;
-  swayPkg = if osSway then pkgs.sway else null;
+  swayPkg =
+    if osSway
+    then pkgs.sway
+    else null;
   cfg = jhome.gui;
   cursor.package = pkgs.nordzy-cursor-theme;
   cursor.name = "Nordzy-cursors";
   iconTheme.name = "Papirus-Dark";
   iconTheme.package = pkgs.papirus-icon-theme;
-in
-{
+in {
   config = lib.mkIf (jhome.enable && cfg.enable) {
-    home.packages =
-      with pkgs;
+    home.packages = with pkgs;
       [
         webcord
         ferdium
@@ -48,13 +51,13 @@ in
     # Video player
     programs.mpv = {
       enable = true;
-      scripts = builtins.attrValues { inherit (pkgs.mpvScripts) uosc thumbfast; };
+      scripts = builtins.attrValues {inherit (pkgs.mpvScripts) uosc thumbfast;};
     };
     # Status bar
     programs.waybar = {
       enable = true;
       systemd.enable = true;
-      settings = import ./waybar-settings.nix { inherit config lib; };
+      settings = import ./waybar-settings.nix {inherit config lib;};
     };
     # Terminal
     programs.wezterm = {
@@ -103,7 +106,7 @@ in
     wayland.windowManager.sway = {
       enable = true;
       package = swayPkg; # no sway package if it comes from the OS
-      config = import ./sway-config.nix { inherit config pkgs; };
+      config = import ./sway-config.nix {inherit config pkgs;};
     };
 
     # Set cursor style

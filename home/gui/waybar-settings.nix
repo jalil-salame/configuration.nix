@@ -1,31 +1,35 @@
-{ config, lib }:
-let
-  cfg = config.jhome.gui;
-in
 {
+  config,
+  lib,
+}: let
+  cfg = config.jhome.gui;
+in {
   mainBar.layer = "top";
   mainBar.position = "top";
   mainBar.margin = "2 2 2 2";
   # Choose the order of the modules
-  mainBar.modules-left = [ "sway/workspaces" ];
-  mainBar.modules-center = [ "clock" ];
-  mainBar.modules-right = [
-    "pulseaudio"
-    "backlight"
-    "battery"
-    "sway/language"
-    "memory"
-  ] ++ lib.optional (cfg.tempInfo != null) "temperature" ++ [ "tray" ];
+  mainBar.modules-left = ["sway/workspaces"];
+  mainBar.modules-center = ["clock"];
+  mainBar.modules-right =
+    [
+      "pulseaudio"
+      "backlight"
+      "battery"
+      "sway/language"
+      "memory"
+    ]
+    ++ lib.optional (cfg.tempInfo != null) "temperature"
+    ++ ["tray"];
   mainBar."sway/workspaces".disable-scroll = true;
-  mainBar."sway/workspaces".persistent-workspaces."1" = [ ];
-  mainBar."sway/workspaces".persistent-workspaces."2" = [ ];
-  mainBar."sway/workspaces".persistent-workspaces."3" = [ ];
-  mainBar."sway/workspaces".persistent-workspaces."4" = [ ];
-  mainBar."sway/workspaces".persistent-workspaces."5" = [ ];
-  mainBar."sway/workspaces".persistent-workspaces."6" = [ ];
-  mainBar."sway/workspaces".persistent-workspaces."7" = [ ];
-  mainBar."sway/workspaces".persistent-workspaces."8" = [ ];
-  mainBar."sway/workspaces".persistent-workspaces."9" = [ ];
+  mainBar."sway/workspaces".persistent-workspaces."1" = [];
+  mainBar."sway/workspaces".persistent-workspaces."2" = [];
+  mainBar."sway/workspaces".persistent-workspaces."3" = [];
+  mainBar."sway/workspaces".persistent-workspaces."4" = [];
+  mainBar."sway/workspaces".persistent-workspaces."5" = [];
+  mainBar."sway/workspaces".persistent-workspaces."6" = [];
+  mainBar."sway/workspaces".persistent-workspaces."7" = [];
+  mainBar."sway/workspaces".persistent-workspaces."8" = [];
+  mainBar."sway/workspaces".persistent-workspaces."9" = [];
   mainBar."sway/language".format = "{} ";
   mainBar."sway/language".min-length = 5;
   mainBar."sway/language".tooltip = false;

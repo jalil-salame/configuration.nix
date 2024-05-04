@@ -33,172 +33,173 @@
   inputs.neovim-flake.inputs.nixpkgs.follows = "nixpkgs";
 
   # Flake outputs that other flakes can use
-  outputs =
-    {
-      self,
-      nixpkgs,
-      stylix,
-      home-manager,
-      nixos-hardware,
-      jpassmenu,
-      audiomenu,
-      nixvim,
-      neovim-flake,
-    }:
-    let
-      inherit (nixpkgs) lib;
-      # Helpers for producing system-specific outputs
-      supportedSystems = [
-        "x86_64-linux"
-        "aarch64-linux"
-      ];
-      forEachSupportedSystem =
-        f:
-        nixpkgs.lib.genAttrs supportedSystems (
-          system:
+  outputs = {
+    self,
+    nixpkgs,
+    stylix,
+    home-manager,
+    nixos-hardware,
+    jpassmenu,
+    audiomenu,
+    nixvim,
+    neovim-flake,
+  }: let
+    inherit (nixpkgs) lib;
+    # Helpers for producing system-specific outputs
+    supportedSystems = [
+      "x86_64-linux"
+      "aarch64-linux"
+    ];
+    forEachSupportedSystem = f:
+      nixpkgs.lib.genAttrs supportedSystems (
+        system:
           f {
             inherit system;
-            pkgs = import nixpkgs { inherit system; };
+            pkgs = import nixpkgs {inherit system;};
           }
-        );
-      overlays = builtins.attrValues self.overlays;
+      );
+    overlays = builtins.attrValues self.overlays;
+  in {
+    checks = forEachSupportedSystem (
+      {
+        pkgs,
+        system,
+      }: {
+        nvim = nixvim.lib.${system}.check.mkTestDerivationFromNixvimModule {
+          pkgs = import nixpkgs {inherit system overlays;};
+          module = ./nvim/nixvim.nix;
+        };
+        # alejandra = {};
+        # typos = {};
+      }
+    );
+
+    packages = forEachSupportedSystem (
+      {
+        pkgs,
+        system,
+      }: {
+        inherit
+          (import ./docs {inherit pkgs lib;})
+          docs
+          nixos-markdown
+          nvim-markdown
+          home-markdown
+          ;
+        # Nvim standalone module
+        nvim = nixvim.legacyPackages.${system}.makeNixvimWithModule {
+          pkgs = import nixpkgs {inherit system overlays;};
+          module = ./nvim/nixvim.nix;
+        };
+      }
+    );
+
+    # Provide necessary overlays
+    overlays = {
+      nixvim = nixvim.overlays.default;
+      neovim-nightly = neovim-flake.overlay;
+      jpassmenu = jpassmenu.overlays.default;
+      audiomenu = audiomenu.overlays.default;
+    };
+
+    # Nix files formatter (run `nix fmt`)
+    formatter = forEachSupportedSystem ({pkgs, ...}: pkgs.alejandra);
+
+    # Example vm configuration
+    nixosConfigurations.vm = let
+      system = "x86_64-linux";
+      config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) ["steam-original"];
+      pkgs = import nixpkgs {inherit system overlays config;};
     in
-    {
-      checks = forEachSupportedSystem (
-        { pkgs, system }:
-        {
-          nvim = nixvim.lib.${system}.check.mkTestDerivationFromNixvimModule {
-            pkgs = import nixpkgs { inherit system overlays; };
-            module = ./nvim/nixvim.nix;
-          };
-          # alejandra = {};
-          # typos = {};
-        }
-      );
+      lib.nixosSystem {
+        inherit system pkgs;
+        modules = [
+          self.nixosModules.vm # import vm module
+          {
+            time.timeZone = "Europe/Berlin";
+            i18n.defaultLocale = "en_US.UTF-8";
 
-      packages = forEachSupportedSystem (
-        { pkgs, system }:
-        {
-          inherit (import ./docs { inherit pkgs lib; })
-            docs
-            nixos-markdown
-            nvim-markdown
-            home-markdown
-            ;
-          # Nvim standalone module
-          nvim = nixvim.legacyPackages.${system}.makeNixvimWithModule {
-            pkgs = import nixpkgs { inherit system overlays; };
-            module = ./nvim/nixvim.nix;
-          };
-        }
-      );
+            users.users.jdoe.password = "example";
+            users.users.jdoe.isNormalUser = true;
+            users.users.jdoe.extraGroups = [
+              "wheel"
+              "video"
+              "networkmanager"
+            ];
 
-      # Provide necessary overlays
-      overlays = {
-        nixvim = nixvim.overlays.default;
-        neovim-nightly = neovim-flake.overlay;
-        jpassmenu = jpassmenu.overlays.default;
-        audiomenu = audiomenu.overlays.default;
+            home-manager.users.jdoe = {
+              home.username = "jdoe";
+              home.homeDirectory = "/home/jdoe";
+
+              jhome.enable = true;
+              jhome.gui.enable = true;
+              jhome.dev.rust.enable = true;
+            };
+
+            nix.registry.nixpkgs.flake = nixpkgs;
+
+            jconfig.enable = true;
+            jconfig.gui.enable = true;
+          }
+        ];
       };
 
-      # Nix files formatter (run `nix fmt`)
-      formatter = forEachSupportedSystem ({ pkgs, ... }: pkgs.nixfmt-rfc-style);
+    nixosModules = let
+      nvim-config.imports = [
+        nixvim.homeManagerModules.nixvim
+        ./nvim
+      ];
+      overlays = builtins.attrValues self.overlays;
+      homeManagerModuleSandalone = import ./home {inherit overlays nvim-config stylix;};
+      homeManagerModuleNixOS = import ./home {inherit overlays nvim-config;};
+      nixosModule = {
+        imports = [
+          (import ./system {inherit stylix;})
+          home-manager.nixosModules.home-manager
+        ];
 
-      # Example vm configuration
-      nixosConfigurations.vm =
-        let
-          system = "x86_64-linux";
-          config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ "steam-original" ];
-          pkgs = import nixpkgs { inherit system overlays config; };
-        in
-        lib.nixosSystem {
-          inherit system pkgs;
-          modules = [
-            self.nixosModules.vm # import vm module
-            {
-              time.timeZone = "Europe/Berlin";
-              i18n.defaultLocale = "en_US.UTF-8";
+        home-manager.useGlobalPkgs = true;
+        home-manager.useUserPackages = true;
+        home-manager.sharedModules = [homeManagerModuleNixOS];
 
-              users.users.jdoe.password = "example";
-              users.users.jdoe.isNormalUser = true;
-              users.users.jdoe.extraGroups = [
-                "wheel"
-                "video"
-                "networkmanager"
-              ];
+        # Pin nixpkgs
+        nix.registry.nixpkgs.flake = nixpkgs;
+      };
 
-              home-manager.users.jdoe = {
-                home.username = "jdoe";
-                home.homeDirectory = "/home/jdoe";
+      machines = [
+        "capricorn"
+        "gemini"
+        "libra"
+        "vm"
+      ];
+      mkMachine = hostname: {
+        imports = [
+          nixosModule
+          (import (./machines + "/${hostname}") {inherit nixos-hardware;})
+        ];
+        home-manager.sharedModules = [{jhome.hostName = hostname;}];
+      };
+      machineModules = lib.genAttrs machines mkMachine;
+    in
+      {
+        default = nixosModule;
+        inherit nixosModule homeManagerModuleNixOS homeManagerModuleSandalone;
+      }
+      // machineModules;
 
-                jhome.enable = true;
-                jhome.gui.enable = true;
-                jhome.dev.rust.enable = true;
-              };
-
-              nix.registry.nixpkgs.flake = nixpkgs;
-
-              jconfig.enable = true;
-              jconfig.gui.enable = true;
-            }
+    devShells = forEachSupportedSystem (
+      {
+        pkgs,
+        system,
+      }: {
+        default = pkgs.mkShell {
+          buildInputs = with pkgs; [
+            just
+            self.packages.${system}.nvim
           ];
+          QEMU_OPTS_WL = "-smp 4 -device virtio-gpu-rutabaga,gfxstream-vulkan=on,cross-domain=on,hostmem=2G,wsi=headless";
         };
-
-      nixosModules =
-        let
-          nvim-config.imports = [
-            nixvim.homeManagerModules.nixvim
-            ./nvim
-          ];
-          overlays = builtins.attrValues self.overlays;
-          homeManagerModuleSandalone = import ./home { inherit overlays nvim-config stylix; };
-          homeManagerModuleNixOS = import ./home { inherit overlays nvim-config; };
-          nixosModule = {
-            imports = [
-              (import ./system { inherit stylix; })
-              home-manager.nixosModules.home-manager
-            ];
-
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.sharedModules = [ homeManagerModuleNixOS ];
-
-            # Pin nixpkgs
-            nix.registry.nixpkgs.flake = nixpkgs;
-          };
-
-          machines = [
-            "capricorn"
-            "gemini"
-            "libra"
-            "vm"
-          ];
-          mkMachine = hostname: {
-            imports = [
-              nixosModule
-              (import (./machines + "/${hostname}") { inherit nixos-hardware; })
-            ];
-            home-manager.sharedModules = [ { jhome.hostName = hostname; } ];
-          };
-          machineModules = lib.genAttrs machines mkMachine;
-        in
-        {
-          default = nixosModule;
-          inherit nixosModule homeManagerModuleNixOS homeManagerModuleSandalone;
-        }
-        // machineModules;
-
-      devShells = forEachSupportedSystem (
-        { pkgs, system }:
-        {
-          default = pkgs.mkShell {
-            buildInputs = with pkgs; [
-              just
-              self.packages.${system}.nvim
-            ];
-            QEMU_OPTS_WL = "-smp 4 -device virtio-gpu-rutabaga,gfxstream-vulkan=on,cross-domain=on,hostmem=2G,wsi=headless";
-          };
-        }
-      );
-    };
+      }
+    );
+  };
 }

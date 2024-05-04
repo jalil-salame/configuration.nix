@@ -1,4 +1,7 @@
-{ vimUtils, fetchFromGitHub }:
+{
+  vimUtils,
+  fetchFromGitHub,
+}:
 vimUtils.buildVimPlugin {
   name = "jjdescription";
   src = fetchFromGitHub {

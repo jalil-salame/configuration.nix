@@ -3,24 +3,24 @@
   lib,
   pkgs,
   ...
-}:
-let
+}: let
   cfg = config.jconfig.gui;
   enable = config.jconfig.enable && cfg.enable;
-in
-{
+in {
   config = lib.mkMerge [
     (lib.mkIf enable {
-      environment.systemPackages = [
-        pkgs.gnome.adwaita-icon-theme
-        pkgs.adwaita-qt
-        pkgs.nordzy-cursor-theme
-        pkgs.pinentry-qt
-      ] ++ lib.optional cfg.ydotool.enable pkgs.ydotool;
+      environment.systemPackages =
+        [
+          pkgs.gnome.adwaita-icon-theme
+          pkgs.adwaita-qt
+          pkgs.nordzy-cursor-theme
+          pkgs.pinentry-qt
+        ]
+        ++ lib.optional cfg.ydotool.enable pkgs.ydotool;
 
       systemd.user.services.ydotool = lib.mkIf cfg.ydotool.enable {
         enable = cfg.ydotool.autoStart;
-        wantedBy = [ "default.target" ];
+        wantedBy = ["default.target"];
         description = "Generic command-line automation tool";
         documentation = [
           "man:ydotool(1)"
@@ -45,7 +45,7 @@ in
       programs.dconf.enable = true;
 
       programs.sway.enable = cfg.sway;
-      programs.sway.extraPackages = [ ]; # No extra packages (by default it adds foot, dmenu, and other stuff)
+      programs.sway.extraPackages = []; # No extra packages (by default it adds foot, dmenu, and other stuff)
       programs.sway.wrapperFeatures.base = true;
       programs.sway.wrapperFeatures.gtk = true;
 
@@ -65,7 +65,7 @@ in
       # XDG portals
       xdg.portal.enable = true;
       xdg.portal.wlr.enable = true;
-      xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+      xdg.portal.extraPortals = [pkgs.xdg-desktop-portal-gtk];
       # Default to the gtk portal
       xdg.portal.config.preferred.default = "gtk";
       # Use wlr for screenshots and screen recording

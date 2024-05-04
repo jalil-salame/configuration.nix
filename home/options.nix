@@ -1,21 +1,24 @@
-{ lib, pkgs, ... }:
-let
+{
+  lib,
+  pkgs,
+  ...
+}: let
   inherit (lib) types;
 
-  mkExtraPackagesOption =
-    name: defaultPkgsPath:
-    let
-      text = lib.strings.concatMapStringsSep " " (
+  mkExtraPackagesOption = name: defaultPkgsPath: let
+    text =
+      lib.strings.concatMapStringsSep " " (
         pkgPath: "pkgs." + (lib.strings.concatStringsSep "." pkgPath)
-      ) defaultPkgsPath;
-      defaultText = lib.literalExpression "[ ${text} ]";
-      default = builtins.map (pkgPath: lib.attrsets.getAttrFromPath pkgPath pkgs) defaultPkgsPath;
-    in
+      )
+      defaultPkgsPath;
+    defaultText = lib.literalExpression "[ ${text} ]";
+    default = builtins.map (pkgPath: lib.attrsets.getAttrFromPath pkgPath pkgs) defaultPkgsPath;
+  in
     lib.mkOption {
       description = "Extra ${name} Packages.";
       type = types.listOf types.package;
       inherit default defaultText;
-      example = [ ];
+      example = [];
     };
 
   identity.options = {
@@ -47,12 +50,12 @@ let
     enable = lib.mkEnableOption "Jalil's default user configuration";
     gpg = lib.mkOption {
       description = "GnuPG Configuration.";
-      default = { };
+      default = {};
       type = types.submodule {
         options.unlockKeys = lib.mkOption {
           description = "Keygrips of keys to unlock through `pam-gnupg` when logging in.";
-          default = [ ];
-          example = [ "6F4ABB77A88E922406BCE6627AFEEE2363914B76" ];
+          default = [];
+          example = ["6F4ABB77A88E922406BCE6627AFEEE2363914B76"];
           type = types.listOf types.str;
         };
       };
@@ -93,20 +96,20 @@ let
     };
     exec = lib.mkOption {
       description = "Run commands when starting sway.";
-      default = { };
+      default = {};
       type = types.submodule {
         options = {
           once = lib.mkOption {
             description = "Programs to start only once (`exec`).";
             type = types.listOf types.str;
-            default = [ ];
-            example = [ "signal-desktop --start-in-tray" ];
+            default = [];
+            example = ["signal-desktop --start-in-tray"];
           };
           always = lib.mkOption {
             description = "Programs to start whenever the config is sourced (`exec_always`).";
             type = types.listOf types.str;
-            default = [ ];
-            example = [ "signal-desktop --start-in-tray" ];
+            default = [];
+            example = ["signal-desktop --start-in-tray"];
           };
         };
       };
@@ -114,7 +117,7 @@ let
   };
 
   gui.options = {
-    enable = lib.mkEnableOption ("GUI applications");
+    enable = lib.mkEnableOption "GUI applications";
     tempInfo = lib.mkOption {
       description = "Temperature info to display in the statusbar.";
       default = null;
@@ -122,7 +125,7 @@ let
     };
     sway = lib.mkOption {
       description = "Sway window manager configuration.";
-      default = { };
+      default = {};
       type = types.submodule sway;
     };
     terminal = lib.mkOption {
@@ -135,11 +138,10 @@ let
       ];
     };
   };
-in
-{
+in {
   options.jhome = lib.mkOption {
     description = "Jalil's default home-manager configuration.";
-    default = { };
+    default = {};
     type = types.submodule {
       options = {
         enable = lib.mkEnableOption "jalil's home defaults";
@@ -151,29 +153,29 @@ in
         };
         dev = lib.mkOption {
           description = "Setup development environment for programming languages.";
-          default = { };
+          default = {};
           type = types.submodule {
             options.enable = lib.mkEnableOption "development settings";
             options.neovimAsManPager = lib.mkEnableOption "neovim as the man pager";
             options.extraPackages = mkExtraPackagesOption "dev" [
-              [ "jq" ] # json parser
-              [ "just" ] # just a command runner
-              [ "typos" ] # low false positive rate typo checker
-              [ "git-absorb" ] # fixup! but automatic
-              [ "man-pages" ] # gimme the man pages
-              [ "man-pages-posix" ] # I said gimme the man pages!!!
+              ["jq"] # json parser
+              ["just"] # just a command runner
+              ["typos"] # low false positive rate typo checker
+              ["git-absorb"] # fixup! but automatic
+              ["man-pages"] # gimme the man pages
+              ["man-pages-posix"] # I said gimme the man pages!!!
             ];
             options.rust = lib.mkOption {
               description = "Jalil's default rust configuration.";
-              default = { };
+              default = {};
               type = types.submodule {
                 options.enable = lib.mkEnableOption "rust development settings";
                 options.extraPackages = mkExtraPackagesOption "Rust" [
-                  [ "cargo-kcov" ] # code coverage
-                  [ "cargo-msrv" ] # minimum supported version
-                  [ "cargo-nextest" ] # better testing harness
-                  [ "cargo-sort" ] # sort deps and imports
-                  [ "cargo-watch" ] # watch for file changes and run commands
+                  ["cargo-kcov"] # code coverage
+                  ["cargo-msrv"] # minimum supported version
+                  ["cargo-nextest"] # better testing harness
+                  ["cargo-sort"] # sort deps and imports
+                  ["cargo-watch"] # watch for file changes and run commands
                 ];
               };
             };
@@ -186,7 +188,7 @@ in
         };
         gui = lib.mkOption {
           description = "Jalil's default GUI configuration.";
-          default = { };
+          default = {};
           type = types.submodule gui;
         };
       };
