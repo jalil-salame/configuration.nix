@@ -58,6 +58,14 @@ in {
       enable = true;
       systemd.enable = true;
       settings = import ./waybar-settings.nix {inherit config lib;};
+      style = ''
+        .modules-left #workspaces button {
+          border-bottom: 3px solid @base01;
+        }
+        .modules-left #workspaces button.persistent {
+          border-bottom: 3px solid transparent;
+        }
+      '';
     };
     # Terminal
     programs.wezterm = {
