@@ -49,7 +49,7 @@ in
         # Enable local configuration :h 'exrc'
         exrc = true; # safe since nvim 0.9
       };
-      plugins = import ./plugins.nix { inherit lib; };
+      plugins = import ./plugins.nix { inherit lib pkgs; };
       keymaps = import ./mappings.nix;
       inherit (import ./augroups.nix) autoGroups autoCmd;
       extraPlugins =

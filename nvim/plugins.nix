@@ -1,4 +1,4 @@
-{ lib }:
+{ lib, pkgs }:
 {
   bacon = {
     enable = true;
@@ -196,8 +196,67 @@
     enable = true;
     indent = true;
     incrementalSelection.enable = true;
+    grammarPackages =
+      let
+        parsers = pkgs.vimPlugins.nvim-treesitter-parsers;
+      in
+      [
+        parsers.asm
+        parsers.bash
+        # parsers.bibtex
+        parsers.c
+        parsers.comment
+        parsers.commonlisp
+        parsers.cpp
+        parsers.css
+        parsers.csv
+        # parsers.d
+        parsers.diff
+        parsers.dockerfile
+        parsers.dot
+        parsers.doxygen
+        parsers.git_config
+        parsers.git_rebase
+        parsers.gitattributes
+        parsers.gitcommit
+        parsers.gitignore
+        parsers.go
+        parsers.gomod
+        parsers.gosum
+        parsers.gowork
+        parsers.html
+        parsers.ini
+        parsers.json
+        parsers.json5
+        parsers.jsonc
+        # parsers.latex
+        parsers.lua
+        parsers.luadoc
+        parsers.luap
+        parsers.luau
+        parsers.make
+        parsers.markdown
+        parsers.markdown_inline
+        parsers.meson
+        parsers.nix
+        parsers.ocaml
+        parsers.ocaml_interface
+        parsers.pem
+        parsers.python
+        parsers.rust
+        parsers.scheme
+        parsers.sql
+        parsers.ssh_config
+        parsers.toml
+        parsers.tsv
+        parsers.vim
+        parsers.vimdoc
+        parsers.wgsl
+        parsers.wgsl_bevy
+        parsers.yaml
+        parsers.zig
+      ];
   };
-  treesitter-context.enable = true;
   trouble = {
     enable = true;
     settings.auto_close = true;
