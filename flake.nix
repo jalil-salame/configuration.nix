@@ -28,8 +28,8 @@
 
   inputs.nixos-hardware.url = "github:NixOS/nixos-hardware";
 
-  inputs.neovim-nightly.url = "github:nix-community/neovim-nightly-overlay";
-  inputs.neovim-nightly.inputs.nixpkgs.follows = "nixpkgs";
+  inputs.neovim-flake.url = "github:neovim/neovim?dir=contrib";
+  inputs.neovim-flake.inputs.nixpkgs.follows = "nixpkgs";
 
   inputs.pre-commit-hooks.url = "github:cachix/pre-commit-hooks.nix";
   inputs.pre-commit-hooks.inputs.nixpkgs.follows = "nixpkgs";
@@ -46,7 +46,7 @@
       jpassmenu,
       audiomenu,
       nixvim,
-      neovim-nightly,
+      neovim-flake,
     }:
     let
       inherit (nixpkgs) lib;
@@ -106,7 +106,7 @@
       # Provide necessary overlays
       overlays = {
         nixvim = nixvim.overlays.default;
-        neovim-nightly = neovim-nightly.overlays.default;
+        neovim-nightly = neovim-flake.overlay;
         jpassmenu = jpassmenu.overlays.default;
         audiomenu = audiomenu.overlays.default;
       };
