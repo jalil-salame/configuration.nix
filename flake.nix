@@ -64,13 +64,38 @@
       {
         pkgs,
         system,
-      }: {
+      }: let
+        src = builtins.path {
+          path = ./.;
+          name = "configuration.nix";
+        };
+      in {
         nvim = nixvim.lib.${system}.check.mkTestDerivationFromNixvimModule {
           pkgs = import nixpkgs {inherit system overlays;};
           module = ./nvim/nixvim.nix;
         };
-        # alejandra = {};
-        # typos = {};
+        formatting = let
+          fmt = pkgs.lib.getExe self.formatter.${system};
+        in
+          pkgs.stdenvNoCC.mkDerivation {
+            name = "nix-formatting-check";
+            dontUnpack = true;
+            dontBuild = true;
+            doCheck = true;
+            checkPhase = "${fmt} --check ${src}";
+            installPhase = "mkdir $out";
+          };
+        typos = let
+          typos = pkgs.lib.getExe pkgs.typos;
+        in
+          pkgs.stdenvNoCC.mkDerivation {
+            name = "typos-check";
+            dontUnpack = true;
+            dontBuild = true;
+            doCheck = true;
+            checkPhase = "${typos} --color=always ${src}";
+            installPhase = "mkdir $out";
+          };
       }
     );
 
