@@ -19,7 +19,8 @@
   inputs.nixvim.url = "github:nix-community/nixvim";
   inputs.nixvim.inputs.nixpkgs.follows = "nixpkgs";
   inputs.nixvim.inputs.home-manager.follows = "home-manager";
-  inputs.nixvim.inputs.pre-commit-hooks.follows = "pre-commit-hooks";
+  # disable MacOS stuff
+  inputs.nixvim.inputs.nix-darwin.follows = "";
 
   # WARN: Flakehub is outdated (39 days out of date)
   # inputs.home-manager.url = "https://flakehub.com/f/nix-community/home-manager/0.1.*.tar.gz";
@@ -31,9 +32,6 @@
   inputs.neovim-flake.url = "github:neovim/neovim?dir=contrib";
   inputs.neovim-flake.inputs.nixpkgs.follows = "nixpkgs";
 
-  inputs.pre-commit-hooks.url = "github:cachix/pre-commit-hooks.nix";
-  inputs.pre-commit-hooks.inputs.nixpkgs.follows = "nixpkgs";
-
   # Flake outputs that other flakes can use
   outputs =
     {
@@ -42,7 +40,6 @@
       stylix,
       home-manager,
       nixos-hardware,
-      pre-commit-hooks,
       jpassmenu,
       audiomenu,
       nixvim,
@@ -74,15 +71,8 @@
             pkgs = import nixpkgs { inherit system overlays; };
             module = ./nvim/nixvim.nix;
           };
-          pre-commit-check = pre-commit-hooks.lib.${system}.run {
-            src = builtins.path {
-              path = ./.;
-              name = "configuration.nix";
-            };
-            hooks.typos.enable = true;
-            hooks.nixfmt.enable = true;
-            hooks.nixfmt.package = pkgs.nixfmt-rfc-style;
-          };
+          # alejandra = {};
+          # typos = {};
         }
       );
 
@@ -202,7 +192,6 @@
         { pkgs, system }:
         {
           default = pkgs.mkShell {
-            inherit (self.checks.${system}.pre-commit-check) shellHook;
             buildInputs = with pkgs; [
               just
               self.packages.${system}.nvim
