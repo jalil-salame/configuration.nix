@@ -74,7 +74,7 @@
             end
             -- Enable formatting if supported
             if capabilities.documentFormattingProvider then
-              vim.keymap.set('n', '<leader>w', function() vim.lsp.buf.format { async = true } end, { desc = 'Format Buffer', ${opts} })
+              vim.keymap.set('n', '<leader>w', function() require("conform").format({ lsp_fallback = true }) end, { desc = 'Format Buffer', ${opts} })
             end
             -- Other keybinds
             vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { desc = '[G]o to [D]efinition', ${opts} })

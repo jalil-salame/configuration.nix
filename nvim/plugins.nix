@@ -124,7 +124,7 @@
       c = ["clang_format"];
       cpp = ["clang_format"];
       lua = ["stylua"];
-      nix = ["nixpkgs_fmt"];
+      nix = ["alejandra"];
       rust = ["rustfmt"];
       sh = ["shfmt"];
       toml = ["taplo"];
@@ -137,7 +137,7 @@
     enable = true;
     servers = {
       bashls.enable = true;
-      clangd.enable = true;
+      # clangd.enable = true;
       html.enable = true;
       jsonls.enable = true;
       nil_ls.enable = true;
@@ -166,18 +166,27 @@
   };
   noice = {
     enable = true;
+    lsp.override = {
+      "vim.lsp.util.convert_input_to_markdown_lines" = true;
+      "vim.lsp.util.stylize_markdown" = true;
+      "cmp.entry.get_documentation" = true;
+    };
     presets = {
       # use a classic bottom cmdline for search
       bottom_search = true;
       # position the cmdline and popupmenu together
-      command_palette = true;
+      command_palette = false;
       # long messages will be sent to a split
       long_message_to_split = true;
       # enables an input dialog for inc-rename.nvim
       inc_rename = false;
       # add a border to hover docs and signature help
-      lsp_doc_border = false;
+      lsp_doc_border = true;
     };
+  };
+  notify = {
+    enable = true;
+    backgroundColour = "#000000";
   };
   nvim-colorizer = {
     enable = true;
@@ -198,64 +207,6 @@
     enable = true;
     indent = true;
     incrementalSelection.enable = true;
-    grammarPackages = let
-      parsers = pkgs.vimPlugins.nvim-treesitter-parsers;
-    in [
-      parsers.asm
-      parsers.bash
-      # parsers.bibtex
-      parsers.c
-      parsers.comment
-      parsers.commonlisp
-      parsers.cpp
-      parsers.css
-      parsers.csv
-      # parsers.d
-      parsers.diff
-      parsers.dockerfile
-      parsers.dot
-      parsers.doxygen
-      parsers.git_config
-      parsers.git_rebase
-      parsers.gitattributes
-      parsers.gitcommit
-      parsers.gitignore
-      parsers.go
-      parsers.gomod
-      parsers.gosum
-      parsers.gowork
-      parsers.html
-      parsers.ini
-      parsers.json
-      parsers.json5
-      parsers.jsonc
-      # parsers.latex
-      parsers.lua
-      parsers.luadoc
-      parsers.luap
-      parsers.luau
-      parsers.make
-      parsers.markdown
-      parsers.markdown_inline
-      parsers.meson
-      parsers.nix
-      parsers.ocaml
-      parsers.ocaml_interface
-      parsers.pem
-      parsers.python
-      parsers.rust
-      parsers.scheme
-      parsers.sql
-      parsers.ssh_config
-      parsers.toml
-      parsers.tsv
-      parsers.vim
-      parsers.vimdoc
-      parsers.wgsl
-      parsers.wgsl_bevy
-      parsers.yaml
-      parsers.zig
-    ];
   };
   trouble = {
     enable = true;

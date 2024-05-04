@@ -51,22 +51,23 @@ in {
       keymaps = import ./mappings.nix;
       inherit (import ./augroups.nix) autoGroups autoCmd;
       extraPlugins = let
+        plugins = pkgs.vimPlugins;
         jjdescription = pkgs.callPackage ./vim-jjdescription.nix {};
-      in
-        with pkgs.vimPlugins; [
-          nvim-web-devicons
-          jjdescription
-        ];
+      in [
+        plugins.nui-nvim
+        plugins.nvim-web-devicons
+        jjdescription
+      ];
       # Formatting
-      extraPackages = with pkgs; [
-        stylua
-        shfmt
-        taplo
-        yamlfmt
-        nixpkgs-fmt
-        alejandra
-        nixfmt-classic
-        rust-analyzer
+      extraPackages = [
+        pkgs.stylua
+        pkgs.shfmt
+        pkgs.taplo
+        pkgs.yamlfmt
+        pkgs.nixpkgs-fmt
+        pkgs.alejandra
+        pkgs.nixfmt-classic
+        pkgs.luajitPackages.jsregexp
       ];
       extraConfigLuaPre = ''
         -- Lua Pre Config
