@@ -17,7 +17,7 @@ in {
     (lib.optionalAttrs canSetAsDefault {defaultEditor = lib.mkDefault true;})
     (lib.optionalAttrs notStandalone {enable = lib.mkDefault true;})
     (lib.mkIf cfg.enable {
-      # package = pkgs.neovim-nightly;
+      package = pkgs.neovim;
       globals.mapleader = " ";
       # Appearance
       colorschemes = {
