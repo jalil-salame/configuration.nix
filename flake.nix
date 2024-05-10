@@ -32,6 +32,13 @@
   inputs.neovim-flake.url = "github:neovim/neovim?dir=contrib";
   inputs.neovim-flake.inputs.nixpkgs.follows = "nixpkgs";
 
+  # Lix
+  inputs.lix.url = "https://git.lix.systems/lix-project/lix/archive/main.tar.gz";
+  inputs.lix.flake = false;
+  inputs.lix-module.url = "https://git.lix.systems/lix-project/nixos-module/archive/main.tar.gz";
+  inputs.lix-module.inputs.lix.follows = "lix";
+  inputs.lix-module.inputs.nixpkgs.follows = "nixpkgs";
+
   # Flake outputs that other flakes can use
   outputs = {
     self,
@@ -43,6 +50,8 @@
     audiomenu,
     nixvim,
     neovim-flake,
+    lix,
+    lix-module,
   }: let
     inherit (nixpkgs) lib;
     # Helpers for producing system-specific outputs
@@ -199,7 +208,7 @@
         imports = [
           (import ./system {inherit stylix;})
           home-manager.nixosModules.home-manager
-        ];
+        ] ++ nixpkgs.lib.optional (lix != null && lix-module != null) lix-module.nixosModules.default;
 
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
