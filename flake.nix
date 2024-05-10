@@ -125,6 +125,24 @@
       neovim-nightly = neovim-flake.overlay;
       jpassmenu = jpassmenu.overlays.default;
       audiomenu = audiomenu.overlays.default;
+      # FIXME: remove once merged in nixpkgs
+      fix-noice-nvim = final: prev: {
+        vimPlugins =
+          prev.vimPlugins
+          // {
+            noice-nvim = prev.vimUtils.buildVimPlugin {
+              pname = "noice.nvim";
+              version = "2024-05-09";
+              src = final.fetchFromGitHub {
+                owner = "folke";
+                repo = "noice.nvim";
+                rev = "v2.0.2";
+                sha256 = "sha256-YWqphpaxr/729/6NTDEWKOi2FnY/8xgjdsDQ9ePj7b8=";
+              };
+              meta.homepage = "https://github.com/folke/noice.nvim/";
+            };
+          };
+      };
     };
 
     # Nix files formatter (run `nix fmt`)
