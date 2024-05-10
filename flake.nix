@@ -2,42 +2,61 @@
 {
   # A helpful description of your flake
   description = "My NixOS configuration";
-
   # Flake inputs
-  inputs.stylix.url = "github:jalil-salame/stylix/fallback-fonts-v2";
-  inputs.stylix.inputs.nixpkgs.follows = "nixpkgs";
-  inputs.stylix.inputs.home-manager.follows = "home-manager";
-
-  inputs.nixpkgs.url = "nixpkgs/nixos-unstable";
-
-  inputs.jpassmenu.url = "github:jalil-salame/jpassmenu";
-  inputs.jpassmenu.inputs.nixpkgs.follows = "nixpkgs";
-
-  inputs.audiomenu.url = "github:jalil-salame/audiomenu";
-  inputs.audiomenu.inputs.nixpkgs.follows = "nixpkgs";
-
-  inputs.nixvim.url = "github:nix-community/nixvim";
-  inputs.nixvim.inputs.nixpkgs.follows = "nixpkgs";
-  inputs.nixvim.inputs.home-manager.follows = "home-manager";
-  # disable MacOS stuff
-  inputs.nixvim.inputs.nix-darwin.follows = "";
-
-  # WARN: Flakehub is outdated (39 days out of date)
-  # inputs.home-manager.url = "https://flakehub.com/f/nix-community/home-manager/0.1.*.tar.gz";
-  inputs.home-manager.url = "github:nix-community/home-manager";
-  inputs.home-manager.inputs.nixpkgs.follows = "nixpkgs";
-
-  inputs.nixos-hardware.url = "github:NixOS/nixos-hardware";
-
-  inputs.neovim-flake.url = "github:neovim/neovim?dir=contrib";
-  inputs.neovim-flake.inputs.nixpkgs.follows = "nixpkgs";
-
-  # Lix
-  inputs.lix.url = "https://git.lix.systems/lix-project/lix/archive/main.tar.gz";
-  inputs.lix.flake = false;
-  inputs.lix-module.url = "https://git.lix.systems/lix-project/nixos-module/archive/main.tar.gz";
-  inputs.lix-module.inputs.lix.follows = "lix";
-  inputs.lix-module.inputs.nixpkgs.follows = "nixpkgs";
+  inputs = {
+    nixpkgs.url = "nixpkgs/nixos-unstable";
+    # Software
+    jpassmenu = {
+      url = "github:jalil-salame/jpassmenu";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    audiomenu = {
+      url = "github:jalil-salame/audiomenu";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    neovim-flake = {
+      url = "github:neovim/neovim?dir=contrib";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-utils.follows = "lix-module/flake-utils";
+      };
+    };
+    # Lix
+    lix = {
+      url = "https://git.lix.systems/lix-project/lix/archive/main.tar.gz";
+      flake = false;
+    };
+    lix-module = {
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/main.tar.gz";
+      inputs = {
+        lix.follows = "lix";
+        nixpkgs.follows = "nixpkgs";
+      };
+    };
+    # Modules
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nixos-hardware.url = "github:NixOS/nixos-hardware";
+    stylix = {
+      url = "github:jalil-salame/stylix/fallback-fonts-v2";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        home-manager.follows = "home-manager";
+      };
+    };
+    nixvim = {
+      url = "github:nix-community/nixvim";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        home-manager.follows = "home-manager";
+        # disable MacOS stuff
+        nix-darwin.follows = "";
+        flake-compat.follows = "stylix/flake-compat";
+      };
+    };
+  };
 
   # Flake outputs that other flakes can use
   outputs = {
@@ -205,10 +224,12 @@
       homeManagerModuleSandalone = import ./home {inherit overlays nvim-config stylix;};
       homeManagerModuleNixOS = import ./home {inherit overlays nvim-config;};
       nixosModule = {
-        imports = [
-          (import ./system {inherit stylix;})
-          home-manager.nixosModules.home-manager
-        ] ++ nixpkgs.lib.optional (lix != null && lix-module != null) lix-module.nixosModules.default;
+        imports =
+          [
+            (import ./system {inherit stylix;})
+            home-manager.nixosModules.home-manager
+          ]
+          ++ nixpkgs.lib.optional (lix != null && lix-module != null) lix-module.nixosModules.default;
 
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
