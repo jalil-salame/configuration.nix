@@ -15,7 +15,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     neovim-flake = {
-      url = "github:neovim/neovim?dir=contrib";
+      url = "github:neovim/neovim?dir=contrib&ref=v0.10.0";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         flake-utils.follows = "lix-module/flake-utils";
@@ -102,17 +102,14 @@
           pkgs = import nixpkgs {inherit system overlays;};
           module = ./nvim/nixvim.nix;
         };
-        formatting = let
-          fmt = pkgs.lib.getExe self.formatter.${system};
-        in
-          pkgs.stdenvNoCC.mkDerivation {
-            name = "nix-formatting-check";
-            dontUnpack = true;
-            dontBuild = true;
-            doCheck = true;
-            checkPhase = "${fmt} --check ${src}";
-            installPhase = "mkdir $out";
-          };
+        formatting = pkgs.stdenvNoCC.mkDerivation {
+          name = "nix-formatting-check";
+          dontUnpack = true;
+          dontBuild = true;
+          doCheck = true;
+          checkPhase = "${pkgs.lib.getExe self.formatter.${system}} --check --quiet ${src}";
+          installPhase = "mkdir $out";
+        };
         typos = let
           typos = pkgs.lib.getExe pkgs.typos;
         in
