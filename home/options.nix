@@ -155,28 +155,30 @@ in {
           description = "Setup development environment for programming languages.";
           default = {};
           type = types.submodule {
-            options.enable = lib.mkEnableOption "development settings";
-            options.neovimAsManPager = lib.mkEnableOption "neovim as the man pager";
-            options.extraPackages = mkExtraPackagesOption "dev" [
-              ["jq"] # json parser
-              ["just"] # just a command runner
-              ["typos"] # low false positive rate typo checker
-              ["git-absorb"] # fixup! but automatic
-              ["man-pages"] # gimme the man pages
-              ["man-pages-posix"] # I said gimme the man pages!!!
-            ];
-            options.rust = lib.mkOption {
-              description = "Jalil's default rust configuration.";
-              default = {};
-              type = types.submodule {
-                options.enable = lib.mkEnableOption "rust development settings";
-                options.extraPackages = mkExtraPackagesOption "Rust" [
-                  ["cargo-kcov"] # code coverage
-                  ["cargo-msrv"] # minimum supported version
-                  ["cargo-nextest"] # better testing harness
-                  ["cargo-sort"] # sort deps and imports
-                  ["cargo-watch"] # watch for file changes and run commands
-                ];
+            options = {
+              enable = lib.mkEnableOption "development settings";
+              neovimAsManPager = lib.mkEnableOption "neovim as the man pager";
+              extraPackages = mkExtraPackagesOption "dev" [
+                ["jq"] # json parser
+                ["just"] # just a command runner
+                ["typos"] # low false positive rate typo checker
+                ["git-absorb"] # fixup! but automatic
+                ["man-pages"] # gimme the man pages
+                ["man-pages-posix"] # I said gimme the man pages!!!
+              ];
+              rust = lib.mkOption {
+                description = "Jalil's default rust configuration.";
+                default = {};
+                type = types.submodule {
+                  options.enable = lib.mkEnableOption "rust development settings";
+                  options.extraPackages = mkExtraPackagesOption "Rust" [
+                    ["cargo-kcov"] # code coverage
+                    ["cargo-msrv"] # minimum supported version
+                    ["cargo-nextest"] # better testing harness
+                    ["cargo-sort"] # sort deps and imports
+                    ["cargo-watch"] # watch for file changes and run commands
+                  ];
+                };
               };
             };
           };

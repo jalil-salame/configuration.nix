@@ -4,7 +4,7 @@
 }: let
   cfg = config.jhome.gui.sway;
   modifier = "Mod4";
-  terminal = config.jhome.gui.terminal;
+  inherit (config.jhome.gui) terminal;
   termCmd =
     if terminal == "wezterm"
     then "wezterm start"

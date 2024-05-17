@@ -8,46 +8,50 @@
   ...
 }: {
   imports = [(modulesPath + "/installer/scan/not-detected.nix")];
-
-  boot.initrd.availableKernelModules = [
-    "nvme"
-    "xhci_pci"
-    "ahci"
-    "usbhid"
-    "usb_storage"
-    "sd_mod"
-  ];
-  boot.initrd.kernelModules = [];
-  boot.kernelModules = ["kvm-amd"];
-  boot.extraModulePackages = [];
-
-  fileSystems."/" = {
-    # device = "/dev/disk/by-label/NIXOSROOT";
-    device = "/dev/disk/by-label/NIXOSHOME";
-    fsType = "btrfs";
-    options = ["subvol=root"];
+  boot = {
+    initrd = {
+      availableKernelModules = [
+        "nvme"
+        "xhci_pci"
+        "ahci"
+        "usbhid"
+        "usb_storage"
+        "sd_mod"
+      ];
+      kernelModules = [];
+    };
+    kernelModules = ["kvm-amd"];
+    extraModulePackages = [];
   };
+  fileSystems = {
+    "/" = {
+      # device = "/dev/disk/by-label/NIXOSROOT";
+      device = "/dev/disk/by-label/NIXOSHOME";
+      fsType = "btrfs";
+      options = ["subvol=root"];
+    };
 
-  fileSystems."/steam" = {
-    device = "/dev/disk/by-label/STEAM";
-    fsType = "btrfs";
-  };
+    "/steam" = {
+      device = "/dev/disk/by-label/STEAM";
+      fsType = "btrfs";
+    };
 
-  fileSystems."/home" = {
-    device = "/dev/disk/by-label/NIXOSHOME";
-    fsType = "btrfs";
-    options = ["subvol=home"];
-  };
+    "/home" = {
+      device = "/dev/disk/by-label/NIXOSHOME";
+      fsType = "btrfs";
+      options = ["subvol=home"];
+    };
 
-  fileSystems."/nix" = {
-    device = "/dev/disk/by-label/NIXOSROOT";
-    fsType = "btrfs";
-    options = ["subvol=nix"];
-  };
+    "/nix" = {
+      device = "/dev/disk/by-label/NIXOSROOT";
+      fsType = "btrfs";
+      options = ["subvol=nix"];
+    };
 
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-label/BOOT";
-    fsType = "vfat";
+    "/boot" = {
+      device = "/dev/disk/by-label/BOOT";
+      fsType = "vfat";
+    };
   };
 
   swapDevices = [{device = "/dev/disk/by-label/SWAP";}];

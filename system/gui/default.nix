@@ -17,65 +17,80 @@ in {
           pkgs.pinentry-qt
         ]
         ++ lib.optional cfg.ydotool.enable pkgs.ydotool;
-
-      systemd.user.services.ydotool = lib.mkIf cfg.ydotool.enable {
-        enable = cfg.ydotool.autoStart;
-        wantedBy = ["default.target"];
-        description = "Generic command-line automation tool";
-        documentation = [
-          "man:ydotool(1)"
-          "man:ydotoold(8)"
-        ];
-        serviceConfig = {
-          Type = "simple";
-          Restart = "always";
-          ExecStart = "${pkgs.ydotool}/bin/ydotoold";
-          ExecReload = "${pkgs.util-linux}/bin/kill -HUP $MAINPID";
-          KillMode = "process";
-          TimeoutSec = 180;
+      systemd = {
+        user.services.ydotool = lib.mkIf cfg.ydotool.enable {
+          enable = cfg.ydotool.autoStart;
+          wantedBy = ["default.target"];
+          description = "Generic command-line automation tool";
+          documentation = [
+            "man:ydotool(1)"
+            "man:ydotoold(8)"
+          ];
+          serviceConfig = {
+            Type = "simple";
+            Restart = "always";
+            ExecStart = "${pkgs.ydotool}/bin/ydotoold";
+            ExecReload = "${pkgs.util-linux}/bin/kill -HUP $MAINPID";
+            KillMode = "process";
+            TimeoutSec = 180;
+          };
         };
+        # Fix xdg-portals issue issue: https://github.com/NixOS/nixpkgs/issues/189851
+        user.extraConfig = ''
+          DefaultEnvironment="PATH=/run/wrappers/bin:/etc/profiles/per-user/%u/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin"
+        '';
       };
-      # Fix xdg-portals issue issue: https://github.com/NixOS/nixpkgs/issues/189851
-      systemd.user.extraConfig = ''
-        DefaultEnvironment="PATH=/run/wrappers/bin:/etc/profiles/per-user/%u/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin"
-      '';
 
       fonts.fontDir.enable = true;
-
-      programs.dconf.enable = true;
-
-      programs.sway.enable = cfg.sway;
-      programs.sway.extraPackages = []; # No extra packages (by default it adds foot, dmenu, and other stuff)
-      programs.sway.wrapperFeatures.base = true;
-      programs.sway.wrapperFeatures.gtk = true;
-
-      security.polkit.enable = true;
-      security.rtkit.enable = true; # Recommended for pipewire
-
-      services.flatpak.enable = true;
-      # Audio
-      services.pipewire.enable = true;
-      services.pipewire.alsa.enable = true;
-      services.pipewire.alsa.support32Bit = true;
-      services.pipewire.pulse.enable = true;
-      services.pipewire.wireplumber.enable = true;
-      # Dbus
-      services.dbus.enable = true;
-
-      # XDG portals
-      xdg.portal.enable = true;
-      xdg.portal.wlr.enable = true;
-      xdg.portal.extraPortals = [pkgs.xdg-desktop-portal-gtk];
-      # Default to the gtk portal
-      xdg.portal.config.preferred.default = "gtk";
-      # Use wlr for screenshots and screen recording
-      xdg.portal.config.preferred."org.freedesktop.impl.portal.Screenshot" = "wlr";
-      xdg.portal.config.preferred."org.freedesktop.impl.portal.ScreenCast" = "wlr";
-      # Consider using darkman like upstream
-
-      hardware.opengl.enable = true;
-      hardware.uinput.enable = true;
-      hardware.steam-hardware.enable = cfg.steamHardwareSupport;
+      programs = {
+        dconf.enable = true;
+        sway = {
+          enable = cfg.sway;
+          # No extra packages (by default it adds foot, dmenu, and other stuff)
+          extraPackages = [];
+          wrapperFeatures = {
+            base = true;
+            gtk = true;
+          };
+        };
+      };
+      security = {
+        polkit.enable = true;
+        rtkit.enable = true; # Recommended for pipewire
+      };
+      services = {
+        flatpak.enable = true;
+        # Audio
+        pipewire = {
+          enable = true;
+          alsa = {
+            enable = true;
+            support32Bit = true;
+          };
+          pulse.enable = true;
+          wireplumber.enable = true;
+        };
+        # Dbus
+        dbus.enable = true;
+      };
+      xdg.portal = {
+        # XDG portals
+        enable = true;
+        wlr.enable = true;
+        extraPortals = [pkgs.xdg-desktop-portal-gtk];
+        config.preferred = {
+          # Default to the gtk portal
+          default = "gtk";
+          # Use wlr for screenshots and screen recording
+          "org.freedesktop.impl.portal.Screenshot" = "wlr";
+        };
+        # Consider using darkman like upstream
+      };
+      hardware = {
+        opengl.enable = true;
+        uinput.enable = true;
+        steam-hardware.enable = cfg.steamHardwareSupport;
+      };
     })
     (lib.mkIf (enable && cfg."8bitdoFix") {
       # Udev rules to start or stop systemd service when controller is connected or disconnected

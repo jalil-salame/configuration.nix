@@ -20,12 +20,15 @@ in {
       package = pkgs.neovim;
       globals.mapleader = " ";
       # Appearance
-      colorschemes = {
-        gruvbox.enable = true;
-        gruvbox.settings.bold = true;
-        gruvbox.settings.transparent_mode = true;
-        gruvbox.settings.terminal_colors = true;
+      colorschemes.gruvbox = {
+        enable = true;
+        settings = {
+          bold = true;
+          transparent_mode = true;
+          terminal_colors = true;
+        };
       };
+
       opts = {
         number = true;
         relativenumber = true;

@@ -210,28 +210,31 @@
           {
             time.timeZone = "Europe/Berlin";
             i18n.defaultLocale = "en_US.UTF-8";
-
-            users.users.jdoe.password = "example";
-            users.users.jdoe.isNormalUser = true;
-            users.users.jdoe.extraGroups = [
-              "wheel"
-              "video"
-              "networkmanager"
-            ];
-
-            home-manager.users.jdoe = {
-              home.username = "jdoe";
-              home.homeDirectory = "/home/jdoe";
-
-              jhome.enable = true;
-              jhome.gui.enable = true;
-              jhome.dev.rust.enable = true;
+            users.users.jdoe = {
+              password = "example";
+              isNormalUser = true;
+              extraGroups = [
+                "wheel"
+                "video"
+                "networkmanager"
+              ];
             };
-
+            home-manager.users.jdoe = {
+              home = {
+                username = "jdoe";
+                homeDirectory = "/home/jdoe";
+              };
+              jhome = {
+                enable = true;
+                gui.enable = true;
+                dev.rust.enable = true;
+              };
+            };
             nix.registry.nixpkgs.flake = nixpkgs;
-
-            jconfig.enable = true;
-            jconfig.gui.enable = true;
+            jconfig = {
+              enable = true;
+              gui.enable = true;
+            };
           }
         ];
       };
@@ -251,11 +254,11 @@
             home-manager.nixosModules.home-manager
           ]
           ++ nixpkgs.lib.optional (lix != null && lix-module != null) lix-module.nixosModules.default;
-
-        home-manager.useGlobalPkgs = true;
-        home-manager.useUserPackages = true;
-        home-manager.sharedModules = [homeManagerModuleNixOS];
-
+        home-manager = {
+          useGlobalPkgs = true;
+          useUserPackages = true;
+          sharedModules = [homeManagerModuleNixOS];
+        };
         # Pin nixpkgs
         nix.registry.nixpkgs.flake = nixpkgs;
       };

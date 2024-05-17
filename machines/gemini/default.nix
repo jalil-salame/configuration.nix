@@ -11,40 +11,46 @@
     nixos-hardware.nixosModules.common-cpu-amd
     nixos-hardware.nixosModules.common-gpu-amd
   ];
-
-  fileSystems."/".options = ["compress=zstd"];
-  fileSystems."/steam".options = ["compress=zstd"];
-  fileSystems."/home".options = ["compress=zstd"];
-  fileSystems."/nix".options = [
-    "compress=zstd"
-    "noatime"
-  ];
-
-  # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.systemd-boot.configurationLimit = 3;
-  boot.loader.efi.canTouchEfiVariables = true;
+  fileSystems = {
+    "/".options = ["compress=zstd"];
+    "/steam".options = ["compress=zstd"];
+    "/home".options = ["compress=zstd"];
+    "/nix".options = [
+      "compress=zstd"
+      "noatime"
+    ];
+  };
+  boot.loader = {
+    systemd-boot = {
+      # Use the systemd-boot EFI boot loader.
+      enable = true;
+      configurationLimit = 3;
+    };
+    efi.canTouchEfiVariables = true;
+  };
 
   # Enable bluetooth
   hardware.bluetooth.enable = true;
-
-  networking.hostName = "gemini";
-  networking.networkmanager.enable = true;
-  networking.interfaces.enp4s0.wakeOnLan.enable = true;
+  networking = {
+    hostName = "gemini";
+    networkmanager.enable = true;
+    interfaces.enp4s0.wakeOnLan.enable = true;
+  };
 
   console = {
     # font = "Lat2-Terminus16";
     # keyMap = "us";
     useXkbConfig = true; # use xkbOptions in tty.
   };
-
-  # Configure keymap in X11
-  # services.xserver.xkbOptions = {
-  #   "caps:swapescape" # map caps to escape.
-  # };
-  services.openssh.enable = true;
-  services.openssh.startWhenNeeded = true;
-  services.openssh.settings.AllowUsers = ["jalil"];
+  services.openssh = {
+    # Configure keymap in X11
+    # services.xserver.xkbOptions = {
+    #   "caps:swapescape" # map caps to escape.
+    # };
+    enable = true;
+    startWhenNeeded = true;
+    settings.AllowUsers = ["jalil"];
+  };
 
   # Enable CUPS to print documents.
   services.printing.enable = true;

@@ -20,39 +20,49 @@
       "noatime"
     ];
   };
+  boot = {
+    kernelPackages = pkgs.linuxPackages_latest;
+    kernelParams = ["amdgpu.dcdebugmask=0x10"];
+    loader = {
+      # Use the systemd-boot EFI boot loader.
+      timeout = 0; # Press Space to show the menu
+      efi.canTouchEfiVariables = true;
+      systemd-boot.enable = true;
+      systemd-boot.configurationLimit = 10;
+    };
+  };
+  # Fixes graphical issues
+  hardware = {
+    opengl.enable = true;
+    bluetooth.enable = true;
+    tuxedo-rs = {
+      enable = true;
+      tailor-gui.enable = true;
+    };
+  };
+  networking = {
+    hostName = "libra";
+    networkmanager = {
+      enable = true; # Easiest to use and most distros use this by default.
+      # networking.networkmanager.wifi.backend = "iwd"; # Seems to cause problems
+      appendNameservers = [
+        "1.1.1.1"
+        "1.0.0.1"
+        "8.8.8.8"
+        "8.4.4.8"
+      ];
+    };
+  };
 
-  boot.kernelPackages = pkgs.linuxPackages_latest;
-  boot.kernelParams = ["amdgpu.dcdebugmask=0x10"]; # Fixes graphical issues
+  # use xkb.options in tty.
+  console.useXkbConfig = true;
+  services = {
+    # Enable CUPS to print documents.
+    printing.enable = true;
 
-  hardware.opengl.enable = true;
-  hardware.bluetooth.enable = true;
-  hardware.tuxedo-rs.enable = true;
-  hardware.tuxedo-rs.tailor-gui.enable = true;
-
-  # Use the systemd-boot EFI boot loader.
-  boot.loader.timeout = 0; # Press Space to show the menu
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.systemd-boot.configurationLimit = 10;
-
-  networking.hostName = "libra";
-  networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
-  # networking.networkmanager.wifi.backend = "iwd"; # Seems to cause problems
-  networking.networkmanager.appendNameservers = [
-    "1.1.1.1"
-    "1.0.0.1"
-    "8.8.8.8"
-    "8.4.4.8"
-  ];
-
-  # Select internationalisation properties.
-  console.useXkbConfig = true; # use xkb.options in tty.
-
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
-
-  # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
+    # Enable the OpenSSH daemon.
+    openssh.enable = true;
+  };
 
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.

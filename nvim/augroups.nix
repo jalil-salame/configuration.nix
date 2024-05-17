@@ -1,7 +1,9 @@
 {
-  autoGroups."highlightOnYank" = {};
-  autoGroups."lspConfig" = {};
-  autoGroups."restoreCursorPosition" = {};
+  autoGroups = {
+    "highlightOnYank" = {};
+    "lspConfig" = {};
+    "restoreCursorPosition" = {};
+  };
   autoCmd = [
     {
       group = "highlightOnYank";

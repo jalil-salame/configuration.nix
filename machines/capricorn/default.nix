@@ -7,32 +7,39 @@
     nixos-hardware.nixosModules.common-pc-laptop-ssd
     nixos-hardware.nixosModules.common-cpu-intel
   ];
-
-  # Setup extra filesystem options
-  fileSystems."/".options = ["compress=zstd"];
-  fileSystems."/home".options = ["compress=zstd"];
-  fileSystems."/nix".options = [
-    "compress=zstd"
-    "noatime"
-  ];
+  fileSystems = {
+    # Setup extra filesystem options
+    "/".options = ["compress=zstd"];
+    "/home".options = ["compress=zstd"];
+    "/nix".options = [
+      "compress=zstd"
+      "noatime"
+    ];
+  };
 
   hardware.bluetooth.enable = true;
-
-  # Bootloader
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.systemd-boot.configurationLimit = 10;
-  boot.loader.efi.canTouchEfiVariables = true;
-
+  boot.loader = {
+    # Bootloader
+    systemd-boot = {
+      enable = true;
+      configurationLimit = 10;
+    };
+    efi.canTouchEfiVariables = true;
+  };
   # Network configuration
-  networking.hostName = "capricorn";
-  networking.networkmanager.enable = true;
-  networking.networkmanager.wifi.backend = "iwd";
-  networking.networkmanager.appendNameservers = [
-    "1.1.1.1"
-    "1.0.0.1"
-    "8.8.8.8"
-    "8.4.4.8"
-  ];
+  networking = {
+    hostName = "capricorn";
+    networkmanager = {
+      enable = true;
+      wifi.backend = "iwd";
+      appendNameservers = [
+        "1.1.1.1"
+        "1.0.0.1"
+        "8.8.8.8"
+        "8.4.4.8"
+      ];
+    };
+  };
 
   console.useXkbConfig = true;
 

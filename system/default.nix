@@ -51,20 +51,29 @@ in {
 
     # Enable dev documentation
     documentation.dev.enable = cfg.dev.enable;
-
-    # Shell prompt
-    programs.starship.enable = true;
-    programs.starship.settings = lib.mkIf cfg.styling.enable {
-      format = "$time$all";
-      add_newline = false;
-      cmd_duration.min_time = 500;
-      cmd_duration.show_milliseconds = true;
-      time.format = "[$time](bold yellow) ";
-      time.disabled = false;
-      status.format = "[$signal_name$common_meaning$maybe_int](red)";
-      status.symbol = "[✗](bold red)";
-      status.disabled = false;
-      sudo.disabled = false;
+    programs = {
+      # Shell prompt
+      starship = {
+        enable = true;
+        settings = lib.mkIf cfg.styling.enable {
+          format = "$time$all";
+          add_newline = false;
+          cmd_duration.min_time = 500;
+          cmd_duration.show_milliseconds = true;
+          time = {
+            format = "[$time](bold yellow) ";
+            disabled = false;
+          };
+          status = {
+            format = "[$signal_name$common_meaning$maybe_int](red)";
+            symbol = "[✗](bold red)";
+            disabled = false;
+          };
+          sudo.disabled = false;
+        };
+      };
+      # Default shell
+      zsh.enable = true;
     };
 
     environment.etc = keysFromGithub;
@@ -74,29 +83,32 @@ in {
 
     # Enable printer autodiscovery if printing is enabled
     services.avahi = {
-      enable = config.services.printing.enable;
+      inherit (config.services.printing) enable;
       nssmdns4 = true;
       openFirewall = true;
     };
-
-    # Default shell
-    programs.zsh.enable = true;
     users.defaultUserShell = pkgs.zsh;
-
     # Open ports for spotifyd
-    networking.firewall.allowedUDPPorts = [5353];
-    networking.firewall.allowedTCPPorts = [2020];
-
+    networking.firewall = {
+      allowedUDPPorts = [5353];
+      allowedTCPPorts = [2020];
+    };
     # Nix Settings
-    nix.gc.automatic = true;
-    nix.gc.dates = "weekly";
-    nix.gc.options = "--delete-older-than 30d";
-    # run between 0 and 45min after boot if run was missed
-    nix.gc.randomizedDelaySec = "45min";
-    nix.settings.auto-optimise-store = true;
-    nix.settings.experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
+    nix = {
+      gc = {
+        automatic = true;
+        dates = "weekly";
+        options = "--delete-older-than 30d";
+        # run between 0 and 45min after boot if run was missed
+        randomizedDelaySec = "45min";
+      };
+      settings = {
+        auto-optimise-store = true;
+        experimental-features = [
+          "nix-command"
+          "flakes"
+        ];
+      };
+    };
   };
 }
