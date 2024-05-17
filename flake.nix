@@ -18,7 +18,7 @@
       url = "github:neovim/neovim?dir=contrib&ref=v0.10.0";
       inputs = {
         nixpkgs.follows = "nixpkgs";
-        flake-utils.follows = "lix-module/flake-utils";
+        flake-utils.follows = "flake-utils";
       };
     };
     # Lix
@@ -31,6 +31,7 @@
       inputs = {
         lix.follows = "lix";
         nixpkgs.follows = "nixpkgs";
+        flake-utils.follows = "flake-utils";
       };
     };
     # Modules
@@ -50,9 +51,31 @@
       url = "github:nix-community/nixvim";
       inputs = {
         nixpkgs.follows = "nixpkgs";
+        devshell.follows = "devshell";
+        nix-darwin.follows = ""; # disable MacOS stuff
         home-manager.follows = "home-manager";
-        # disable MacOS stuff
-        nix-darwin.follows = "";
+        flake-compat.follows = "stylix/flake-compat";
+        pre-commit-hooks.follows = "pre-commit-hooks";
+      };
+    };
+    # For deduplication
+    systems.url = "github:nix-systems/default";
+    flake-utils = {
+      url = "github:numtide/flake-utils";
+      inputs.systems.follows = "systems";
+    };
+    devshell = {
+      url = "github:numtide/devshell";
+      inputs = {
+        flake-utils.follows = "flake-utils";
+        nixpkgs.follows = "nixpkgs";
+      };
+    };
+    pre-commit-hooks = {
+      url = "github:cachix/pre-commit-hooks.nix";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        nixpkgs-stable.follows = "nixpkgs";
         flake-compat.follows = "stylix/flake-compat";
       };
     };
@@ -71,6 +94,7 @@
     neovim-flake,
     lix,
     lix-module,
+    ...
   }: let
     inherit (nixpkgs) lib;
     # Helpers for producing system-specific outputs
