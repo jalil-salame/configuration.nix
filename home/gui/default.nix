@@ -134,8 +134,11 @@ in {
     };
 
     # Set cursor style
-    stylix.cursor = cursor;
-    home.pointerCursor.gtk.enable = true;
+    stylix = {inherit cursor;};
+    home.pointerCursor = {
+      gtk.enable = true;
+      inherit (cursor) name package;
+    };
     # Set Gtk theme
     gtk = {
       enable = true;

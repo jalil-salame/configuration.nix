@@ -41,7 +41,7 @@
     };
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     stylix = {
-      url = "github:jalil-salame/stylix/fallback-fonts-v2";
+      url = "github:jalil-salame/stylix/enable-option";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         home-manager.follows = "home-manager";
