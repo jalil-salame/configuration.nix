@@ -16,10 +16,14 @@
     then pkgs.sway
     else null;
   cfg = jhome.gui;
-  cursor.package = pkgs.nordzy-cursor-theme;
-  cursor.name = "Nordzy-cursors";
-  iconTheme.name = "Papirus-Dark";
-  iconTheme.package = pkgs.papirus-icon-theme;
+  cursor = {
+    package = pkgs.nordzy-cursor-theme;
+    name = "Nordzy-cursors";
+  };
+  iconTheme = {
+    name = "Papirus-Dark";
+    package = pkgs.papirus-icon-theme;
+  };
 in {
   config = lib.mkIf (jhome.enable && cfg.enable) {
     home.packages = with pkgs;
@@ -32,10 +36,18 @@ in {
         wl-clipboard
         # Extra fonts
         noto-fonts-cjk # Chinese, Japanese and Korean characters
+        (pkgs.nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})
       ]
       ++ lib.optional flatpakEnabled flatpak;
-
-    fonts.fontconfig.enable = true;
+    fonts.fontconfig = {
+      enable = true;
+      defaultFonts = {
+        emoji = ["Noto Color Emoji"];
+        monospace = ["JetBrains Mono" "Symbols Nerd Font"];
+        serif = ["Noto Serif" "Symbols Nerd Font"];
+        sansSerif = ["Noto Sans" "Symbols Nerd Font"];
+      };
+    };
     # Browser
     programs = {
       firefox.enable = true;
