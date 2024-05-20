@@ -17,7 +17,9 @@ jobs:
       - uses: DeterminateSystems/nix-installer-action@v10
       - uses: DeterminateSystems/magic-nix-cache-action@v4
       - name: Run `nix flake check`
-        run: nix flake check
+        run: |
+          nix flake check
+          nix run nixpkgs#statix -- check .
   lockfile:
     runs-on: ubuntu-22.04
     needs: check
