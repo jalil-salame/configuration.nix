@@ -14,12 +14,13 @@
       url = "github:jalil-salame/audiomenu";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    neovim-src = {
+      url = "github:neovim/neovim/v0.10.0";
+      flake = false;
+    };
     neovim-flake = {
-      url = "github:neovim/neovim?dir=contrib&ref=v0.10.0";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        flake-utils.follows = "flake-utils";
-      };
+      url = "github:nix-community/neovim-nightly-overlay";
+      flake = false;
     };
     # Lix
     lix = {
@@ -92,6 +93,7 @@
     audiomenu,
     nixvim,
     neovim-flake,
+    neovim-src,
     lix,
     lix-module,
     ...
@@ -171,26 +173,11 @@
     # Provide necessary overlays
     overlays = {
       nixvim = nixvim.overlays.default;
-      neovim-nightly = neovim-flake.overlay;
       jpassmenu = jpassmenu.overlays.default;
       audiomenu = audiomenu.overlays.default;
       # FIXME: remove once merged in nixpkgs
-      fix-noice-nvim = final: prev: {
-        vimPlugins =
-          prev.vimPlugins
-          // {
-            noice-nvim = prev.vimUtils.buildVimPlugin {
-              pname = "noice.nvim";
-              version = "2024-05-09";
-              src = final.fetchFromGitHub {
-                owner = "folke";
-                repo = "noice.nvim";
-                rev = "v2.0.2";
-                sha256 = "sha256-YWqphpaxr/729/6NTDEWKOi2FnY/8xgjdsDQ9ePj7b8=";
-              };
-              meta.homepage = "https://github.com/folke/noice.nvim/";
-            };
-          };
+      neovim-nightly = final: prev: {
+        neovim = final.callPackage (neovim-flake + "/flake/packages/neovim.nix") {inherit neovim-src;};
       };
     };
 
@@ -294,7 +281,7 @@
             just
             self.packages.${system}.nvim
           ];
-          QEMU_OPTS_WL = "-smp 4 -device virtio-gpu-rutabaga,gfxstream-vulkan=on,cross-domain=on,hostmem=2G,wsi=headless";
+          QEMU_OPTS_WL = "--enable-kvm -smp 4 -device virtio-gpu-rutabaga,gfxstream-vulkan=on,cross-domain=on,hostmem=2G,wsi=headless";
         };
       }
     );
