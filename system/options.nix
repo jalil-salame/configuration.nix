@@ -38,7 +38,7 @@
   };
 
   styling.options = {
-    enable = mkDisableOption "jalil's default styling (cannot be disabled currently)";
+    enable = mkDisableOption "jalil's default styling (disables stylix)";
     wallpaper = mkImageOption {
       description = "The wallpaper to use.";
       url = "https://raw.githubusercontent.com/lunik1/nixos-logo-gruvbox-wallpaper/d4937c424fad79c1136a904599ba689fcf8d0fad/png/gruvbox-dark-rainbow.png";

@@ -4,7 +4,7 @@
 }: let
   cfg = config.jconfig.styling;
 in {
-  autoEnable = cfg.enable;
+  inherit (cfg) enable;
   image = cfg.wallpaper;
   base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-dark-hard.yaml";
   polarity = "dark";
