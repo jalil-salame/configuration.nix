@@ -14,14 +14,6 @@
       url = "github:jalil-salame/audiomenu";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    neovim-src = {
-      url = "github:neovim/neovim/v0.10.0";
-      flake = false;
-    };
-    neovim-flake = {
-      url = "github:nix-community/neovim-nightly-overlay";
-      flake = false;
-    };
     # Lix
     lix = {
       url = "https://git.lix.systems/lix-project/lix/archive/main.tar.gz";
@@ -56,7 +48,6 @@
         nix-darwin.follows = ""; # disable MacOS stuff
         home-manager.follows = "home-manager";
         flake-compat.follows = "stylix/flake-compat";
-        pre-commit-hooks.follows = "pre-commit-hooks";
       };
     };
     # For deduplication
@@ -72,14 +63,6 @@
         nixpkgs.follows = "nixpkgs";
       };
     };
-    pre-commit-hooks = {
-      url = "github:cachix/pre-commit-hooks.nix";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        nixpkgs-stable.follows = "nixpkgs";
-        flake-compat.follows = "stylix/flake-compat";
-      };
-    };
   };
 
   # Flake outputs that other flakes can use
@@ -92,8 +75,8 @@
     jpassmenu,
     audiomenu,
     nixvim,
-    neovim-flake,
-    neovim-src,
+    # neovim-flake,
+    # neovim-src,
     lix,
     lix-module,
     ...
@@ -176,9 +159,9 @@
       jpassmenu = jpassmenu.overlays.default;
       audiomenu = audiomenu.overlays.default;
       # FIXME: remove once merged in nixpkgs
-      neovim-nightly = final: prev: {
-        neovim = final.callPackage (neovim-flake + "/flake/packages/neovim.nix") {inherit neovim-src;};
-      };
+      # neovim-nightly = final: prev: {
+      #   neovim = final.callPackage (neovim-flake + "/flake/packages/neovim.nix") {inherit neovim-src;};
+      # };
     };
 
     # Nix files formatter (run `nix fmt`)
