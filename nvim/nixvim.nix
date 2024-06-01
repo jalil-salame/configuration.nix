@@ -61,14 +61,16 @@ in {
         plugins.nvim-web-devicons
         jjdescription
       ];
-      # Formatting
+      # Formatting & linters
       extraPackages = [
+        pkgs.unstable.alejandra
+        pkgs.unstable.luajitPackages.jsregexp
+        pkgs.unstable.statix
         pkgs.unstable.stylua
         pkgs.unstable.shfmt
         pkgs.unstable.taplo
+        pkgs.unstable.typos
         pkgs.unstable.yamlfmt
-        pkgs.unstable.alejandra
-        pkgs.unstable.luajitPackages.jsregexp
       ];
       extraConfigLuaPre = ''
         -- Lua Pre Config

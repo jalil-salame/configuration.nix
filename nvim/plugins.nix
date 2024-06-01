@@ -212,11 +212,11 @@
     enable = true;
     lintersByFt = {
       rust = ["typos"];
-      latex = [
-        "chktex"
-        "typos"
-      ];
+      latex = ["chktex" "typos"];
       markdown = ["typos"];
+      nix = ["statix"];
+      sh = ["dash"];
+      zsh = ["zsh"];
     };
   };
 }
