@@ -349,15 +349,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1717097707,
-        "narHash": "sha256-HC5vJ3oYsjwsCaSbkIPv80e4ebJpNvFKQTBOGlHvjLs=",
+        "lastModified": 1716736833,
+        "narHash": "sha256-rNObca6dm7Qs524O4st8VJH6pZ/Xe1gxl+Rx6mcWYo0=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "0eb314b4f0ba337e88123e0b1e57ef58346aafd9",
+        "rev": "a631666f5ec18271e86a5cde998cba68c33d9ac6",
         "type": "github"
       },
       "original": {
         "owner": "nix-community",
+        "ref": "release-24.05",
         "repo": "home-manager",
         "type": "github"
       }
@@ -438,16 +439,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1716948383,
-        "narHash": "sha256-SzDKxseEcHR5KzPXLwsemyTR/kaM9whxeiJohbL04rs=",
+        "lastModified": 1717144377,
+        "narHash": "sha256-F/TKWETwB5RaR8owkPPi+SPJh83AQsm6KrQAlJ8v/uA=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "ad57eef4ef0659193044870c731987a6df5cf56b",
+        "rev": "805a384895c696f802a9bf5bf4720f37385df547",
         "type": "github"
       },
       "original": {
         "id": "nixpkgs",
-        "ref": "nixos-unstable",
+        "ref": "nixos-24.05",
         "type": "indirect"
       }
     },
@@ -468,7 +469,7 @@
         ],
         "nix-darwin": [],
         "nixpkgs": [
-          "nixpkgs"
+          "unstable"
         ],
         "treefmt-nix": "treefmt-nix"
       },
@@ -499,7 +500,8 @@
         "nixpkgs": "nixpkgs",
         "nixvim": "nixvim",
         "stylix": "stylix",
-        "systems": "systems"
+        "systems": "systems",
+        "unstable": "unstable"
       }
     },
     "stylix": {
@@ -521,11 +523,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1716800695,
-        "narHash": "sha256-5ZHVsIg5akOIWImypmQMX/fXZZf3/7tzqJICLteFGZc=",
+        "lastModified": 1717250350,
+        "narHash": "sha256-l7y55WbUrj4NVCzgo3GLmM1Z2HC2uLb8dLUt7FxfI5g=",
         "owner": "jalil-salame",
         "repo": "stylix",
-        "rev": "036128f2517b1ff7d33d04773f48ea98d680128f",
+        "rev": "03a8c7744903f29f017fabeda833834bd873f956",
         "type": "github"
       },
       "original": {
@@ -569,6 +571,21 @@
         "owner": "numtide",
         "repo": "treefmt-nix",
         "type": "github"
+      }
+    },
+    "unstable": {
+      "locked": {
+        "lastModified": 1716948383,
+        "narHash": "sha256-SzDKxseEcHR5KzPXLwsemyTR/kaM9whxeiJohbL04rs=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "ad57eef4ef0659193044870c731987a6df5cf56b",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "ref": "nixos-unstable",
+        "type": "indirect"
       }
     }
   },

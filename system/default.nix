@@ -22,7 +22,6 @@ in {
     ./options.nix
     ./gui
     stylix.nixosModules.stylix
-    # FIXME(https://github.com/danth/stylix/issues/216): Must configure stylix
     {stylix = import ./stylix-config.nix {inherit config pkgs;};}
   ];
 

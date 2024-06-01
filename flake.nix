@@ -4,7 +4,8 @@
   description = "My NixOS configuration";
   # Flake inputs
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-unstable";
+    nixpkgs.url = "nixpkgs/nixos-24.05";
+    unstable.url = "nixpkgs/nixos-unstable";
     # Software
     jpassmenu = {
       url = "github:jalil-salame/jpassmenu";
@@ -29,10 +30,11 @@
     };
     # Modules
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager/release-24.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixos-hardware.url = "github:NixOS/nixos-hardware";
+    # FIXME: pin to 24.05 when avalialble
     stylix = {
       url = "github:jalil-salame/stylix/enable-option";
       inputs = {
@@ -43,7 +45,7 @@
     nixvim = {
       url = "github:nix-community/nixvim";
       inputs = {
-        nixpkgs.follows = "nixpkgs";
+        nixpkgs.follows = "unstable";
         devshell.follows = "devshell";
         nix-darwin.follows = ""; # disable MacOS stuff
         home-manager.follows = "home-manager";
@@ -69,14 +71,13 @@
   outputs = {
     self,
     nixpkgs,
+    unstable,
     stylix,
     home-manager,
     nixos-hardware,
     jpassmenu,
     audiomenu,
     nixvim,
-    # neovim-flake,
-    # neovim-src,
     lix,
     lix-module,
     ...
@@ -158,10 +159,15 @@
       nixvim = nixvim.overlays.default;
       jpassmenu = jpassmenu.overlays.default;
       audiomenu = audiomenu.overlays.default;
-      # FIXME: remove once merged in nixpkgs
-      # neovim-nightly = final: prev: {
-      #   neovim = final.callPackage (neovim-flake + "/flake/packages/neovim.nix") {inherit neovim-src;};
-      # };
+      unstable = final: prev: {
+        inherit
+          (unstable.legacyPackages.${prev.system})
+          gitoxide
+          jujutsu
+          wezterm
+          ;
+        unstable = unstable.legacyPackages.${prev.system};
+      };
     };
 
     # Nix files formatter (run `nix fmt`)

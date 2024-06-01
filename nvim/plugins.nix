@@ -1,7 +1,4 @@
-{
-  lib,
-  pkgs,
-}: {
+{lib}: {
   bacon = {
     enable = true;
     settings.quickfix.enabled = true;

@@ -17,7 +17,7 @@ in {
     (lib.optionalAttrs canSetAsDefault {defaultEditor = lib.mkDefault true;})
     (lib.optionalAttrs notStandalone {enable = lib.mkDefault true;})
     (lib.mkIf cfg.enable {
-      # package = pkgs.neovim;
+      package = pkgs.unstable.neovim-unwrapped;
       globals.mapleader = " ";
       # Appearance
       colorschemes.gruvbox = {
@@ -50,12 +50,12 @@ in {
         # Enable local configuration :h 'exrc'
         exrc = true; # safe since nvim 0.9
       };
-      plugins = import ./plugins.nix {inherit lib pkgs;};
+      plugins = import ./plugins.nix {inherit lib;};
       keymaps = import ./mappings.nix;
       inherit (import ./augroups.nix) autoGroups autoCmd;
       extraPlugins = let
-        plugins = pkgs.vimPlugins;
-        jjdescription = pkgs.callPackage ./vim-jjdescription.nix {};
+        plugins = pkgs.unstable.vimPlugins;
+        jjdescription = pkgs.unstable.callPackage ./vim-jjdescription.nix {};
       in [
         plugins.nui-nvim
         plugins.nvim-web-devicons
@@ -63,14 +63,12 @@ in {
       ];
       # Formatting
       extraPackages = [
-        pkgs.stylua
-        pkgs.shfmt
-        pkgs.taplo
-        pkgs.yamlfmt
-        pkgs.nixpkgs-fmt
-        pkgs.alejandra
-        pkgs.nixfmt-classic
-        pkgs.luajitPackages.jsregexp
+        pkgs.unstable.stylua
+        pkgs.unstable.shfmt
+        pkgs.unstable.taplo
+        pkgs.unstable.yamlfmt
+        pkgs.unstable.alejandra
+        pkgs.unstable.luajitPackages.jsregexp
       ];
       extraConfigLuaPre = ''
         -- Lua Pre Config
