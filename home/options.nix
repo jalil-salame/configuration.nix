@@ -2,8 +2,20 @@
   lib,
   pkgs,
   ...
-}: let
+} @ attrs: let
+  osConfig = attrs.osConfig or null;
   inherit (lib) types;
+  fromOs = let
+    get = path: set:
+      if path == []
+      then set
+      else get (builtins.tail path) (builtins.getAttr (builtins.head path) set);
+  in
+    path: default:
+      if osConfig == null
+      then default
+      else get path osConfig;
+  fromConfig = path: default: fromOs (["jconfig"] ++ path) default;
 
   mkExtraPackagesOption = name: defaultPkgsPath: let
     text =
@@ -73,13 +85,14 @@
   };
 
   sway.options = {
+    enable = lib.mkEnableOption "sway" // {default = fromConfig ["gui" "sway"] true;};
     background = lib.mkOption {
       description = "The wallpaper to use.";
       type = types.path;
-      default = builtins.fetchurl {
+      default = fromConfig ["styling" "wallpaper"] (builtins.fetchurl {
         url = "https://raw.githubusercontent.com/lunik1/nixos-logo-gruvbox-wallpaper/d4937c424fad79c1136a904599ba689fcf8d0fad/png/gruvbox-dark-rainbow.png";
         sha256 = "036gqhbf6s5ddgvfbgn6iqbzgizssyf7820m5815b2gd748jw8zc";
-      };
+      });
     };
     autostart = lib.mkOption {
       description = ''
@@ -117,7 +130,7 @@
   };
 
   gui.options = {
-    enable = lib.mkEnableOption "GUI applications";
+    enable = lib.mkEnableOption "GUI applications" // {default = fromConfig ["gui" "enable"] false;};
     tempInfo = lib.mkOption {
       description = "Temperature info to display in the statusbar.";
       default = null;
@@ -148,7 +161,7 @@ in {
         hostName = lib.mkOption {
           description = "The hostname of this system.";
           type = types.str;
-          default = "nixos";
+          default = fromOs ["networking" "hostName"] "nixos";
           example = "my pc";
         };
         dev = lib.mkOption {
@@ -156,7 +169,7 @@ in {
           default = {};
           type = types.submodule {
             options = {
-              enable = lib.mkEnableOption "development settings";
+              enable = lib.mkEnableOption "development settings" // {default = fromConfig ["dev" "enable"] false;};
               neovimAsManPager = lib.mkEnableOption "neovim as the man pager";
               extraPackages = mkExtraPackagesOption "dev" [
                 ["jq"] # json parser
@@ -172,7 +185,8 @@ in {
                 type = types.submodule {
                   options.enable = lib.mkEnableOption "rust development settings";
                   options.extraPackages = mkExtraPackagesOption "Rust" [
-                    ["cargo-kcov"] # code coverage
+                    ["cargo-insta"] # snapshot testing
+                    ["cargo-llvm-cov"] # code coverage
                     ["cargo-msrv"] # minimum supported version
                     ["cargo-nextest"] # better testing harness
                     ["cargo-sort"] # sort deps and imports
@@ -192,6 +206,15 @@ in {
           description = "Jalil's default GUI configuration.";
           default = {};
           type = types.submodule gui;
+        };
+        styling = lib.mkOption {
+          description = "My custom styling (uses stylix)";
+          default = {};
+          type = types.submodule {
+            options = {
+              enable = lib.mkEnableOption "styling" // {default = fromConfig ["styling" "enable"] true;};
+            };
+          };
         };
       };
     };

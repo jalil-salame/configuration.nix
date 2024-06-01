@@ -41,7 +41,7 @@ in {
       ++ lib.optional flatpakEnabled flatpak;
     fonts.fontconfig = {
       enable = true;
-      defaultFonts = {
+      defaultFonts = lib.mkIf config.jhome.styling.enable {
         emoji = ["Noto Color Emoji"];
         monospace = ["JetBrains Mono" "Symbols Nerd Font"];
         serif = ["Noto Serif" "Symbols Nerd Font"];
@@ -54,7 +54,7 @@ in {
       # Dynamic Menu
       fuzzel = {
         enable = true;
-        settings.main = {
+        settings.main = lib.mkIf config.jhome.styling.enable {
           icon-theme = "Papirus-Dark";
           inherit (cfg) terminal;
           layer = "overlay";
@@ -69,8 +69,8 @@ in {
       waybar = {
         enable = true;
         systemd.enable = true;
-        settings = import ./waybar-settings.nix {inherit config lib;};
-        style = ''
+        settings = lib.mkIf config.jhome.styling.enable (import ./waybar-settings.nix {inherit config lib;});
+        style = lib.optionalString config.jhome.styling.enable ''
           .modules-left #workspaces button {
             border-bottom: 3px solid @base01;
           }
@@ -82,7 +82,7 @@ in {
       # Terminal
       wezterm = {
         enable = cfg.terminal == "wezterm";
-        extraConfig = ''
+        extraConfig = lib.optionalString config.jhome.styling.enable ''
           config = {}
           config.hide_tab_bar_if_only_one_tab = true
           config.window_padding = { left = 1, right = 1, top = 1, bottom = 1 }
@@ -90,7 +90,7 @@ in {
         '';
       };
       alacritty.enable = cfg.terminal == "alacritty";
-      zellij.enable = cfg.terminal == "alacritty"; # alacritty has no terminal multiplexerr built in
+      zellij.enable = cfg.terminal == "alacritty"; # alacritty has no terminal multiplexer built-in
       # PDF reader
       zathura.enable = true;
       # Auto start sway
@@ -128,26 +128,26 @@ in {
 
     # Window Manager
     wayland.windowManager.sway = {
-      enable = true;
+      inherit (cfg.sway) enable;
       package = swayPkg; # no sway package if it comes from the OS
       config = import ./sway-config.nix {inherit config pkgs;};
     };
 
     # Set cursor style
-    stylix = {inherit cursor;};
-    home.pointerCursor = {
+    stylix = lib.mkIf config.jhome.styling.enable {inherit cursor;};
+    home.pointerCursor = lib.mkIf config.jhome.styling.enable (lib.mkDefault {
       gtk.enable = true;
       inherit (cursor) name package;
-    };
+    });
     # Set Gtk theme
-    gtk = {
+    gtk = lib.mkIf config.jhome.styling.enable {
       enable = true;
       inherit iconTheme;
       gtk3.extraConfig.gtk-application-prefer-dark-theme = 1;
       gtk4.extraConfig.gtk-application-prefer-dark-theme = 1;
     };
     # Set Qt theme
-    qt = {
+    qt = lib.mkIf config.jhome.styling.enable {
       enable = true;
       platformTheme.name = "gtk";
     };

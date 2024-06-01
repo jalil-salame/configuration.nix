@@ -14,11 +14,7 @@ in {
   imports =
     [
       # Apply overlays
-      {
-        nixpkgs = {
-          inherit overlays;
-        };
-      }
+      {nixpkgs = {inherit overlays;};}
       nvim-config
       ./options.nix
       ./gui
@@ -26,12 +22,11 @@ in {
     ]
     ++ lib.optionals (stylix != null) [
       stylix.homeManagerModules.stylix
-      {
-        stylix.image = cfg.sway.background;
-      }
+      {stylix.image = cfg.sway.background;}
     ];
 
   config = lib.mkMerge [
+    (lib.mkIf (cfg.enable && cfg.styling.enable) {stylix.enable = true;})
     (lib.mkIf cfg.enable {
       programs = {
         # Better cat (bat)
