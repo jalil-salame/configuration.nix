@@ -137,7 +137,7 @@
       # clangd.enable = true;
       html.enable = true;
       jsonls.enable = true;
-      nil_ls.enable = true;
+      nil-ls.enable = true;
       ruff-lsp.enable = true;
       taplo.enable = true;
       texlab.enable = true;
