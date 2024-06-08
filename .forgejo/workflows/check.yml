@@ -10,9 +10,11 @@ jobs:
     runs-on: nixos
     strategy:
       matrix:
-        machine:
-          - vm
+        target:
+          - docs
+          - nvim
+          - nixosConfigurations.vm.config.system.build.toplevel
     steps:
       - uses: https://code.forgejo.org/actions/checkout@v4
       - run: nix --version
-      - run: nix build --print-build-logs '.#nixosConfigurations.${{ matrix.machine }}.config.system.build.toplevel'
+      - run: nix build --print-build-logs '.#${{ matrix.target }}'
