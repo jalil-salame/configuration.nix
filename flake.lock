@@ -507,16 +507,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1717250350,
-        "narHash": "sha256-l7y55WbUrj4NVCzgo3GLmM1Z2HC2uLb8dLUt7FxfI5g=",
-        "owner": "jalil-salame",
+        "lastModified": 1718122552,
+        "narHash": "sha256-A+dBkSwp8ssHKV/WyXb9uqIYrHBqHvtSedU24Lq9lqw=",
+        "owner": "danth",
         "repo": "stylix",
-        "rev": "03a8c7744903f29f017fabeda833834bd873f956",
+        "rev": "e59d2c1725b237c362e4a62f5722f5b268d566c7",
         "type": "github"
       },
       "original": {
-        "owner": "jalil-salame",
-        "ref": "enable-option",
+        "owner": "danth",
+        "ref": "release-24.05",
         "repo": "stylix",
         "type": "github"
       }

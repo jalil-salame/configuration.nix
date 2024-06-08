@@ -36,7 +36,7 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     # FIXME: pin to 24.05 when avalialble
     stylix = {
-      url = "github:jalil-salame/stylix/enable-option";
+      url = "github:danth/stylix/release-24.05";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         home-manager.follows = "home-manager";
