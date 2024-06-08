@@ -112,25 +112,9 @@
           pkgs = import nixpkgs {inherit system overlays;};
           module = ./nvim/nixvim.nix;
         };
-        formatting = pkgs.stdenvNoCC.mkDerivation {
-          name = "nix-formatting-check";
-          dontUnpack = true;
-          dontBuild = true;
-          doCheck = true;
-          checkPhase = "${pkgs.lib.getExe self.formatter.${system}} --check --quiet ${src}";
-          installPhase = "mkdir $out";
-        };
-        typos = let
-          typos = pkgs.lib.getExe pkgs.typos;
-        in
-          pkgs.stdenvNoCC.mkDerivation {
-            name = "typos-check";
-            dontUnpack = true;
-            dontBuild = true;
-            doCheck = true;
-            checkPhase = "${typos} --color=always ${src}";
-            installPhase = "mkdir $out";
-          };
+        fmt = pkgs.callPackage ./fmt.nix {inherit src;};
+        lint = pkgs.callPackage ./lint.nix {inherit src;};
+        typos = pkgs.callPackage ./lint.nix {inherit src;};
       }
     );
 

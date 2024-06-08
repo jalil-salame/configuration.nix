@@ -1,0 +1,18 @@
+on: [push]
+jobs:
+  check:
+    runs-on: nixos
+    steps:
+      - uses: https://code.forgejo.org/actions/checkout@v4
+      - run: nix --version
+      - run: nix flake check --keep-going
+  build:
+    runs-on: nixos
+    strategy:
+      matrix:
+        machine:
+          - vm
+    steps:
+      - uses: https://code.forgejo.org/actions/checkout@v4
+      - run: nix --version
+      - run: nix build --print-build-logs '.#nixosConfigurations.${{ matrix.machine }}.config.system.build.toplevel'
