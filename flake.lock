@@ -453,7 +453,7 @@
         ],
         "nix-darwin": [],
         "nixpkgs": [
-          "unstable"
+          "nixpkgs"
         ],
         "treefmt-nix": "treefmt-nix"
       },

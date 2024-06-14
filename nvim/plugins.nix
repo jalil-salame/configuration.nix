@@ -134,13 +134,13 @@
     enable = true;
     servers = {
       bashls.enable = true;
-      # clangd.enable = true;
+      # clangd.enable = true; # Adds ~2GiB
       html.enable = true;
       jsonls.enable = true;
       nil-ls.enable = true;
       ruff-lsp.enable = true;
       taplo.enable = true;
-      texlab.enable = true;
+      # texlab.enable = true; # Not writing TeX rn
       typos-lsp.enable = true;
       typst-lsp.enable = true;
     };
