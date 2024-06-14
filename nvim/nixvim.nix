@@ -55,11 +55,12 @@ in {
       inherit (import ./augroups.nix) autoGroups autoCmd;
       extraPlugins = let
         plugins = pkgs.unstable.vimPlugins;
-        jjdescription = pkgs.unstable.callPackage ./vim-jjdescription.nix {};
+        extraPlugins = import ./extraPlugins {pkgs = pkgs.unstable;};
       in [
         plugins.nui-nvim
         plugins.nvim-web-devicons
-        jjdescription
+        extraPlugins.vim-jjdescription
+        extraPlugins.nvim-silicon
       ];
       # Formatting & linters
       extraPackages = [
