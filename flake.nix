@@ -78,7 +78,6 @@
     jpassmenu,
     audiomenu,
     nixvim,
-    lix,
     lix-module,
     ...
   }: let
@@ -213,7 +212,7 @@
             (import ./system {inherit stylix;})
             home-manager.nixosModules.home-manager
           ]
-          ++ nixpkgs.lib.optional (lix != null && lix-module != null) lix-module.nixosModules.default;
+          ++ nixpkgs.lib.optional (lix-module != null) lix-module.nixosModules.default;
         home-manager = {
           useGlobalPkgs = true;
           useUserPackages = true;
