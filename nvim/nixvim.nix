@@ -89,6 +89,22 @@ in {
         end
         -- END: Lua Pre Config
       '';
+      extraConfigLua = ''
+        -- Lua Config
+        require("nvim-silicon").setup {
+          theme = "gruvbox-dark",
+          pad_horiz = 16,
+         pad_vert = 16,
+          -- Current buffer name
+          window_title = function()
+              return vim.fn.fnamemodify(
+                  vim.api.nvim_buf_get_name(vim.api.nvim_get_current_buf()),
+                  ":t"
+              )
+          end,
+        }
+        -- END: Lua Config
+      '';
     })
   ];
 }

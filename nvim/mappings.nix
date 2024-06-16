@@ -135,7 +135,14 @@ in [
   {
     mode = "n";
     key = "<leader>w";
-    action = mkRaw "require'conform'.format";
+    action = mkRaw "require('conform').format";
     options.desc = "Format buffer";
+  }
+  # Nvim Silicon
+  {
+    mode = "v";
+    key = "<leader>sc";
+    action = mkRaw "require('nvim-silicon').clip";
+    options.desc = "Snap Code (to clipboard)";
   }
 ]

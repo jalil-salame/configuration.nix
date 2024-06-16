@@ -5,7 +5,7 @@ jobs:
     steps:
       - uses: https://code.forgejo.org/actions/checkout@v4
       - run: nix --version
-      - run: nix flake check --keep-going
+      - run: nix flake check --keep-going --verbose
   build:
     runs-on: nixos
     strategy:
