@@ -64,6 +64,7 @@ in {
       ];
       # Formatting & linters
       extraPackages = [
+        pkgs.unstable.silicon
         pkgs.unstable.alejandra
         pkgs.unstable.luajitPackages.jsregexp
         pkgs.unstable.statix

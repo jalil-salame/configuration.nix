@@ -1,11 +1,9 @@
 {
   vimUtils,
   fetchFromGitHub,
-  silicon,
 }:
 vimUtils.buildVimPlugin {
   name = "nvim-silicon";
-  dependencies = [silicon];
   src = fetchFromGitHub {
     owner = "michaelrommel";
     repo = "nvim-silicon";
