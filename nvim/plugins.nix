@@ -137,7 +137,13 @@
       # clangd.enable = true; # Adds ~2GiB
       html.enable = true;
       jsonls.enable = true;
-      nil-ls.enable = true;
+      nil-ls = {
+        enable = true;
+        settings.nix.flake = {
+          autoArchive = true;
+          autoEvalInputs = true;
+        };
+      };
       ruff-lsp.enable = true;
       taplo.enable = true;
       # texlab.enable = true; # Not writing TeX rn
