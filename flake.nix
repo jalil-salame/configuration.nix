@@ -46,8 +46,7 @@
       url = "github:nix-community/nixvim";
       inputs = {
         # Disable until fixed upstream: https://github.com/nix-community/nixvim/issues/1699
-        # nixpkgs.follows = "unstable";
-        nixpkgs.follows = "nixpkgs";
+        nixpkgs.follows = "unstable";
         devshell.follows = "devshell";
         nix-darwin.follows = ""; # disable MacOS stuff
         home-manager.follows = "home-manager";

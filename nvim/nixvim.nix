@@ -11,7 +11,7 @@
   canSetAsDefault = hmAvailable || nixosAvailable;
   notStandalone = hmAvailable || nixosAvailable || darwinAvailable;
 in {
-  imports = [./options.nix];
+  imports = [./options.nix ./plugins.nix ./mappings.nix ./augroups.nix];
 
   config = lib.mkMerge [
     (lib.optionalAttrs canSetAsDefault {defaultEditor = lib.mkDefault true;})
@@ -28,7 +28,7 @@ in {
           terminal_colors = true;
         };
       };
-
+      clipboard.providers.wl-copy.enable = true;
       opts = {
         number = true;
         relativenumber = true;
@@ -50,9 +50,6 @@ in {
         # Enable local configuration :h 'exrc'
         exrc = true; # safe since nvim 0.9
       };
-      plugins = import ./plugins.nix {inherit lib;};
-      keymaps = import ./mappings.nix;
-      inherit (import ./augroups.nix) autoGroups autoCmd;
       extraPlugins = let
         plugins = pkgs.unstable.vimPlugins;
         extraPlugins = import ./extraPlugins {pkgs = pkgs.unstable;};
