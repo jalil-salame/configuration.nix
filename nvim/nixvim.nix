@@ -10,14 +10,18 @@
   darwinAvailable = args ? darwinConfig;
   canSetAsDefault = hmAvailable || nixosAvailable;
   notStandalone = hmAvailable || nixosAvailable || darwinAvailable;
+  augroups = import ./augroups.nix args;
 in {
-  imports = [./options.nix ./plugins.nix ./mappings.nix ./augroups.nix];
+  imports = [./options.nix];
 
   config = lib.mkMerge [
     (lib.optionalAttrs canSetAsDefault {defaultEditor = lib.mkDefault true;})
     (lib.optionalAttrs notStandalone {enable = lib.mkDefault true;})
     (lib.mkIf cfg.enable {
       package = pkgs.unstable.neovim-unwrapped;
+      inherit (augroups) autoGroups autoCmd;
+      plugins = import ./plugins.nix args;
+      keymaps = import ./mappings.nix args;
       globals.mapleader = " ";
       # Appearance
       colorschemes.gruvbox = {

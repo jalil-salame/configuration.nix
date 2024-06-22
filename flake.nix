@@ -250,8 +250,8 @@
         system,
       }: {
         default = pkgs.mkShell {
-          buildInputs = with pkgs; [
-            just
+          buildInputs = [
+            pkgs.just
             self.packages.${system}.nvim
           ];
           QEMU_OPTS_WL = "--enable-kvm -smp 4 -device virtio-gpu-rutabaga,gfxstream-vulkan=on,cross-domain=on,hostmem=2G,wsi=headless";
