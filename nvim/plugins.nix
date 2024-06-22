@@ -141,6 +141,17 @@ in
         };
       };
       gitsigns.enable = true;
+      lint = {
+        enable = true;
+        lintersByFt = {
+          rust = ["typos"];
+          latex = ["chktex" "typos"];
+          markdown = ["typos"];
+          nix = ["statix"];
+          sh = ["dash"];
+          zsh = ["zsh"];
+        };
+      };
       lsp = {
         enable = true;
         servers = {
@@ -149,6 +160,8 @@ in
           # clangd.enable = true; # Adds ~2GiB
           html.enable = true;
           jsonls.enable = true;
+          marksman.enable = true;
+          nixd.enable = true;
           nil-ls = {
             enable = true;
             settings.nix.flake = {
@@ -209,7 +222,11 @@ in
           mode = "virtualtext";
         };
       };
-      rustaceanvim.enable = true;
+      rustaceanvim = {
+        enable = true;
+        # Install through rustup
+        rustAnalyzerPackage = null;
+      };
       telescope = {
         enable = true;
         extensions = {
@@ -225,17 +242,6 @@ in
       trouble = {
         enable = true;
         settings.auto_close = true;
-      };
-      lint = {
-        enable = true;
-        lintersByFt = {
-          rust = ["typos"];
-          latex = ["chktex" "typos"];
-          markdown = ["typos"];
-          nix = ["statix"];
-          sh = ["dash"];
-          zsh = ["zsh"];
-        };
       };
     };
   }
