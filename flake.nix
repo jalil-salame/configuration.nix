@@ -16,14 +16,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     # Lix
-    lix = {
-      url = "https://git.lix.systems/lix-project/lix/archive/main.tar.gz";
-      flake = false;
-    };
     lix-module = {
-      url = "https://git.lix.systems/lix-project/nixos-module/archive/main.tar.gz";
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.90.0-rc1.tar.gz";
       inputs = {
-        lix.follows = "lix";
         nixpkgs.follows = "nixpkgs";
         flake-utils.follows = "flake-utils";
       };

@@ -371,15 +371,15 @@
     "lix": {
       "flake": false,
       "locked": {
-        "lastModified": 1718902806,
-        "narHash": "sha256-cAkgZoiP2eHB+V2cPJMcXACzdaWZIMgI5sg4vpH+DYo=",
-        "rev": "e44dcd63c4d96807536cdcf2afb688a537cce9be",
+        "lastModified": 1718419213,
+        "narHash": "sha256-WY7BGnu5PnbK4O8cKKv9kvxwzZIGbIQUQLGPHFXitI0=",
+        "rev": "253546d5fbf8a5aa60ac8164c1b4f5794dc4e9d1",
         "type": "tarball",
-        "url": "https://git.lix.systems/api/v1/repos/lix-project/lix/archive/e44dcd63c4d96807536cdcf2afb688a537cce9be.tar.gz"
+        "url": "https://git.lix.systems/api/v1/repos/lix-project/lix/archive/253546d5fbf8a5aa60ac8164c1b4f5794dc4e9d1.tar.gz"
       },
       "original": {
         "type": "tarball",
-        "url": "https://git.lix.systems/lix-project/lix/archive/main.tar.gz"
+        "url": "https://git.lix.systems/lix-project/lix/archive/2.90.0-rc1.tar.gz"
       }
     },
     "lix-module": {
@@ -388,23 +388,21 @@
           "flake-utils"
         ],
         "flakey-profile": "flakey-profile",
-        "lix": [
-          "lix"
-        ],
+        "lix": "lix",
         "nixpkgs": [
           "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1718778751,
-        "narHash": "sha256-DdcMvX9r29uHMlz7P1Shgs5xZw9WkZ4ObMGYzwROAiw=",
-        "rev": "909e593ae9f5fe338ab19b4ed9d52bb0ea09bad8",
+        "lastModified": 1718778548,
+        "narHash": "sha256-64lB/NO6AQ6z6EDCemPSYZWX/Qc6Rt04cPia5T5v01g=",
+        "rev": "29ed1bb67751e5b107d08df35d18dda6d45324e9",
         "type": "tarball",
-        "url": "https://git.lix.systems/api/v1/repos/lix-project/nixos-module/archive/909e593ae9f5fe338ab19b4ed9d52bb0ea09bad8.tar.gz"
+        "url": "https://git.lix.systems/api/v1/repos/lix-project/nixos-module/archive/29ed1bb67751e5b107d08df35d18dda6d45324e9.tar.gz"
       },
       "original": {
         "type": "tarball",
-        "url": "https://git.lix.systems/lix-project/nixos-module/archive/main.tar.gz"
+        "url": "https://git.lix.systems/lix-project/nixos-module/archive/2.90.0-rc1.tar.gz"
       }
     },
     "nixos-hardware": {
@@ -478,7 +476,6 @@
         "flake-utils": "flake-utils",
         "home-manager": "home-manager",
         "jpassmenu": "jpassmenu",
-        "lix": "lix",
         "lix-module": "lix-module",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs",
