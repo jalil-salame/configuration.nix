@@ -1,5 +1,4 @@
 {
-  overlays,
   nvim-config,
   stylix ? null,
 }: {
@@ -13,8 +12,6 @@
 in {
   imports =
     [
-      # Apply overlays
-      {nixpkgs = {inherit overlays;};}
       nvim-config
       ./options.nix
       ./gui

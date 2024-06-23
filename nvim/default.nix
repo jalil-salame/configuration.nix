@@ -1,14 +1,17 @@
 {
   lib,
-  pkgs,
   config,
-  helpers,
   ...
 }: let
-  # Force inputs to be included
-  nixvim = import ./nixvim.nix {inherit lib pkgs config helpers;};
+  cfg = config.jhome.nvim;
 in {
   imports = [./options.nix];
 
-  config.programs.nixvim = nixvim.config;
+  config.programs.nixvim = lib.mkMerge [
+    ./standalone.nix
+    (lib.mkIf cfg.enable {
+      enable = true;
+      defaultEditor = lib.mkDefault true;
+    })
+  ];
 }

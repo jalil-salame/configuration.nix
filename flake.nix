@@ -93,7 +93,7 @@
         system:
           f {
             inherit system;
-            pkgs = import nixpkgs {inherit system;};
+            pkgs = nixpkgs.legacyPackages.${system};
           }
       );
     overlays = builtins.attrValues self.overlays;
@@ -110,7 +110,7 @@
       in {
         nvim = nixvim.lib.${system}.check.mkTestDerivationFromNixvimModule {
           pkgs = import nixpkgs {inherit system overlays;};
-          module = ./nvim/nixvim.nix;
+          module = ./nvim/standalone.nix;
         };
         fmt = pkgs.callPackage ./fmt.nix {inherit src;};
         lint = pkgs.callPackage ./lint.nix {inherit src;};
@@ -133,7 +133,7 @@
         # Nvim standalone module
         nvim = nixvim.legacyPackages.${system}.makeNixvimWithModule {
           pkgs = import nixpkgs {inherit system overlays;};
-          module = ./nvim/nixvim.nix;
+          module = ./nvim/standalone.nix;
         };
       }
     );
@@ -204,9 +204,8 @@
         nixvim.homeManagerModules.nixvim
         ./nvim
       ];
-      overlays = builtins.attrValues self.overlays;
-      homeManagerModuleSandalone = import ./home {inherit overlays nvim-config stylix;};
-      homeManagerModuleNixOS = import ./home {inherit overlays nvim-config;};
+      homeManagerModuleSandalone = import ./home {inherit nvim-config stylix;};
+      homeManagerModuleNixOS = import ./home {inherit nvim-config;};
       nixosModule = {
         imports =
           [
