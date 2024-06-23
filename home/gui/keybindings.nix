@@ -88,6 +88,7 @@ in
     "${mod}+Return" = "exec ${swayconf.terminal}";
     "${mod}+D" = "exec ${swayconf.menu}";
     "${mod}+P" = "exec ${passmenu}";
+    "${mod}+Shift+P" = "exec ${passmenu} --type";
     "${mod}+F2" = "exec qutebrowser";
     "${mod}+Shift+Q" = "kill";
     "${mod}+F" = "fullscreen toggle";
