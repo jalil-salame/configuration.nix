@@ -2,7 +2,6 @@
   imports = [./options.nix ./plugins.nix ./mappings.nix ./augroups.nix];
 
   config = {
-    package = pkgs.unstable.neovim-unwrapped;
     globals.mapleader = " ";
     # Appearance
     colorschemes.gruvbox = {

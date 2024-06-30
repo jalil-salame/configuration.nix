@@ -29,8 +29,11 @@ in {
         # Better cat (bat)
         bat = {
           enable = true;
-          # Disable headers and numbers
-          config.style = "plain";
+          config = {
+            # Disable headers and numbers
+            style = "plain";
+            theme = lib.mkForce "gruvbox-dark";
+          };
         };
         # Direnv
         direnv = {

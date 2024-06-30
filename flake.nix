@@ -40,7 +40,6 @@
     nixvim = {
       url = "github:nix-community/nixvim";
       inputs = {
-        # Disable until fixed upstream: https://github.com/nix-community/nixvim/issues/1699
         nixpkgs.follows = "unstable";
         devshell.follows = "devshell";
         nix-darwin.follows = ""; # disable MacOS stuff
@@ -138,14 +137,21 @@
       nixvim = nixvim.overlays.default;
       jpassmenu = jpassmenu.overlays.default;
       audiomenu = audiomenu.overlays.default;
-      unstable = final: prev: {
+      unstable = final: prev: let
+        unstablePkgs = unstable.legacyPackages.${prev.system};
+      in {
+        # Get unstable packages
+        unstable = unstablePkgs;
+        # Update vim plugins with the versions from unstable
+        vimPlugins = prev.vimPlugins // unstablePkgs.vimPlugins;
+        # Get specific packages from unstable
         inherit
-          (unstable.legacyPackages.${prev.system})
+          (unstablePkgs)
           gitoxide
           jujutsu
           wezterm
+          neovim-unwrapped
           ;
-        unstable = unstable.legacyPackages.${prev.system};
       };
     };
 
