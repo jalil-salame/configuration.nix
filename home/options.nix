@@ -172,9 +172,11 @@ in {
               enable = lib.mkEnableOption "development settings" // {default = fromConfig ["dev" "enable"] false;};
               neovimAsManPager = lib.mkEnableOption "neovim as the man pager";
               extraPackages = mkExtraPackagesOption "dev" [
+                ["clang"] # LLVM C lang compiler
                 ["jq"] # json parser
                 ["just"] # just a command runner
                 ["typos"] # low false positive rate typo checker
+                ["gcc"] # GNU Compiler Collection
                 ["git-absorb"] # fixup! but automatic
                 ["man-pages"] # gimme the man pages
                 ["man-pages-posix"] # I said gimme the man pages!!!
@@ -190,6 +192,7 @@ in {
                     ["cargo-msrv"] # minimum supported version
                     ["cargo-nextest"] # better testing harness
                     ["cargo-sort"] # sort deps and imports
+                    ["cargo-udeps"] # check for unused dependencies (requires nightly)
                     ["cargo-watch"] # watch for file changes and run commands
                   ];
                 };

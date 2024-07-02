@@ -105,7 +105,6 @@ in {
           pkgs.gopass
           pkgs.sshfs
           pkgs.gitoxide
-          pkgs.xplr
         ];
         # Extra variables
         sessionVariables = {

@@ -32,9 +32,6 @@ in {
     security.pam.services.login.gnupg.enable = true;
 
     environment.systemPackages = [
-      # Dev tools
-      pkgs.gcc
-      pkgs.clang
       # CLI tools
       pkgs.fd
       pkgs.bat
