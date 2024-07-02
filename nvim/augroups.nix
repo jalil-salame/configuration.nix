@@ -12,28 +12,38 @@ in {
         group = "highlightOnYank";
         event = "TextYankPost";
         pattern = "*";
-        callback = mkRaw ''
-          function()
-            vim.highlight.on_yank {
-              higroup = (
-                vim.fn['hlexists'] 'HighlightedyankRegion' > 0 and 'HighlightedyankRegion' or 'IncSearch'
-              ),
-              timeout = 200,
-            }
-          end
-        '';
+        callback =
+          mkRaw
+          /*
+          lua
+          */
+          ''
+            function()
+              vim.highlight.on_yank {
+                higroup = (
+                  vim.fn['hlexists'] 'HighlightedyankRegion' > 0 and 'HighlightedyankRegion' or 'IncSearch'
+                ),
+                timeout = 200,
+              }
+            end
+          '';
       }
       {
         group = "restoreCursorPosition";
         event = "BufReadPost";
         pattern = "*";
-        callback = mkRaw ''
-          function()
-            if vim.fn.line '\'"' > 0 and vim.fn.line '\'"' <= vim.fn.line '$' then
-              vim.cmd [[execute "normal! g'\""]]
+        callback =
+          mkRaw
+          /*
+          lua
+          */
+          ''
+            function()
+              if vim.fn.line '\'"' > 0 and vim.fn.line '\'"' <= vim.fn.line '$' then
+                vim.cmd [[execute "normal! g'\""]]
+              end
             end
-          end
-        '';
+          '';
       }
       {
         group = "lspConfig";
@@ -42,7 +52,11 @@ in {
         callback = let
           opts = "noremap = true, buffer = bufnr";
         in
-          mkRaw ''
+          mkRaw
+          /*
+          lua
+          */
+          ''
             function(opts)
               local bufnr = opts.buf
               local client = vim.lsp.get_client_by_id(opts.data.client_id)

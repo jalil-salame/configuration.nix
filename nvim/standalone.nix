@@ -55,37 +55,41 @@
       pkgs.unstable.typos
       pkgs.unstable.yamlfmt
     ];
-    extraConfigLuaPre = ''
-      -- Lua Pre Config
-      if vim.fn.has 'termguicolors' then
-        -- Enable RGB colors
-        vim.g.termguicolors = true
-      end
+    extraConfigLuaPre =
+      # lua
+      ''
+        -- Lua Pre Config
+        if vim.fn.has 'termguicolors' then
+          -- Enable RGB colors
+          vim.g.termguicolors = true
+        end
 
-      -- Useful function
-      local has_words_before = function()
-        -- unpack = unpack or table.unpack
-        local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-        return col ~= 0
-          and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match '%s' == nil
-      end
-      -- END: Lua Pre Config
-    '';
-    extraConfigLua = ''
-      -- Lua Config
-      require("nvim-silicon").setup {
-        theme = "gruvbox-dark",
-        pad_horiz = 16,
-       pad_vert = 16,
-        -- Current buffer name
-        window_title = function()
-            return vim.fn.fnamemodify(
-                vim.api.nvim_buf_get_name(vim.api.nvim_get_current_buf()),
-                ":t"
-            )
-        end,
-      }
-      -- END: Lua Config
-    '';
+        -- Useful function
+        local has_words_before = function()
+          -- unpack = unpack or table.unpack
+          local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+          return col ~= 0
+            and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match '%s' == nil
+        end
+        -- END: Lua Pre Config
+      '';
+    extraConfigLua =
+      # lua
+      ''
+        -- Lua Config
+        require("nvim-silicon").setup {
+          theme = "gruvbox-dark",
+          pad_horiz = 16,
+         pad_vert = 16,
+          -- Current buffer name
+          window_title = function()
+              return vim.fn.fnamemodify(
+                  vim.api.nvim_buf_get_name(vim.api.nvim_get_current_buf()),
+                  ":t"
+              )
+          end,
+        }
+        -- END: Lua Config
+      '';
   };
 }

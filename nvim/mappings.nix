@@ -51,99 +51,180 @@ in {
     {
       mode = "n";
       key = "<leader>dj";
-      action = mkRaw "vim.diagnostic.goto_next";
+      action =
+        mkRaw
+        # lua
+        ''
+          vim.diagnostic.goto_next
+        '';
       options.desc = "Diagnostics next [J]";
     }
     {
       mode = "n";
       key = "<leader>dk";
-      action = mkRaw "vim.diagnostic.goto_prev";
+      action =
+        mkRaw
+        # lua
+        ''
+          vim.diagnostic.goto_prev
+        '';
       options.desc = "Diagnostics previous [K]";
     }
     {
       mode = "n";
       key = "<leader>xx";
-      action = mkRaw "require('trouble').toggle";
+      action =
+        mkRaw
+        # lua
+        ''
+          require('trouble').toggle
+        '';
       options.desc = "Toggle trouble";
     }
     {
       mode = "n";
       key = "<leader>xw";
-      action = mkRaw "function() require('trouble').toggle('workspace_diagnostics') end";
+      action =
+        mkRaw
+        # lua
+        ''
+          function() require('trouble').toggle('workspace_diagnostics') end
+        '';
       options.desc = "Toggle Workspace trouble";
     }
     {
       mode = "n";
       key = "<leader>xd";
-      action = mkRaw "function() require('trouble').toggle('document_diagnostics') end";
+      action =
+        mkRaw
+        # lua
+        ''
+          function() require('trouble').toggle('document_diagnostics') end
+        '';
       options.desc = "Toggle Document trouble";
     }
     {
       mode = "n";
       key = "<leader>xq";
-      action = mkRaw "function() require('trouble').toggle('quickfix') end";
+      action =
+        mkRaw
+        # lua
+        ''
+          function() require('trouble').toggle('quickfix') end
+        '';
       options.desc = "Toggle Quickfix trouble";
     }
     {
       mode = "n";
       key = "<leader>xl";
-      action = mkRaw "function() require('trouble').toggle('loclist') end";
+      action =
+        mkRaw
+        # lua
+        ''
+          function() require('trouble').toggle('loclist') end
+        '';
       options.desc = "Toggle Loclist trouble";
     }
     {
       mode = "n";
       key = "gR";
-      action = mkRaw "function() require('trouble').toggle('lsp_references') end";
+      action =
+        mkRaw
+        # lua
+        ''
+          function() require('trouble').toggle('lsp_references') end
+        '';
       options.desc = "Toggle lsp References trouble";
     }
     # Telescope
     {
       mode = "n";
       key = "<leader>ff";
-      action = mkRaw "require('telescope.builtin').find_files";
+      action =
+        mkRaw
+        # lua
+        ''
+          require('telescope.builtin').find_files
+        '';
       options.desc = "Find Files";
     }
     {
       mode = "n";
       key = "<leader>fg";
-      action = mkRaw "require('telescope.builtin').live_grep";
+      action =
+        mkRaw
+        # lua
+        ''
+          require('telescope.builtin').live_grep
+        '';
       options.desc = "Find Grep";
     }
     {
       mode = "n";
       key = "<leader>fh";
-      action = mkRaw "require('telescope.builtin').help_tags";
+      action =
+        mkRaw
+        # lua
+        ''
+          require('telescope.builtin').help_tags
+        '';
       options.desc = "Find Help";
     }
     {
       mode = "n";
       key = "<leader>fb";
-      action = mkRaw "require('telescope.builtin').buffers";
+      action =
+        mkRaw
+        # lua
+        ''
+          require('telescope.builtin').buffers
+        '';
       options.desc = "Find Buffer";
     }
     {
       mode = "n";
       key = "<leader>fd";
-      action = mkRaw "require('telescope.builtin').diagnostics";
+      action =
+        mkRaw
+        # lua
+        ''
+          require('telescope.builtin').diagnostics
+        '';
       options.desc = "Find Diagnostics";
     }
     {
       mode = "n";
       key = "<leader>fq";
-      action = mkRaw "require('telescope.builtin').quickfix";
+      action =
+        mkRaw
+        # lua
+        ''
+          require('telescope.builtin').quickfix
+        '';
       options.desc = "Find Quickfix";
     }
     {
       mode = "n";
       key = "<leader>w";
-      action = mkRaw "require('conform').format";
+      action =
+        mkRaw
+        # lua
+        ''
+          require('conform').format
+        '';
       options.desc = "Format buffer";
     }
     # Nvim Silicon
     {
       mode = "v";
       key = "<leader>sc";
-      action = mkRaw "require('nvim-silicon').clip";
+      action =
+        mkRaw
+        # lua
+        ''
+          require('nvim-silicon').clip
+
+        '';
       options.desc = "Snap Code (to clipboard)";
     }
   ];
