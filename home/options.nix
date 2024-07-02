@@ -172,7 +172,6 @@ in {
               enable = lib.mkEnableOption "development settings" // {default = fromConfig ["dev" "enable"] false;};
               neovimAsManPager = lib.mkEnableOption "neovim as the man pager";
               extraPackages = mkExtraPackagesOption "dev" [
-                ["clang"] # LLVM C lang compiler
                 ["jq"] # json parser
                 ["just"] # just a command runner
                 ["typos"] # low false positive rate typo checker
