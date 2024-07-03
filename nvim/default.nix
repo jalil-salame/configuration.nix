@@ -1,11 +1,9 @@
-{
-  lib,
-  config,
-  ...
-}: let
+{ lib, config, ... }:
+let
   cfg = config.jhome.nvim;
-in {
-  imports = [./options.nix];
+in
+{
+  imports = [ ./options.nix ];
 
   config.programs.nixvim = lib.mkMerge [
     ./standalone.nix

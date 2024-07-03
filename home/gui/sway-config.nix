@@ -1,16 +1,15 @@
-{
-  config,
-  pkgs,
-}: let
+{ config, pkgs }:
+let
   cfg = config.jhome.gui.sway;
   modifier = "Mod4";
   inherit (config.jhome.gui) terminal;
   termCmd =
-    if terminal == "wezterm"
-    then "wezterm start"
-    else if terminal == "alacritty"
-    then "alacritty -e"
-    else builtins.abort "no command configured for ${terminal}";
+    if terminal == "wezterm" then
+      "wezterm start"
+    else if terminal == "alacritty" then
+      "alacritty -e"
+    else
+      builtins.abort "no command configured for ${terminal}";
   menu = "${pkgs.fuzzel}/bin/fuzzel --terminal '${termCmd}'";
   # currently, there is some friction between sway and gtk:
   # https://github.com/swaywm/sway/wiki/GTK-3-settings-on-Wayland
@@ -18,10 +17,11 @@
   # for gsettings to work, we need to tell it where the schemas are
   # using the XDG_DATA_DIR environment variable
   # run at the end of sway config
-  configure-gtk = let
-    schema = pkgs.gsettings-desktop-schemas;
-    datadir = "${schema}/share/gsettings-schemas/${schema.name}";
-  in
+  configure-gtk =
+    let
+      schema = pkgs.gsettings-desktop-schemas;
+      datadir = "${schema}/share/gsettings-schemas/${schema.name}";
+    in
     pkgs.writers.writeDashBin "configure-gtk" ''
       export XDG_DATA_DIRS=${datadir}:$XDG_DATA_DIRS
       gnome_schema=org.gnome.desktop.interface
@@ -38,16 +38,17 @@
       ${pkgs.glib}/bin/gsettings set "$gnome_schema" font-name "$font_name"
       ${pkgs.glib}/bin/gsettings set "$gnome_schema" color-scheme prefer-dark
     '';
-  cmdOnce = command: {inherit command;};
+  cmdOnce = command: { inherit command; };
   cmdAlways = command: {
     inherit command;
     always = true;
   };
-in {
+in
+{
   inherit modifier terminal menu;
-  keybindings = import ./keybindings.nix {inherit config pkgs;};
+  keybindings = import ./keybindings.nix { inherit config pkgs; };
   # Appearance
-  bars = []; # Waybar is started as a systemd service
+  bars = [ ]; # Waybar is started as a systemd service
   gaps = {
     smartGaps = true;
     smartBorders = "on";
@@ -72,12 +73,9 @@ in {
     }
   ];
   # Startup scripts
-  startup =
-    [
-      (cmdAlways "${configure-gtk}/bin/configure-gtk")
-    ]
-    ++ (builtins.map cmdAlways cfg.exec.always)
-    ++ (builtins.map cmdOnce cfg.exec.once);
+  startup = [
+    (cmdAlways "${configure-gtk}/bin/configure-gtk")
+  ] ++ (builtins.map cmdAlways cfg.exec.always) ++ (builtins.map cmdOnce cfg.exec.once);
   # Keyboard configuration
   input."type:keyboard" = {
     repeat_delay = "300";

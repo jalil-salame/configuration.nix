@@ -1,6 +1,8 @@
-{helpers, ...}: let
+{ helpers, ... }:
+let
   inherit (helpers) mkRaw;
-in {
+in
+{
   config.keymaps = [
     # Quickfix
     {
@@ -53,10 +55,10 @@ in {
       key = "<leader>dj";
       action =
         mkRaw
-        # lua
-        ''
-          vim.diagnostic.goto_next
-        '';
+          # lua
+          ''
+            vim.diagnostic.goto_next
+          '';
       options.desc = "Diagnostics next [J]";
     }
     {
@@ -64,10 +66,10 @@ in {
       key = "<leader>dk";
       action =
         mkRaw
-        # lua
-        ''
-          vim.diagnostic.goto_prev
-        '';
+          # lua
+          ''
+            vim.diagnostic.goto_prev
+          '';
       options.desc = "Diagnostics previous [K]";
     }
     {
@@ -75,10 +77,10 @@ in {
       key = "<leader>xx";
       action =
         mkRaw
-        # lua
-        ''
-          require('trouble').toggle
-        '';
+          # lua
+          ''
+            require('trouble').toggle
+          '';
       options.desc = "Toggle trouble";
     }
     {
@@ -86,10 +88,10 @@ in {
       key = "<leader>xw";
       action =
         mkRaw
-        # lua
-        ''
-          function() require('trouble').toggle('workspace_diagnostics') end
-        '';
+          # lua
+          ''
+            function() require('trouble').toggle('workspace_diagnostics') end
+          '';
       options.desc = "Toggle Workspace trouble";
     }
     {
@@ -97,10 +99,10 @@ in {
       key = "<leader>xd";
       action =
         mkRaw
-        # lua
-        ''
-          function() require('trouble').toggle('document_diagnostics') end
-        '';
+          # lua
+          ''
+            function() require('trouble').toggle('document_diagnostics') end
+          '';
       options.desc = "Toggle Document trouble";
     }
     {
@@ -108,10 +110,10 @@ in {
       key = "<leader>xq";
       action =
         mkRaw
-        # lua
-        ''
-          function() require('trouble').toggle('quickfix') end
-        '';
+          # lua
+          ''
+            function() require('trouble').toggle('quickfix') end
+          '';
       options.desc = "Toggle Quickfix trouble";
     }
     {
@@ -119,10 +121,10 @@ in {
       key = "<leader>xl";
       action =
         mkRaw
-        # lua
-        ''
-          function() require('trouble').toggle('loclist') end
-        '';
+          # lua
+          ''
+            function() require('trouble').toggle('loclist') end
+          '';
       options.desc = "Toggle Loclist trouble";
     }
     {
@@ -130,10 +132,10 @@ in {
       key = "gR";
       action =
         mkRaw
-        # lua
-        ''
-          function() require('trouble').toggle('lsp_references') end
-        '';
+          # lua
+          ''
+            function() require('trouble').toggle('lsp_references') end
+          '';
       options.desc = "Toggle lsp References trouble";
     }
     # Telescope
@@ -142,10 +144,10 @@ in {
       key = "<leader>ff";
       action =
         mkRaw
-        # lua
-        ''
-          require('telescope.builtin').find_files
-        '';
+          # lua
+          ''
+            require('telescope.builtin').find_files
+          '';
       options.desc = "Find Files";
     }
     {
@@ -153,10 +155,10 @@ in {
       key = "<leader>fg";
       action =
         mkRaw
-        # lua
-        ''
-          require('telescope.builtin').live_grep
-        '';
+          # lua
+          ''
+            require('telescope.builtin').live_grep
+          '';
       options.desc = "Find Grep";
     }
     {
@@ -164,10 +166,10 @@ in {
       key = "<leader>fh";
       action =
         mkRaw
-        # lua
-        ''
-          require('telescope.builtin').help_tags
-        '';
+          # lua
+          ''
+            require('telescope.builtin').help_tags
+          '';
       options.desc = "Find Help";
     }
     {
@@ -175,10 +177,10 @@ in {
       key = "<leader>fb";
       action =
         mkRaw
-        # lua
-        ''
-          require('telescope.builtin').buffers
-        '';
+          # lua
+          ''
+            require('telescope.builtin').buffers
+          '';
       options.desc = "Find Buffer";
     }
     {
@@ -186,10 +188,10 @@ in {
       key = "<leader>fd";
       action =
         mkRaw
-        # lua
-        ''
-          require('telescope.builtin').diagnostics
-        '';
+          # lua
+          ''
+            require('telescope.builtin').diagnostics
+          '';
       options.desc = "Find Diagnostics";
     }
     {
@@ -197,10 +199,10 @@ in {
       key = "<leader>fq";
       action =
         mkRaw
-        # lua
-        ''
-          require('telescope.builtin').quickfix
-        '';
+          # lua
+          ''
+            require('telescope.builtin').quickfix
+          '';
       options.desc = "Find Quickfix";
     }
     {
@@ -208,10 +210,10 @@ in {
       key = "<leader>w";
       action =
         mkRaw
-        # lua
-        ''
-          require('conform').format
-        '';
+          # lua
+          ''
+            require('conform').format
+          '';
       options.desc = "Format buffer";
     }
     # Nvim Silicon
@@ -220,11 +222,11 @@ in {
       key = "<leader>sc";
       action =
         mkRaw
-        # lua
-        ''
-          require('nvim-silicon').clip
+          # lua
+          ''
+            require('nvim-silicon').clip
 
-        '';
+          '';
       options.desc = "Snap Code (to clipboard)";
     }
   ];

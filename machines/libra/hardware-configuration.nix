@@ -7,8 +7,9 @@
   pkgs,
   modulesPath,
   ...
-}: {
-  imports = [(modulesPath + "/installer/scan/not-detected.nix")];
+}:
+{
+  imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
   boot = {
     initrd = {
       availableKernelModules = [
@@ -17,28 +18,28 @@
         "usb_storage"
         "sd_mod"
       ];
-      kernelModules = [];
+      kernelModules = [ ];
     };
-    kernelModules = ["kvm-amd"];
-    extraModulePackages = [];
+    kernelModules = [ "kvm-amd" ];
+    extraModulePackages = [ ];
   };
   fileSystems = {
     "/" = {
       device = "/dev/disk/by-uuid/efbda7f0-c286-4fb1-b780-d3128e4d1a3e";
       fsType = "btrfs";
-      options = ["subvol=root"];
+      options = [ "subvol=root" ];
     };
 
     "/home" = {
       device = "/dev/disk/by-uuid/efbda7f0-c286-4fb1-b780-d3128e4d1a3e";
       fsType = "btrfs";
-      options = ["subvol=home"];
+      options = [ "subvol=home" ];
     };
 
     "/nix" = {
       device = "/dev/disk/by-uuid/efbda7f0-c286-4fb1-b780-d3128e4d1a3e";
       fsType = "btrfs";
-      options = ["subvol=nix"];
+      options = [ "subvol=nix" ];
     };
 
     "/boot" = {
@@ -47,7 +48,7 @@
     };
   };
 
-  swapDevices = [];
+  swapDevices = [ ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's

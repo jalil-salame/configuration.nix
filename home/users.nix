@@ -1,8 +1,5 @@
-{
-  config,
-  lib,
-  ...
-}: let
+{ config, lib, ... }:
+let
   inherit (config) jhome;
   inherit (cfg.defaultIdentity) signingKey;
 
@@ -10,8 +7,9 @@
   hasConfig = jhome.enable && cfg != null;
   hasKey = signingKey != null;
   gpgHome = config.programs.gpg.homedir;
-  unlockKey = hasConfig && cfg.gpg.unlockKeys != [];
-in {
+  unlockKey = hasConfig && cfg.gpg.unlockKeys != [ ];
+in
+{
   config = lib.mkMerge [
     (lib.mkIf hasConfig {
       programs.git = {
@@ -23,7 +21,7 @@ in {
         };
       };
       programs.jujutsu.settings = {
-        user = lib.mkIf (cfg.defaultIdentity != null) {inherit (cfg.defaultIdentity) name email;};
+        user = lib.mkIf (cfg.defaultIdentity != null) { inherit (cfg.defaultIdentity) name email; };
         signing = lib.mkIf hasKey {
           sign-all = true;
           backend = "gpg";

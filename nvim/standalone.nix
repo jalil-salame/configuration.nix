@@ -1,5 +1,11 @@
-{pkgs, ...}: {
-  imports = [./options.nix ./plugins.nix ./mappings.nix ./augroups.nix];
+{ pkgs, ... }:
+{
+  imports = [
+    ./options.nix
+    ./plugins.nix
+    ./mappings.nix
+    ./augroups.nix
+  ];
 
   config = {
     globals.mapleader = " ";
@@ -34,15 +40,17 @@
       # Enable local configuration :h 'exrc'
       exrc = true; # safe since nvim 0.9
     };
-    extraPlugins = let
-      plugins = pkgs.unstable.vimPlugins;
-      extraPlugins = import ./extraPlugins {pkgs = pkgs.unstable;};
-    in [
-      plugins.nui-nvim
-      plugins.nvim-web-devicons
-      extraPlugins.vim-jjdescription
-      extraPlugins.nvim-silicon
-    ];
+    extraPlugins =
+      let
+        plugins = pkgs.unstable.vimPlugins;
+        extraPlugins = import ./extraPlugins { pkgs = pkgs.unstable; };
+      in
+      [
+        plugins.nui-nvim
+        plugins.nvim-web-devicons
+        extraPlugins.vim-jjdescription
+        extraPlugins.nvim-silicon
+      ];
     # Formatting & linters
     extraPackages = [
       pkgs.unstable.silicon

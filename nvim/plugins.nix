@@ -3,9 +3,11 @@
   pkgs,
   helpers,
   ...
-}: let
+}:
+let
   inherit (helpers) mkRaw;
-in {
+in
+{
   config.plugins = {
     bacon = {
       enable = true;
@@ -17,38 +19,32 @@ in {
         "/" = {
           mapping =
             mkRaw
-            /*
-            lua
-            */
-            ''
-              cmp.mapping.preset.cmdline()
-            '';
+              # lua
+              ''
+                cmp.mapping.preset.cmdline()
+              '';
           sources = [
-            {name = "rg";}
-            {name = "buffer";}
+            { name = "rg"; }
+            { name = "buffer"; }
           ];
         };
         ":" = {
           mapping =
             mkRaw
-            /*
-            lua
-            */
-            ''
-              cmp.mapping.preset.cmdline()
-            '';
+              # lua
+              ''
+                cmp.mapping.preset.cmdline()
+              '';
           sources = [
-            {name = "path";}
-            {name = "cmdline";}
+            { name = "path"; }
+            { name = "cmdline"; }
           ];
         };
       };
       settings = {
         # Snippets
         snippet.expand =
-          /*
-          lua
-          */
+          # lua
           ''
             function(args) require('luasnip').lsp_expand(args.body) end
           '';
@@ -105,73 +101,74 @@ in {
         ];
         mapping =
           mkRaw
-          /*
-          lua
-          */
-          ''
-            cmp.mapping.preset.insert({
-              ["<C-n>"] = function(fallback)
-                if cmp.visible() then
-                  cmp.select_next_item()
-                elseif require("luasnip").expand_or_jumpable() then
-                  require("luasnip").expand_or_jump()
-                elseif has_words_before() then
-                  cmp.complete()
-                else
-                  fallback()
-                end
-              end,
-              ["<C-p>"] = function(fallback)
-                if cmp.visible() then
-                  cmp.select_prev_item()
-                elseif require("luasnip").jumpable(-1) then
-                  require("luasnip").jump(-1)
-                else
-                  fallback()
-                end
-              end,
-              ["<C-u>"] = cmp.mapping(function(fallback)
-                if require("luasnip").choice_active() then
-                  require("luasnip").next_choice()
-                else
-                  fallback()
-                end
-              end),
-              ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-              ["<C-f>"] = cmp.mapping.scroll_docs(4),
-              ["<C-Space>"] = cmp.mapping.complete { },
-              ["<C-e>"] = cmp.mapping.close(),
-              ["<CR>"] = cmp.mapping.confirm { select = true },
-            })
-          '';
+            # lua
+            ''
+              cmp.mapping.preset.insert({
+                ["<C-n>"] = function(fallback)
+                  if cmp.visible() then
+                    cmp.select_next_item()
+                  elseif require("luasnip").expand_or_jumpable() then
+                    require("luasnip").expand_or_jump()
+                  elseif has_words_before() then
+                    cmp.complete()
+                  else
+                    fallback()
+                  end
+                end,
+                ["<C-p>"] = function(fallback)
+                  if cmp.visible() then
+                    cmp.select_prev_item()
+                  elseif require("luasnip").jumpable(-1) then
+                    require("luasnip").jump(-1)
+                  else
+                    fallback()
+                  end
+                end,
+                ["<C-u>"] = cmp.mapping(function(fallback)
+                  if require("luasnip").choice_active() then
+                    require("luasnip").next_choice()
+                  else
+                    fallback()
+                  end
+                end),
+                ["<C-b>"] = cmp.mapping.scroll_docs(-4),
+                ["<C-f>"] = cmp.mapping.scroll_docs(4),
+                ["<C-Space>"] = cmp.mapping.complete { },
+                ["<C-e>"] = cmp.mapping.close(),
+                ["<CR>"] = cmp.mapping.confirm { select = true },
+              })
+            '';
       };
     };
     # FIXME: doesn't include formatters
     conform-nvim = {
       enable = true;
       formattersByFt = {
-        "_" = ["trim_whitespace"];
-        c = ["clang_format"];
-        cpp = ["clang_format"];
-        lua = ["stylua"];
-        nix = ["alejandra"];
-        rust = ["rustfmt"];
-        sh = ["shfmt"];
-        toml = ["taplo"];
-        yaml = ["yamlfmt"];
-        zig = ["zigfmt"];
+        "_" = [ "trim_whitespace" ];
+        c = [ "clang_format" ];
+        cpp = [ "clang_format" ];
+        lua = [ "stylua" ];
+        nix = [ "alejandra" ];
+        rust = [ "rustfmt" ];
+        sh = [ "shfmt" ];
+        toml = [ "taplo" ];
+        yaml = [ "yamlfmt" ];
+        zig = [ "zigfmt" ];
       };
     };
     gitsigns.enable = true;
     lint = {
       enable = true;
       lintersByFt = {
-        rust = ["typos"];
-        latex = ["chktex" "typos"];
-        markdown = ["typos"];
-        nix = ["statix"];
-        sh = ["dash"];
-        zsh = ["zsh"];
+        rust = [ "typos" ];
+        latex = [
+          "chktex"
+          "typos"
+        ];
+        markdown = [ "typos" ];
+        nix = [ "statix" ];
+        sh = [ "dash" ];
+        zsh = [ "zsh" ];
       };
     };
     lsp = {

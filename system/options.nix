@@ -1,21 +1,24 @@
-{lib, ...}: let
+{ lib, ... }:
+let
   inherit (lib) types;
   # Like mkEnableOption but defaults to true
-  mkDisableOption = option:
+  mkDisableOption =
+    option:
     (lib.mkEnableOption option)
     // {
       default = true;
       example = false;
     };
-  mkImageOption = {
-    description,
-    url,
-    sha256 ? "",
-  }:
+  mkImageOption =
+    {
+      description,
+      url,
+      sha256 ? "",
+    }:
     lib.mkOption {
       inherit description;
       type = types.path;
-      default = builtins.fetchurl {inherit url sha256;};
+      default = builtins.fetchurl { inherit url sha256; };
       defaultText = lib.literalMD "![${description}](${url})";
     };
 
@@ -28,7 +31,7 @@
     steamHardwareSupport = mkDisableOption "steam hardware support";
     ydotool = lib.mkOption {
       description = "Jalil's default ydotool configuration.";
-      default = {};
+      default = { };
       type = types.submodule {
         options.enable = mkDisableOption "ydotool";
         options.autoStart = mkDisableOption "autostarting ydotool at login";
@@ -56,17 +59,17 @@
     enable = lib.mkEnableOption "jalil's default configuration.";
     dev = lib.mkOption {
       description = "Options for setting up a dev environment";
-      default = {};
-      type = types.submodule {options.enable = lib.mkEnableOption "dev configuration";};
+      default = { };
+      type = types.submodule { options.enable = lib.mkEnableOption "dev configuration"; };
     };
     gui = lib.mkOption {
       description = "Jalil's default configuration for a NixOS gui.";
-      default = {};
+      default = { };
       type = types.submodule gui;
     };
     styling = lib.mkOption {
       description = "Jalil's styling options";
-      default = {};
+      default = { };
       type = types.submodule styling;
     };
     importSSHKeysFromGithub = lib.mkOption {
@@ -83,17 +86,18 @@
         `users.users.<name>.openssh.authorizedKeys.keyFiles` on the users you
         want to allow ssh logins.
       '';
-      default = {};
+      default = { };
       example = {
         "jalil-salame" = "sha256:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
       };
       type = types.attrsOf types.str;
     };
   };
-in {
+in
+{
   options.jconfig = lib.mkOption {
     description = "Jalil's default NixOS configuration.";
-    default = {};
+    default = { };
     type = types.submodule config;
   };
 }

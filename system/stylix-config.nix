@@ -1,9 +1,8 @@
-{
-  config,
-  pkgs,
-}: let
+{ config, pkgs }:
+let
   cfg = config.jconfig.styling;
-in {
+in
+{
   inherit (cfg) enable;
   image = cfg.wallpaper;
   base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-dark-hard.yaml";

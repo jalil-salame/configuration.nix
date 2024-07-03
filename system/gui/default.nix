@@ -3,24 +3,24 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.jconfig.gui;
   enable = config.jconfig.enable && cfg.enable;
-in {
+in
+{
   config = lib.mkMerge [
     (lib.mkIf enable {
-      environment.systemPackages =
-        [
-          pkgs.gnome.adwaita-icon-theme
-          pkgs.adwaita-qt
-          pkgs.nordzy-cursor-theme
-          pkgs.pinentry-qt
-        ]
-        ++ lib.optional cfg.ydotool.enable pkgs.ydotool;
+      environment.systemPackages = [
+        pkgs.gnome.adwaita-icon-theme
+        pkgs.adwaita-qt
+        pkgs.nordzy-cursor-theme
+        pkgs.pinentry-qt
+      ] ++ lib.optional cfg.ydotool.enable pkgs.ydotool;
       systemd = {
         user.services.ydotool = lib.mkIf cfg.ydotool.enable {
           enable = cfg.ydotool.autoStart;
-          wantedBy = ["default.target"];
+          wantedBy = [ "default.target" ];
           description = "Generic command-line automation tool";
           documentation = [
             "man:ydotool(1)"
@@ -47,7 +47,7 @@ in {
         sway = {
           enable = cfg.sway;
           # No extra packages (by default it adds foot, dmenu, and other stuff)
-          extraPackages = [];
+          extraPackages = [ ];
           wrapperFeatures = {
             base = true;
             gtk = true;
@@ -77,7 +77,7 @@ in {
         # XDG portals
         enable = true;
         wlr.enable = true;
-        extraPortals = [pkgs.xdg-desktop-portal-gtk];
+        extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
         config.preferred = {
           # Default to the gtk portal
           default = "gtk";

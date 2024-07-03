@@ -4,17 +4,12 @@
   pkgs,
   osConfig ? null,
   ...
-}: let
+}:
+let
   inherit (config) jhome;
-  flatpakEnabled =
-    if osConfig != null
-    then osConfig.services.flatpak.enable
-    else false;
+  flatpakEnabled = if osConfig != null then osConfig.services.flatpak.enable else false;
   osSway = osConfig == null && !osConfig.programs.sway.enable;
-  swayPkg =
-    if osSway
-    then pkgs.sway
-    else null;
+  swayPkg = if osSway then pkgs.sway else null;
   cfg = jhome.gui;
   cursor = {
     package = pkgs.nordzy-cursor-theme;
@@ -24,9 +19,11 @@
     name = "Papirus-Dark";
     package = pkgs.papirus-icon-theme;
   };
-in {
+in
+{
   config = lib.mkIf (jhome.enable && cfg.enable) {
-    home.packages = with pkgs;
+    home.packages =
+      with pkgs;
       [
         webcord
         ferdium
@@ -36,16 +33,25 @@ in {
         wl-clipboard
         # Extra fonts
         noto-fonts-cjk # Chinese, Japanese and Korean characters
-        (pkgs.nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})
+        (pkgs.nerdfonts.override { fonts = [ "NerdFontsSymbolsOnly" ]; })
       ]
       ++ lib.optional flatpakEnabled flatpak;
     fonts.fontconfig = {
       enable = true;
       defaultFonts = lib.mkIf config.jhome.styling.enable {
-        emoji = ["Noto Color Emoji"];
-        monospace = ["JetBrains Mono" "Symbols Nerd Font"];
-        serif = ["Noto Serif" "Symbols Nerd Font"];
-        sansSerif = ["Noto Sans" "Symbols Nerd Font"];
+        emoji = [ "Noto Color Emoji" ];
+        monospace = [
+          "JetBrains Mono"
+          "Symbols Nerd Font"
+        ];
+        serif = [
+          "Noto Serif"
+          "Symbols Nerd Font"
+        ];
+        sansSerif = [
+          "Noto Sans"
+          "Symbols Nerd Font"
+        ];
       };
     };
     # Browser
@@ -63,13 +69,15 @@ in {
       # Video player
       mpv = {
         enable = true;
-        scripts = builtins.attrValues {inherit (pkgs.mpvScripts) uosc thumbfast;};
+        scripts = builtins.attrValues { inherit (pkgs.mpvScripts) uosc thumbfast; };
       };
       # Status bar
       waybar = {
         enable = true;
         systemd.enable = true;
-        settings = lib.mkIf config.jhome.styling.enable (import ./waybar-settings.nix {inherit config lib;});
+        settings = lib.mkIf config.jhome.styling.enable (
+          import ./waybar-settings.nix { inherit config lib; }
+        );
         style = lib.optionalString config.jhome.styling.enable ''
           .modules-left #workspaces button {
             border-bottom: 3px solid @base01;
@@ -130,15 +138,17 @@ in {
     wayland.windowManager.sway = {
       inherit (cfg.sway) enable;
       package = swayPkg; # no sway package if it comes from the OS
-      config = import ./sway-config.nix {inherit config pkgs;};
+      config = import ./sway-config.nix { inherit config pkgs; };
     };
 
     # Set cursor style
-    stylix = lib.mkIf config.jhome.styling.enable {inherit cursor;};
-    home.pointerCursor = lib.mkIf config.jhome.styling.enable (lib.mkDefault {
-      gtk.enable = true;
-      inherit (cursor) name package;
-    });
+    stylix = lib.mkIf config.jhome.styling.enable { inherit cursor; };
+    home.pointerCursor = lib.mkIf config.jhome.styling.enable (
+      lib.mkDefault {
+        gtk.enable = true;
+        inherit (cursor) name package;
+      }
+    );
     # Set Gtk theme
     gtk = lib.mkIf config.jhome.styling.enable {
       enable = true;

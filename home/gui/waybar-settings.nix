@@ -1,38 +1,34 @@
-{
-  config,
-  lib,
-}: let
+{ config, lib }:
+let
   cfg = config.jhome.gui;
-in {
+in
+{
   mainBar = {
     layer = "top";
     position = "top";
     margin = "2 2 2 2";
     # Choose the order of the modules
-    modules-left = ["sway/workspaces"];
-    modules-center = ["clock"];
-    modules-right =
-      [
-        "pulseaudio"
-        "backlight"
-        "battery"
-        "sway/language"
-        "memory"
-      ]
-      ++ lib.optional (cfg.tempInfo != null) "temperature"
-      ++ ["tray"];
+    modules-left = [ "sway/workspaces" ];
+    modules-center = [ "clock" ];
+    modules-right = [
+      "pulseaudio"
+      "backlight"
+      "battery"
+      "sway/language"
+      "memory"
+    ] ++ lib.optional (cfg.tempInfo != null) "temperature" ++ [ "tray" ];
     "sway/workspaces" = {
       disable-scroll = true;
       persistent-workspaces = {
-        "1" = [];
-        "2" = [];
-        "3" = [];
-        "4" = [];
-        "5" = [];
-        "6" = [];
-        "7" = [];
-        "8" = [];
-        "9" = [];
+        "1" = [ ];
+        "2" = [ ];
+        "3" = [ ];
+        "4" = [ ];
+        "5" = [ ];
+        "6" = [ ];
+        "7" = [ ];
+        "8" = [ ];
+        "9" = [ ];
       };
     };
     "sway/language" = {
@@ -64,7 +60,11 @@ in {
         phone = "󰘂";
         portable = "";
         car = "";
-        default = ["󰕿" "󰖀" "󰕾"];
+        default = [
+          "󰕿"
+          "󰖀"
+          "󰕾"
+        ];
       };
       on-click = "pavucontrol";
       min-length = 13;
@@ -73,13 +73,27 @@ in {
       inherit (cfg.tempInfo) hwmon-path;
       critical-threshold = 80;
       format = "{temperatureC}°C {icon}";
-      format-icons = ["" "" "" "" ""];
+      format-icons = [
+        ""
+        ""
+        ""
+        ""
+        ""
+      ];
       tooltip = false;
     };
     backlight = {
       device = "intel_backlight";
       format = "{percent}% {icon}";
-      format-icons = ["󰃚" "󰃛" "󰃜" "󰃝" "󰃞" "󰃟" "󰃠"];
+      format-icons = [
+        "󰃚"
+        "󰃛"
+        "󰃜"
+        "󰃝"
+        "󰃞"
+        "󰃟"
+        "󰃠"
+      ];
       min-length = 7;
     };
     battery = {
@@ -89,7 +103,18 @@ in {
       format-charging = "{capacity}% 󰂄";
       format-plugged = "{capacity}% 󰚥";
       format-alt = "{time} {icon}";
-      format-icons = ["󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹"];
+      format-icons = [
+        "󰁺"
+        "󰁻"
+        "󰁼"
+        "󰁽"
+        "󰁾"
+        "󰁿"
+        "󰂀"
+        "󰂁"
+        "󰂂"
+        "󰁹"
+      ];
     };
     tray = {
       icon-size = 16;

@@ -1,7 +1,9 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-{nixos-hardware}: {pkgs, ...}: {
+{ nixos-hardware }:
+{ pkgs, ... }:
+{
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -11,9 +13,9 @@
     nixos-hardware.nixosModules.common-gpu-amd
   ];
   fileSystems = {
-    "/".options = ["compress=zstd"];
-    "/steam".options = ["compress=zstd"];
-    "/home".options = ["compress=zstd"];
+    "/".options = [ "compress=zstd" ];
+    "/steam".options = [ "compress=zstd" ];
+    "/home".options = [ "compress=zstd" ];
     "/nix".options = [
       "compress=zstd"
       "noatime"
@@ -48,7 +50,7 @@
     # };
     enable = true;
     startWhenNeeded = true;
-    settings.AllowUsers = ["jalil"];
+    settings.AllowUsers = [ "jalil" ];
   };
 
   # Enable CUPS to print documents.

@@ -1,15 +1,18 @@
 {
   nvim-config,
   stylix ? null,
-}: {
+}:
+{
   config,
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   cfg = config.jhome;
   devcfg = cfg.dev;
-in {
+in
+{
   imports =
     [
       nvim-config
@@ -19,11 +22,11 @@ in {
     ]
     ++ lib.optionals (stylix != null) [
       stylix.homeManagerModules.stylix
-      {stylix.image = cfg.sway.background;}
+      { stylix.image = cfg.sway.background; }
     ];
 
   config = lib.mkMerge [
-    (lib.mkIf (cfg.enable && cfg.styling.enable) {stylix.enable = true;})
+    (lib.mkIf (cfg.enable && cfg.styling.enable) { stylix.enable = true; })
     (lib.mkIf cfg.enable {
       programs = {
         # Better cat (bat)
@@ -81,10 +84,7 @@ in {
         gpg-agent = {
           enable = true;
           maxCacheTtl = 86400;
-          pinentryPackage =
-            if config.jhome.gui.enable
-            then pkgs.pinentry-qt
-            else pkgs.pinentry-curses;
+          pinentryPackage = if config.jhome.gui.enable then pkgs.pinentry-qt else pkgs.pinentry-curses;
           extraConfig = "allow-preset-passphrase";
         };
         # Spotifyd
@@ -189,7 +189,7 @@ in {
       };
     })
     (lib.mkIf (cfg.enable && devcfg.enable && devcfg.rust.enable) {
-      home.packages = [pkgs.rustup] ++ devcfg.rust.extraPackages;
+      home.packages = [ pkgs.rustup ] ++ devcfg.rust.extraPackages;
       # Background code checker (for Rust)
       programs.bacon = {
         enable = true;
