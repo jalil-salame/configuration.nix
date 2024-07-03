@@ -101,14 +101,20 @@
           path = ./.;
           name = "configuration.nix";
         };
+        runCmdInSrc = name: cmd:
+          pkgs.runCommandNoCC name {} ''
+            cd ${src}
+            ${cmd}
+            mkdir $out
+          '';
       in {
         nvim = nixvim.lib.${system}.check.mkTestDerivationFromNixvimModule {
           pkgs = import nixpkgs {inherit system overlays;};
           module = ./nvim/standalone.nix;
         };
-        fmt = pkgs.callPackage ./fmt.nix {inherit src;};
-        lint = pkgs.callPackage ./lint.nix {inherit src;};
-        typos = pkgs.callPackage ./lint.nix {inherit src;};
+        fmt = runCmdInSrc "fmt-src" "${lib.getExe self.formatter.${system}} --check .";
+        lint = runCmdInSrc "lint-src" "${lib.getExe pkgs.statix} check .";
+        typos = runCmdInSrc "typos-src" "${lib.getExe pkgs.typos} .";
       }
     );
 
