@@ -189,7 +189,9 @@ in
             autoEvalInputs = true;
           };
         };
-        ruff-lsp.enable = true;
+        pyright.enable = true;
+        # ruff-lsp.enable = true;
+        ruff.enable = true;
         taplo.enable = true;
         # texlab.enable = true; # Not writing TeX rn
         typos-lsp.enable = true;
