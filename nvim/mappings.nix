@@ -74,25 +74,14 @@ in
     }
     {
       mode = "n";
-      key = "<leader>xx";
+      key = "<leader>xs";
       action =
         mkRaw
           # lua
           ''
-            require('trouble').toggle
+            function() require('trouble').toggle_preview('symbols') end
           '';
-      options.desc = "Toggle trouble";
-    }
-    {
-      mode = "n";
-      key = "<leader>xw";
-      action =
-        mkRaw
-          # lua
-          ''
-            function() require('trouble').toggle('workspace_diagnostics') end
-          '';
-      options.desc = "Toggle Workspace trouble";
+      options.desc = "Toggle Diagnostics trouble";
     }
     {
       mode = "n";
@@ -101,9 +90,9 @@ in
         mkRaw
           # lua
           ''
-            function() require('trouble').toggle('document_diagnostics') end
+            function() require('trouble').toggle_preview('diagnostics') end
           '';
-      options.desc = "Toggle Document trouble";
+      options.desc = "Toggle Diagnostics trouble";
     }
     {
       mode = "n";
@@ -112,7 +101,7 @@ in
         mkRaw
           # lua
           ''
-            function() require('trouble').toggle('quickfix') end
+            function() require('trouble').toggle_preview('quickfix') end
           '';
       options.desc = "Toggle Quickfix trouble";
     }
@@ -123,7 +112,7 @@ in
         mkRaw
           # lua
           ''
-            function() require('trouble').toggle('loclist') end
+            function() require('trouble').toggle_preview('loclist') end
           '';
       options.desc = "Toggle Loclist trouble";
     }
@@ -134,7 +123,7 @@ in
         mkRaw
           # lua
           ''
-            function() require('trouble').toggle('lsp_references') end
+            function() require('trouble').toggle_preview('lsp_references') end
           '';
       options.desc = "Toggle lsp References trouble";
     }
