@@ -335,26 +335,6 @@
         "type": "github"
       }
     },
-    "jpassmenu": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1714848050,
-        "narHash": "sha256-fKXEzN5AaHFSIavYvnHSy3Ol3YXL+Baxy1LNSoIlFVU=",
-        "owner": "jalil-salame",
-        "repo": "jpassmenu",
-        "rev": "13fd18ec6659aba95491b0f4059ac124e21ad639",
-        "type": "github"
-      },
-      "original": {
-        "owner": "jalil-salame",
-        "repo": "jpassmenu",
-        "type": "github"
-      }
-    },
     "lix": {
       "flake": false,
       "locked": {
@@ -462,7 +442,6 @@
         "devshell": "devshell",
         "flake-utils": "flake-utils",
         "home-manager": "home-manager",
-        "jpassmenu": "jpassmenu",
         "lix-module": "lix-module",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs",

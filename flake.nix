@@ -7,10 +7,6 @@
     nixpkgs.url = "nixpkgs/nixos-24.05";
     unstable.url = "nixpkgs/nixos-unstable";
     # Software
-    jpassmenu = {
-      url = "github:jalil-salame/jpassmenu";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     audiomenu = {
       url = "github:jalil-salame/audiomenu";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -71,7 +67,6 @@
       stylix,
       home-manager,
       nixos-hardware,
-      jpassmenu,
       audiomenu,
       nixvim,
       lix-module,
@@ -94,6 +89,8 @@
           }
         );
       overlays = builtins.attrValues self.overlays;
+      scripts_pkgs = import ./scripts;
+      scripts = final: prev: scripts_pkgs final;
     in
     {
       checks = forEachSupportedSystem (
@@ -124,7 +121,8 @@
 
       packages = forEachSupportedSystem (
         { pkgs, system }:
-        {
+        scripts_pkgs pkgs
+        // {
           inherit (import ./docs { inherit pkgs lib; })
             docs
             nixos-markdown
@@ -141,8 +139,8 @@
 
       # Provide necessary overlays
       overlays = {
+        inherit scripts;
         nixvim = nixvim.overlays.default;
-        jpassmenu = jpassmenu.overlays.default;
         audiomenu = audiomenu.overlays.default;
         unstable =
           final: prev:
@@ -158,8 +156,8 @@
             inherit (unstablePkgs)
               gitoxide
               jujutsu
-              wezterm
               neovim-unwrapped
+              wezterm
               ;
           };
       };
