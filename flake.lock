@@ -1,25 +1,5 @@
 {
   "nodes": {
-    "audiomenu": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1714848092,
-        "narHash": "sha256-qR7IxBDjZpy7svaHSir8qVfuyGctAFTq5bqgyinAFyk=",
-        "owner": "jalil-salame",
-        "repo": "audiomenu",
-        "rev": "6b4954a8771570dec9b33caccdd6460cc8f01cca",
-        "type": "github"
-      },
-      "original": {
-        "owner": "jalil-salame",
-        "repo": "audiomenu",
-        "type": "github"
-      }
-    },
     "base16": {
       "inputs": {
         "fromYaml": "fromYaml"
@@ -438,7 +418,6 @@
     },
     "root": {
       "inputs": {
-        "audiomenu": "audiomenu",
         "devshell": "devshell",
         "flake-utils": "flake-utils",
         "home-manager": "home-manager",

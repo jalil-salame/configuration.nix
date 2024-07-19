@@ -6,11 +6,6 @@
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-24.05";
     unstable.url = "nixpkgs/nixos-unstable";
-    # Software
-    audiomenu = {
-      url = "github:jalil-salame/audiomenu";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     # Lix
     lix-module = {
       url = "https://git.lix.systems/lix-project/nixos-module/archive/2.90.0.tar.gz";
@@ -67,7 +62,6 @@
       stylix,
       home-manager,
       nixos-hardware,
-      audiomenu,
       nixvim,
       lix-module,
       ...
@@ -141,7 +135,6 @@
       overlays = {
         inherit scripts;
         nixvim = nixvim.overlays.default;
-        audiomenu = audiomenu.overlays.default;
         unstable =
           final: prev:
           let

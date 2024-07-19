@@ -1,0 +1,12 @@
+[package]
+name = "audiomenu"
+description = "fuzzel script to select the default audio device for pipewire+wireplumber"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+clap = { version = "4.5.9", features = ["derive", "env"] }
+duct = "0.13.7"
+miette = { version = "7.2.0", features = ["fancy"] }
+serde = { version = "1.0.204", features = ["derive"] }
+serde_json = "1.0.120"
