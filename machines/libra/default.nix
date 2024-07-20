@@ -30,10 +30,10 @@
   hardware = {
     opengl.enable = true;
     bluetooth.enable = true;
-    tuxedo-rs = {
-      enable = true;
-      tailor-gui.enable = true;
-    };
+    # tuxedo-rs = {
+    #   enable = true;
+    #   tailor-gui.enable = true;
+    # };
   };
   networking = {
     hostName = "libra";
