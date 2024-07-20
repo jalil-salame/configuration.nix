@@ -6,8 +6,9 @@ on:
       - ./**.nix
       - ./flake.lock
   pull_request:
-  schedule:
-    - cron: 5 4 * * 5 # At 04:05 on Friday.
+  # scheduled runs are run on my own infrastructure
+  # schedule:
+  #   - cron: 5 4 * * 5 # At 04:05 on Friday.
 
 jobs:
   check:
