@@ -19,8 +19,6 @@
       url = "github:nix-community/home-manager/release-24.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixos-hardware.url = "github:NixOS/nixos-hardware";
-    # FIXME: pin to 24.05 when avalialble
     stylix = {
       url = "github:danth/stylix/release-24.05";
       inputs = {
@@ -61,7 +59,6 @@
       unstable,
       stylix,
       home-manager,
-      nixos-hardware,
       nixvim,
       lix-module,
       ...
@@ -223,16 +220,11 @@
             nix.registry.nixpkgs.flake = nixpkgs;
           };
 
-          machines = [
-            "capricorn"
-            "gemini"
-            "libra"
-            "vm"
-          ];
+          machines = [ "vm" ];
           mkMachine = hostname: {
             imports = [
               nixosModule
-              (import (./machines + "/${hostname}") { inherit nixos-hardware; })
+              (import (./machines + "/${hostname}"))
             ];
             home-manager.sharedModules = [ { jhome.hostName = hostname; } ];
           };

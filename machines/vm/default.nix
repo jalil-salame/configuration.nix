@@ -1,4 +1,4 @@
-_: {
+{
   services.qemuGuest.enable = true;
 
   boot.initrd.availableKernelModules = [
