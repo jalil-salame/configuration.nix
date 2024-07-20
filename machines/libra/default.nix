@@ -2,16 +2,11 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 { nixos-hardware }:
-{ pkgs, ... }:
 {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    nixos-hardware.nixosModules.common-pc-laptop
-    nixos-hardware.nixosModules.common-pc-laptop-ssd
-    # nixos-hardware.nixosModules.common-cpu-amd-pstate
-    nixos-hardware.nixosModules.common-cpu-amd-raphael-igpu # not working?
-    nixos-hardware.nixosModules.common-gpu-amd
+    nixos-hardware.nixosModules.tuxedo-pulse-14-gen3
   ];
 
   fileSystems = {
@@ -23,8 +18,6 @@
     ];
   };
   boot = {
-    kernelPackages = pkgs.linuxPackages_latest;
-    kernelParams = [ "amdgpu.dcdebugmask=0x10" ];
     loader = {
       # Use the systemd-boot EFI boot loader.
       timeout = 0; # Press Space to show the menu
