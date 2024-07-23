@@ -7,6 +7,7 @@
 let
   cfg = config.jconfig.gui;
   enable = config.jconfig.enable && cfg.enable;
+  linuxOlderThan6_3 = lib.versionOlder config.boot.kernelPackages.kernel.version "6.3";
 in
 {
   config = lib.mkMerge [
@@ -92,7 +93,7 @@ in
         steam-hardware.enable = cfg.steamHardwareSupport;
       };
     })
-    (lib.mkIf (enable && cfg."8bitdoFix") {
+    (lib.mkIf (enable && linuxOlderThan6_3 && cfg."8bitdoFix") {
       # Udev rules to start or stop systemd service when controller is connected or disconnected
       services.udev.extraRules = ''
         # May vary depending on your controller model, find product id using 'lsusb'
