@@ -2,7 +2,7 @@
 let
   cfg = config.jhome.gui.sway;
   passmenu = "${pkgs.jpassmenu}/bin/jpassmenu";
-  selectAudio = "${pkgs.audiomenu}/bin/audiomenu --menu 'fuzzel --dmenu'";
+  selectAudio = "${pkgs.audiomenu}/bin/audiomenu";
   swayconf = config.wayland.windowManager.sway.config;
   mod = swayconf.modifier;
   workspaces = map toString [
