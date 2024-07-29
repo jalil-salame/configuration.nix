@@ -11,7 +11,7 @@
       url = "https://git.lix.systems/lix-project/nixos-module/archive/2.90.0.tar.gz";
       inputs = {
         nixpkgs.follows = "nixpkgs";
-        flake-utils.follows = "flake-utils";
+        flake-utils.inputs.systems.follows = "systems";
       };
     };
     # Modules
@@ -30,25 +30,14 @@
       url = "github:nix-community/nixvim";
       inputs = {
         nixpkgs.follows = "unstable";
-        devshell.follows = "devshell";
         nix-darwin.follows = ""; # disable MacOS stuff
         home-manager.follows = "home-manager";
         flake-compat.follows = "stylix/flake-compat";
+        nuschtosSearch.inputs.flake-utils.follows = "lix-module/flake-utils";
       };
     };
     # For deduplication
     systems.url = "github:nix-systems/default";
-    flake-utils = {
-      url = "github:numtide/flake-utils";
-      inputs.systems.follows = "systems";
-    };
-    devshell = {
-      url = "github:numtide/devshell";
-      inputs = {
-        flake-utils.follows = "flake-utils";
-        nixpkgs.follows = "nixpkgs";
-      };
-    };
   };
 
   # Flake outputs that other flakes can use
@@ -61,15 +50,12 @@
       home-manager,
       nixvim,
       lix-module,
-      ...
+      systems,
     }:
     let
       inherit (nixpkgs) lib;
       # Helpers for producing system-specific outputs
-      supportedSystems = [
-        "x86_64-linux"
-        "aarch64-linux"
-      ];
+      supportedSystems = import systems;
       forEachSupportedSystem =
         f:
         nixpkgs.lib.genAttrs supportedSystems (
