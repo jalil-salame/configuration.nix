@@ -12,38 +12,47 @@ on:
 
 jobs:
   check:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/lix-project/lix:latest
     steps:
       - uses: actions/checkout@v4
-      - uses: DeterminateSystems/nix-installer-action@v12
+      - name: Enable flakes
+        run: echo 'experimental-features = nix-command flakes' >> ~/.config/nix/nix.conf
       - uses: DeterminateSystems/magic-nix-cache-action@v7
       - name: Run `nix flake check`
         run: |
-          nix flake check
+          nix flake check --verbose --keep-going
           nix run nixpkgs#statix -- check .
   lockfile:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/lix-project/lix:latest
     needs: check
     if: ${{ github.event_name == 'schedule' }} # only run when scheduled
     steps:
       - uses: actions/checkout@v4
-      - uses: DeterminateSystems/nix-installer-action@v12
+      - name: Enable flakes
+        run: echo 'experimental-features = nix-command flakes' >> ~/.config/nix/nix.conf
       - uses: DeterminateSystems/update-flake-lock@v23
       - name: Run `nix flake check`
-        run: nix flake check
+        run: nix flake check --verbose --keep-going
   build-documentation:
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/lix-project/lix:latest
     if: ${{ github.event_name != 'schedule' }} # only run when not scheduled
     steps:
-    - uses: actions/checkout@v4
-    - uses: DeterminateSystems/nix-installer-action@v12
-    - uses: DeterminateSystems/magic-nix-cache-action@v7
-    - name: Build documentation
-      run: nix build .#docs --print-build-logs
-    - name: Upload artifact
-      uses: actions/upload-pages-artifact@v3
-      with:
-        path: ./result
+      - uses: actions/checkout@v4
+      - name: Enable flakes
+        run: echo 'experimental-features = nix-command flakes' >> ~/.config/nix/nix.conf
+      - uses: DeterminateSystems/magic-nix-cache-action@v7
+      - name: Build documentation
+        run: nix build .#docs --print-build-logs
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./result
   deploy:
     runs-on: ubuntu-latest
     needs: build-documentation
