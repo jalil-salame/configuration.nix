@@ -39,4 +39,4 @@ jobs:
           git switch --force-create update-lockfile
           nix flake update --commit-lock-file --option commit-lockfile-summary '[chore] flake.lock: update inputs'
           nix flake check --keep-going --verbose
-          git push --set-upstream origin update-lockfile
+          git push --force-with-lease --set-upstream origin update-lockfile
