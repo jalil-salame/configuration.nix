@@ -33,7 +33,10 @@
         nix-darwin.follows = ""; # disable MacOS stuff
         home-manager.follows = "home-manager";
         flake-compat.follows = "stylix/flake-compat";
-        nuschtosSearch.inputs.flake-utils.follows = "lix-module/flake-utils";
+        nuschtosSearch.inputs = {
+          flake-utils.follows = "lix-module/flake-utils";
+          nixpkgs.follows = "nixpkgs";
+        };
       };
     };
     # For deduplication
