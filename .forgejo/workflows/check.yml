@@ -1,18 +1,14 @@
 on:
   push:
-  schedule:
-    - cron: '12 5 * * *'
 jobs:
   check:
     runs-on: nixos
-    if: github.event_name != 'schedule'
     steps:
       - uses: "https://code.forgejo.org/actions/checkout@v4"
       - run: nix --version
       - run: nix flake check --keep-going --verbose
   build:
     runs-on: nixos
-    if: github.event_name != 'schedule'
     strategy:
       matrix:
         target:
@@ -25,18 +21,3 @@ jobs:
       - uses: "https://code.forgejo.org/actions/checkout@v4"
       - run: nix --version
       - run: nix build --print-build-logs '.#${{ matrix.target }}'
-  update-lockfile:
-    needs: [check build]
-    runs-on: nixos
-    if: github.event_name == 'schedule'
-    steps:
-      - uses: "https://code.forgejo.org/actions/checkout@v4"
-      - run: nix --version
-      - name: nix flake update
-        run: |
-          git config user.name 'forgejo-actions'
-          git config user.email 'forgejo-actions@noreply.salame.cl'
-          git switch --force-create update-lockfile
-          nix flake update --commit-lock-file --option commit-lockfile-summary '[chore] flake.lock: update inputs'
-          nix flake check --keep-going --verbose
-          git push --force-with-lease --set-upstream origin update-lockfile
