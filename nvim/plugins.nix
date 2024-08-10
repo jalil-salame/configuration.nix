@@ -209,9 +209,7 @@ in
     };
     luasnip = {
       enable = true;
-      extraConfig = {
-        update_events = "TextChanged,TextChangedI";
-      };
+      settings.update_events = "TextChanged,TextChangedI";
     };
     noice = {
       enable = true;
