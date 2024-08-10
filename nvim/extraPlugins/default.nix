@@ -1,5 +1,11 @@
 { pkgs }:
+let
+  overlay = pkgs.callPackage ./generated.nix {
+    inherit (pkgs.vimUtils) buildVimPlugin buildNeovimPlugin;
+  };
+  plugins = overlay pkgs pkgs;
+in
 {
-  vim-jjdescription = pkgs.callPackage ./vim-jjdescription.nix { };
-  nvim-silicon = pkgs.callPackage ./nvim-silicon.nix { };
+  inherit overlay;
+  inherit (plugins) vim-jjdescription nvim-silicon;
 }
