@@ -5,7 +5,7 @@
   # Flake inputs
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-24.05";
-    unstable.url = "nixpkgs/nixos-unstable";
+    unstable.url = "nixpkgs/nixos-unstable-small";
     # Lix
     lix-module = {
       url = "https://git.lix.systems/lix-project/nixos-module/archive/2.90.0.tar.gz";
