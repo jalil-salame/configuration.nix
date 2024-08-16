@@ -129,6 +129,7 @@
           {
             # Get unstable packages
             unstable = unstablePkgs;
+
             # Update vim plugins with the versions from unstable
             vimPlugins = prev.vimPlugins // unstablePkgs.vimPlugins;
             # Get specific packages from unstable
@@ -228,7 +229,7 @@
       devShells = forEachSupportedSystem (
         { pkgs, system }:
         {
-          default = pkgs.mkShell {
+          default = pkgs.mkShellNoCC {
             buildInputs = [
               pkgs.just
               self.packages.${system}.nvim

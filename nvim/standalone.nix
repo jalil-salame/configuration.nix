@@ -53,7 +53,8 @@
       ];
     # Formatting & linters
     extraPackages = [
-      pkgs.unstable.silicon
+      # Rust 1.80.0 broke it, waiting for https://github.com/Aloxaf/silicon/pull/254 to be accepted
+      pkgs.silicon
       pkgs.unstable.alejandra
       pkgs.unstable.luajitPackages.jsregexp
       pkgs.unstable.statix
