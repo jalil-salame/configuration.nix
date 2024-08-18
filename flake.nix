@@ -137,7 +137,7 @@
               gitoxide
               jujutsu
               neovim-unwrapped
-              wezterm
+              # wezterm
               ;
           };
       };
