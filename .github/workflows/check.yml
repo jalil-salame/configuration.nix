@@ -15,6 +15,7 @@ jobs:
       - uses:  DeterminateSystems/nix-installer-action@v13
         with:
           source-url: "https://install.lix.systems/lix/lix-installer-x86_64-linux"
+          diagnostic-endpoint: ""
       - uses: DeterminateSystems/magic-nix-cache-action@v7
       - name: Run `nix flake check`
         run: |
@@ -28,6 +29,7 @@ jobs:
       - uses:  DeterminateSystems/nix-installer-action@v13
         with:
           source-url: "https://install.lix.systems/lix/lix-installer-x86_64-linux"
+          diagnostic-endpoint: ""
       - name: Build documentation
         run: nix build .#docs --print-build-logs
       - name: Upload artifact
