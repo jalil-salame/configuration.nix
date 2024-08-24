@@ -23,8 +23,7 @@ in
 {
   config = lib.mkIf (jhome.enable && cfg.enable) {
     home.packages =
-      with pkgs;
-      [
+      (with pkgs; [
         webcord
         ferdium
         xournalpp
@@ -33,9 +32,9 @@ in
         wl-clipboard
         # Extra fonts
         noto-fonts-cjk # Chinese, Japanese and Korean characters
-        (pkgs.nerdfonts.override { fonts = [ "NerdFontsSymbolsOnly" ]; })
-      ]
-      ++ lib.optional flatpakEnabled flatpak;
+        (nerdfonts.override { fonts = [ "NerdFontsSymbolsOnly" ]; })
+      ])
+      ++ lib.optional flatpakEnabled pkgs.flatpak;
     fonts.fontconfig = {
       enable = true;
       defaultFonts = lib.mkIf config.jhome.styling.enable {
@@ -139,6 +138,10 @@ in
       inherit (cfg.sway) enable;
       package = swayPkg; # no sway package if it comes from the OS
       config = import ./sway-config.nix { inherit config pkgs; };
+      systemd = {
+        enable = true;
+        xdgAutostart = true;
+      };
     };
 
     # Set cursor style
