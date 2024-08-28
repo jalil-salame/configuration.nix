@@ -143,18 +143,20 @@ in
     # FIXME: doesn't include formatters
     conform-nvim = {
       enable = true;
-      formatters.nixfmt.command = "${lib.getExe pkgs.nixfmt-rfc-style}";
-      formattersByFt = {
-        "_" = [ "trim_whitespace" ];
-        c = [ "clang_format" ];
-        cpp = [ "clang_format" ];
-        lua = [ "stylua" ];
-        nix = [ "nixfmt" ];
-        rust = [ "rustfmt" ];
-        sh = [ "shfmt" ];
-        toml = [ "taplo" ];
-        yaml = [ "yamlfmt" ];
-        zig = [ "zigfmt" ];
+      settings = {
+        formatters.nixfmt.command = "${lib.getExe pkgs.nixfmt-rfc-style}";
+        formatters_by_ft = {
+          "_" = [ "trim_whitespace" ];
+          c = [ "clang_format" ];
+          cpp = [ "clang_format" ];
+          lua = [ "stylua" ];
+          nix = [ "nixfmt" ];
+          rust = [ "rustfmt" ];
+          sh = [ "shfmt" ];
+          toml = [ "taplo" ];
+          yaml = [ "yamlfmt" ];
+          zig = [ "zigfmt" ];
+        };
       };
     };
     gitsigns.enable = true;
