@@ -207,7 +207,7 @@ in
     };
     lualine = {
       enable = true;
-      theme = lib.mkForce "gruvbox";
+      settings.options.theme = lib.mkForce "gruvbox";
     };
     luasnip = {
       enable = true;
