@@ -6,11 +6,15 @@
   config,
   pkgs,
   lib,
+  osConfig ? null,
   ...
 }:
 let
   cfg = config.jhome;
   devcfg = cfg.dev;
+  # Query the osConfig for a setting. Return the default value if missing or in standalone mode
+  fromOs =
+    path: default: if osConfig == null then default else lib.attrsets.attrByPath path default osConfig;
 in
 {
   imports =
@@ -26,6 +30,13 @@ in
     ];
 
   config = lib.mkMerge [
+    {
+      nix.settings.use-xdg-base-directories = fromOs [
+        "nix"
+        "settings"
+        "use-xdg-base-directories"
+      ] true;
+    }
     (lib.mkIf (cfg.enable && cfg.styling.enable) { stylix.enable = true; })
     (lib.mkIf cfg.enable {
       programs = {

@@ -100,6 +100,7 @@ in
         randomizedDelaySec = "45min";
       };
       settings = {
+        use-xdg-base-directories = true;
         auto-optimise-store = true;
         experimental-features = [
           "nix-command"
