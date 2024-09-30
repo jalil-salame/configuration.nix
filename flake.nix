@@ -139,6 +139,7 @@
               gitoxide
               jujutsu
               neovim-unwrapped
+              ruff # nixpkgs stable version is improperly configured by nixvim
               # wezterm
               ;
           };
