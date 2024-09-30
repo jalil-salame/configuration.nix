@@ -24,19 +24,21 @@
       inputs = {
         nixpkgs.follows = "nixpkgs";
         home-manager.follows = "home-manager";
+        # disable optional inputs
+        flake-compat.follows = "";
       };
     };
     nixvim = {
       url = "github:nix-community/nixvim";
       inputs = {
         nixpkgs.follows = "unstable";
-        nix-darwin.follows = ""; # disable MacOS stuff
         home-manager.follows = "home-manager";
-        flake-compat.follows = "stylix/flake-compat";
-        nuschtosSearch.inputs = {
-          flake-utils.follows = "lix-module/flake-utils";
-          nixpkgs.follows = "nixpkgs";
-        };
+        # disable optional inputs
+        flake-compat.follows = "";
+        nix-darwin.follows = "";
+        nuschtosSearch.follows = "";
+        devshell.follows = "";
+        git-hooks.follows = "";
       };
     };
     # For deduplication
