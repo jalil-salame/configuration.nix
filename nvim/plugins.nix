@@ -267,5 +267,6 @@ in
       enable = true;
       settings.auto_close = true;
     };
+    web-devicons.enable = true;
   };
 }
