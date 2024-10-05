@@ -193,7 +193,7 @@ in
               };
               neovimAsManPager = lib.mkEnableOption "neovim as the man pager";
               extraPackages = mkExtraPackagesOption "dev" [
-                [ "devenv" ] # a devshell alternative
+                # FIXME: readd on new lix version with fix [ "devenv" ] # a devshell alternative
                 [ "jq" ] # json parser
                 [ "just" ] # just a command runner
                 [ "typos" ] # low false positive rate typo checker
