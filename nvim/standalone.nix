@@ -61,6 +61,7 @@
       pkgs.unstable.taplo
       pkgs.unstable.typos
       pkgs.unstable.yamlfmt
+      (pkgs.unstable.python3.withPackages (p: [ p.jupytext ]))
     ];
     extraConfigLuaPre =
       # lua

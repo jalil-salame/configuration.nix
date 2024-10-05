@@ -74,15 +74,17 @@ in
     };
 
     environment.etc = keysFromGithub;
-    services.openssh.authorizedKeysFiles = builtins.map (path: "/etc/${path}") (
-      builtins.attrNames keysFromGithub
-    );
-
-    # Enable printer autodiscovery if printing is enabled
-    services.avahi = {
-      inherit (config.services.printing) enable;
-      nssmdns4 = true;
-      openFirewall = true;
+    services = {
+      # Enable printer autodiscovery if printing is enabled
+      avahi = {
+        inherit (config.services.printing) enable;
+        nssmdns4 = true;
+        openFirewall = true;
+      };
+      openssh.authorizedKeysFiles = builtins.map (path: "/etc/${path}") (
+        builtins.attrNames keysFromGithub
+      );
+      jupyter.enable = cfg.dev.enable;
     };
     users.defaultUserShell = pkgs.zsh;
     # Open ports for spotifyd

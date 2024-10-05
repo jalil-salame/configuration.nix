@@ -5,7 +5,7 @@
   ...
 }:
 let
-  inherit (helpers) mkRaw;
+  inherit (helpers) mkRaw enableExceptInTests;
 in
 {
   config.plugins = {
@@ -160,6 +160,15 @@ in
       };
     };
     gitsigns.enable = true;
+    image.enable = enableExceptInTests;
+    jupytext = {
+      enable = true;
+      settings.custom_language_formatting.python = {
+        extension = "md";
+        style = "markdown";
+        force_ft = "markdown";
+      };
+    };
     lint = {
       enable = true;
       lintersByFt = {
@@ -210,6 +219,15 @@ in
       enable = true;
       settings.update_events = "TextChanged,TextChangedI";
     };
+    molten = {
+      enable = true;
+      settings = {
+        image_provider = "image.nvim";
+        virt_text_output = true;
+        molten_auto_open_output = false;
+        molten_virt_lines_off_by_1 = true;
+      };
+    };
     noice = {
       enable = true;
       lsp.override = {
@@ -241,6 +259,7 @@ in
         mode = "virtualtext";
       };
     };
+    otter.enable = true;
     rustaceanvim = {
       enable = true;
       # Install through rustup
@@ -256,6 +275,7 @@ in
     treesitter = {
       enable = true;
       settings = {
+        highlight.enable = true;
         indent.enable = true;
         incremental_election.enable = true;
       };
