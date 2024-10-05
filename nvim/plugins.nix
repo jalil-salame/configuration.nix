@@ -205,6 +205,7 @@ in
       mode = "symbol";
       extraOptions.maxwidth = 50;
     };
+    lsp-lines.enable = true;
     lualine = {
       enable = true;
       settings.options.theme = lib.mkForce "gruvbox";
