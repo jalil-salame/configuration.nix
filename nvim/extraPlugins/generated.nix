@@ -10,12 +10,12 @@
 final: prev: {
   nvim-silicon = buildVimPlugin {
     pname = "nvim-silicon";
-    version = "2024-07-30";
+    version = "2024-08-31";
     src = fetchFromGitHub {
       owner = "michaelrommel";
       repo = "nvim-silicon";
-      rev = "feb882f04c992b797daa118101a239fb3bedfc04";
-      sha256 = "03dy4q2dbgiyydi9wvpij6s2aggdpr3lgd9cqqv0i2m1m0qb9gad";
+      rev = "9fe6001dc8cad4d9c53bcfc8649e3dc76ffa169c";
+      sha256 = "1qczi06yndkr2pmwidlkgmk0395x189sznvscn4fnr96jx58j5yl";
     };
     meta.homepage = "https://github.com/michaelrommel/nvim-silicon/";
   };
