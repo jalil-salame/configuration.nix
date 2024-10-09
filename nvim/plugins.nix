@@ -163,12 +163,7 @@ in
     lint = {
       enable = true;
       lintersByFt = {
-        rust = [ "typos" ];
-        latex = [
-          "chktex"
-          "typos"
-        ];
-        markdown = [ "typos" ];
+        latex = [ "chktex" ];
         nix = [ "statix" ];
         sh = [ "dash" ];
         zsh = [ "zsh" ];
@@ -177,10 +172,12 @@ in
     lsp = {
       enable = true;
       servers = {
-        bashls.enable = true;
-        bashls.package = pkgs.unstable.bash-language-server;
+        bashls = {
+          enable = true;
+          package = pkgs.unstable.bash-language-server;
+        };
         # clangd.enable = true; # Adds ~2GiB
-        html.enable = true;
+        # html.enable = true; # Not writing html
         jsonls.enable = true;
         marksman.enable = true;
         nixd.enable = true;
@@ -192,7 +189,6 @@ in
           };
         };
         pyright.enable = true;
-        # ruff-lsp.enable = true;
         ruff.enable = true;
         taplo.enable = true;
         # texlab.enable = true; # Not writing TeX rn
