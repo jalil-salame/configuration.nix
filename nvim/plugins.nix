@@ -184,7 +184,7 @@ in
         jsonls.enable = true;
         marksman.enable = true;
         nixd.enable = true;
-        nil-ls = {
+        nil_ls = {
           enable = true;
           settings.nix.flake = {
             autoArchive = true;
@@ -196,8 +196,8 @@ in
         ruff.enable = true;
         taplo.enable = true;
         # texlab.enable = true; # Not writing TeX rn
-        typos-lsp.enable = true;
-        typst-lsp.enable = true;
+        typos_lsp.enable = true;
+        # typst_lsp.enable = true; # Not using it either
       };
     };
     lspkind = {
