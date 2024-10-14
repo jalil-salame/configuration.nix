@@ -9,7 +9,11 @@
       nixvim = inputs.nixvim.legacyPackages.${system};
       module = {
         inherit pkgs;
-        module = ../nvim/standalone.nix;
+        extraSpecialArgs = {
+          inherit (inputs) unstable;
+          inherit system;
+        };
+        module = import ../nvim/standalone.nix { standalone = true; };
       };
     in
     {

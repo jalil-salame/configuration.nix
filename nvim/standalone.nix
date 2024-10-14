@@ -1,4 +1,11 @@
-{ pkgs, ... }:
+{ standalone }:
+{
+  pkgs,
+  system,
+  unstable,
+  lib,
+  ...
+}:
 {
   imports = [
     ./options.nix
@@ -8,6 +15,7 @@
   ];
 
   config = {
+    nixpkgs = lib.optionalAttrs standalone { pkgs = import unstable { inherit system; }; };
     globals.mapleader = " ";
     # Appearance
     colorschemes.gruvbox = {
@@ -42,8 +50,8 @@
     };
     extraPlugins =
       let
-        plugins = pkgs.unstable.vimPlugins;
-        extraPlugins = import ./extraPlugins { pkgs = pkgs.unstable; };
+        plugins = pkgs.vimPlugins;
+        extraPlugins = import ./extraPlugins { inherit pkgs; };
       in
       [
         plugins.nui-nvim
@@ -53,15 +61,15 @@
       ];
     # Formatting & linters
     extraPackages = [
-      pkgs.unstable.luajitPackages.jsregexp
-      pkgs.unstable.shfmt
-      pkgs.unstable.silicon
-      pkgs.unstable.statix
-      pkgs.unstable.stylua
-      pkgs.unstable.taplo
-      pkgs.unstable.typos
-      pkgs.unstable.yamlfmt
-      (pkgs.unstable.python3.withPackages (p: [ p.jupytext ]))
+      pkgs.luajitPackages.jsregexp
+      pkgs.shfmt
+      pkgs.silicon
+      pkgs.statix
+      pkgs.stylua
+      pkgs.taplo
+      pkgs.typos
+      pkgs.yamlfmt
+      (pkgs.python3.withPackages (p: [ p.jupytext ]))
     ];
     extraConfigLuaPre =
       # lua

@@ -2,10 +2,17 @@
 {
   flake.nixosModules =
     let
-      nvim-config.imports = [
-        inputs.nixvim.homeManagerModules.nixvim
-        ../nvim
-      ];
+      nvim-config =
+        { pkgs, ... }:
+        {
+          imports = [
+            inputs.nixvim.homeManagerModules.nixvim
+            (import ../nvim {
+              inherit (inputs) unstable;
+              inherit (pkgs) system;
+            })
+          ];
+        };
       homeManagerModuleSandalone = import ../home {
         inherit nvim-config;
         inherit (inputs) stylix;

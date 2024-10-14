@@ -183,7 +183,7 @@ in
       servers = {
         bashls = {
           enable = true;
-          package = pkgs.unstable.bash-language-server;
+          package = pkgs.bash-language-server;
         };
         # clangd.enable = true; # Adds ~2GiB
         # html.enable = true; # Not writing html
