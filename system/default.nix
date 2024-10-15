@@ -84,7 +84,10 @@ in
       openssh.authorizedKeysFiles = builtins.map (path: "/etc/${path}") (
         builtins.attrNames keysFromGithub
       );
-      jupyter.enable = cfg.dev.enable;
+      jupyter = {
+        inherit (cfg.dev) enable;
+        group = "users";
+      };
     };
     users.defaultUserShell = pkgs.zsh;
     # Open ports for spotifyd
