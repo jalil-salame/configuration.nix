@@ -4,7 +4,8 @@ let
 in
 {
   imports = [
-    ./checks.nix
+    inputs.treefmt-nix.flakeModule
+
     ./devshells.nix
     ./docs.nix
     ./example-vm.nix
@@ -15,11 +16,19 @@ in
   ];
 
   perSystem =
-    { system, pkgs, ... }:
+    { system, ... }:
     {
       _module.args.pkgs = import inputs.nixpkgs { inherit system overlays; };
 
-      # Nix files formatter (run `nix fmt`)
-      formatter = pkgs.nixfmt-rfc-style;
+      # Setup formatters
+      treefmt = {
+        projectRootFile = "flake.nix";
+        programs = {
+          nixfmt.enable = true;
+          rustfmt.enable = true;
+          statix.enable = true;
+          typos.enable = true;
+        };
+      };
     };
 }

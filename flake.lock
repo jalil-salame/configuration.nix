@@ -289,7 +289,9 @@
           "unstable"
         ],
         "nuschtosSearch": [],
-        "treefmt-nix": "treefmt-nix"
+        "treefmt-nix": [
+          "treefmt-nix"
+        ]
       },
       "locked": {
         "lastModified": 1728829992,
@@ -314,6 +316,7 @@
         "nixvim": "nixvim",
         "stylix": "stylix",
         "systems": "systems",
+        "treefmt-nix": "treefmt-nix",
         "unstable": "unstable"
       }
     },
@@ -368,7 +371,6 @@
     "treefmt-nix": {
       "inputs": {
         "nixpkgs": [
-          "nixvim",
           "nixpkgs"
         ]
       },

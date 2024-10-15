@@ -35,6 +35,7 @@
         nixpkgs.follows = "unstable";
         home-manager.follows = "home-manager";
         flake-parts.follows = "flake-parts";
+        treefmt-nix.follows = "treefmt-nix";
         # disable optional inputs
         flake-compat.follows = "";
         nix-darwin.follows = "";
@@ -46,6 +47,10 @@
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
       inputs.nixpkgs-lib.follows = "nixpkgs";
+    };
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     # For deduplication
     systems.url = "github:nix-systems/default";
