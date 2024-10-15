@@ -60,7 +60,10 @@ let
     dev = lib.mkOption {
       description = "Options for setting up a dev environment";
       default = { };
-      type = types.submodule { options.enable = lib.mkEnableOption "dev configuration"; };
+      type = types.submodule {
+        options.enable = lib.mkEnableOption "dev configuration";
+        options.jupyter.enable = lib.mkEnableOption "jupyter configuration";
+      };
     };
     gui = lib.mkOption {
       description = "Jalil's default configuration for a NixOS gui.";
