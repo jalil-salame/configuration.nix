@@ -230,22 +230,24 @@ in
     };
     noice = {
       enable = true;
-      lsp.override = {
-        "vim.lsp.util.convert_input_to_markdown_lines" = true;
-        "vim.lsp.util.stylize_markdown" = true;
-        "cmp.entry.get_documentation" = true;
-      };
-      presets = {
-        # use a classic bottom cmdline for search
-        bottom_search = true;
-        # position the cmdline and popupmenu together
-        command_palette = false;
-        # long messages will be sent to a split
-        long_message_to_split = true;
-        # enables an input dialog for inc-rename.nvim
-        inc_rename = false;
-        # add a border to hover docs and signature help
-        lsp_doc_border = true;
+      settings = {
+        lsp.override = {
+          "vim.lsp.util.convert_input_to_markdown_lines" = true;
+          "vim.lsp.util.stylize_markdown" = true;
+          "cmp.entry.get_documentation" = true;
+        };
+        presets = {
+          # use a classic bottom cmdline for search
+          bottom_search = true;
+          # position the cmdline and popupmenu together
+          command_palette = false;
+          # long messages will be sent to a split
+          long_message_to_split = true;
+          # enables an input dialog for inc-rename.nvim
+          inc_rename = false;
+          # add a border to hover docs and signature help
+          lsp_doc_border = true;
+        };
       };
     };
     notify = {
