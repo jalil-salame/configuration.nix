@@ -10,6 +10,7 @@
   imports = [
     ./options.nix
     ./plugins.nix
+    ./dev-plugins.nix
     ./mappings.nix
     ./augroups.nix
   ];
@@ -62,14 +63,7 @@
     # Formatting & linters
     extraPackages = [
       pkgs.luajitPackages.jsregexp
-      pkgs.shfmt
       pkgs.silicon
-      pkgs.statix
-      pkgs.stylua
-      pkgs.taplo
-      pkgs.typos
-      pkgs.yamlfmt
-      (pkgs.python3.withPackages (p: [ p.jupytext ]))
     ];
     extraConfigLuaPre =
       # lua

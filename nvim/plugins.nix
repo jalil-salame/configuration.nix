@@ -1,18 +1,9 @@
-{
-  lib,
-  pkgs,
-  helpers,
-  ...
-}:
+{ lib, helpers, ... }:
 let
-  inherit (helpers) mkRaw enableExceptInTests;
+  inherit (helpers) mkRaw;
 in
 {
   config.plugins = {
-    bacon = {
-      enable = true;
-      settings.quickfix.enabled = true;
-    };
     cmp = {
       enable = true;
       cmdline = {
@@ -140,77 +131,7 @@ in
             '';
       };
     };
-    # FIXME: doesn't include formatters
-    conform-nvim = {
-      enable = true;
-      settings = {
-        formatters.nixfmt.command = "${lib.getExe pkgs.nixfmt-rfc-style}";
-        formatters_by_ft = {
-          "_" = [ "trim_whitespace" ];
-          c = [ "clang_format" ];
-          cpp = [ "clang_format" ];
-          lua = [ "stylua" ];
-          nix = [ "nixfmt" ];
-          rust = [ "rustfmt" ];
-          sh = [ "shfmt" ];
-          toml = [ "taplo" ];
-          yaml = [ "yamlfmt" ];
-          zig = [ "zigfmt" ];
-        };
-      };
-    };
     gitsigns.enable = true;
-    image.enable = enableExceptInTests;
-    jupytext = {
-      enable = true;
-      settings.custom_language_formatting.python = {
-        extension = "md";
-        style = "markdown";
-        force_ft = "markdown";
-      };
-    };
-    lint = {
-      enable = true;
-      lintersByFt = {
-        latex = [ "chktex" ];
-        nix = [ "statix" ];
-        sh = [ "dash" ];
-        zsh = [ "zsh" ];
-      };
-    };
-    lsp = {
-      enable = true;
-      servers = {
-        bashls = {
-          enable = true;
-          package = pkgs.bash-language-server;
-        };
-        # clangd.enable = true; # Adds ~2GiB
-        # html.enable = true; # Not writing html
-        jsonls.enable = true;
-        marksman.enable = true;
-        nixd.enable = true;
-        nil_ls = {
-          enable = true;
-          settings.nix.flake = {
-            autoArchive = true;
-            autoEvalInputs = true;
-          };
-        };
-        pyright.enable = true;
-        ruff.enable = true;
-        taplo.enable = true;
-        # texlab.enable = true; # Not writing TeX rn
-        typos_lsp.enable = true;
-        # typst_lsp.enable = true; # Not using it either
-      };
-    };
-    lspkind = {
-      enable = true;
-      mode = "symbol";
-      extraOptions.maxwidth = 50;
-    };
-    lsp-lines.enable = true;
     lualine = {
       enable = true;
       settings.options.theme = lib.mkForce "gruvbox";
@@ -254,32 +175,11 @@ in
       enable = true;
       backgroundColour = "#000000";
     };
-    nvim-colorizer = {
-      enable = true;
-      userDefaultOptions = {
-        names = false; # disable named colors (i.e. red)
-        mode = "virtualtext";
-      };
-    };
-    otter.enable = true;
-    rustaceanvim = {
-      enable = true;
-      # Install through rustup
-      rustAnalyzerPackage = null;
-    };
     telescope = {
       enable = true;
       extensions = {
         ui-select.enable = true;
         fzy-native.enable = true;
-      };
-    };
-    treesitter = {
-      enable = true;
-      settings = {
-        highlight.enable = true;
-        indent.enable = true;
-        incremental_election.enable = true;
       };
     };
     trouble = {
