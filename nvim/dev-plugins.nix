@@ -6,7 +6,7 @@
   ...
 }:
 let
-  inherit (helpers) mkRaw enableExceptInTests;
+  inherit (helpers) enableExceptInTests;
   cfg = config.jhome.nvim;
   enabledLSPs = [
     "bashls"
