@@ -7,15 +7,8 @@
     let
       nixvimLib = inputs.nixvim.lib.${system};
       nixvim = inputs.nixvim.legacyPackages.${system};
-      moduleDev = {
-        inherit pkgs;
-        extraSpecialArgs = {
-          inherit (inputs) unstable;
-          inherit system;
-        };
-        module = import ../nvim/standalone.nix { standalone = true; };
-      };
-      moduleHeadless = {
+      testNvimModule = nixvimLib.check.mkTestDerivationFromNixvimModule;
+      nvimModule = extraConfig: {
         inherit pkgs;
         extraSpecialArgs = {
           inherit (inputs) unstable;
@@ -23,57 +16,37 @@
         };
         module = {
           imports = [ (import ../nvim/standalone.nix { standalone = true; }) ];
-          config.jhome.nvim.dev.enable = false;
+          config = extraConfig;
         };
       };
-      moduleNoLsp = {
-        inherit pkgs;
-        extraSpecialArgs = {
-          inherit (inputs) unstable;
-          inherit system;
-        };
-        module = {
-          imports = [ (import ../nvim/standalone.nix { standalone = true; }) ];
-          config.jhome.nvim.dev.bundleLSPs = false;
-        };
-      };
-      moduleNoTSGrammars = {
-        inherit pkgs;
-        extraSpecialArgs = {
-          inherit (inputs) unstable;
-          inherit system;
-        };
-        module = {
-          imports = [ (import ../nvim/standalone.nix { standalone = true; }) ];
-          config.jhome.nvim.dev.bundleGrammars = false;
-        };
-      };
-      moduleNoBundledBins = {
-        inherit pkgs;
-        extraSpecialArgs = {
-          inherit (inputs) unstable;
-          inherit system;
-        };
-        module = {
-          imports = [ (import ../nvim/standalone.nix { standalone = true; }) ];
-          config.jhome.nvim.dev = {
-            bundleLSPs = false;
-            bundleGrammars = false;
-          };
+      moduleDev = nvimModule { };
+      moduleHeadless = nvimModule { jhome.nvim.dev.enable = false; };
+      moduleNoLsp = nvimModule { jhome.nvim.dev.bundleLSPs = false; };
+      moduleNoTSGrammars = nvimModule { jhome.nvim.dev.bundleGrammars = false; };
+      moduleNoBundledBins = nvimModule {
+        jhome.nvim.dev = {
+          bundleLSPs = false;
+          bundleGrammars = false;
         };
       };
     in
     {
       # Check standalone nvim build
       checks = {
-        nvimDev = nixvimLib.check.mkTestDerivationFromNixvimModule moduleDev;
-        nvimHeadless = nixvimLib.check.mkTestDerivationFromNixvimModule moduleHeadless;
-        nvimNoLsp = nixvimLib.check.mkTestDerivationFromNixvimModule moduleNoLsp;
-        nvimNoTSGrammars = nixvimLib.check.mkTestDerivationFromNixvimModule moduleNoTSGrammars;
-        nvimNoBundledBins = nixvimLib.check.mkTestDerivationFromNixvimModule moduleNoBundledBins;
+        nvimDev = testNvimModule moduleDev;
+        nvimHeadless = testNvimModule moduleHeadless;
+        nvimNoLsp = testNvimModule moduleNoLsp;
+        nvimNoTSGrammars = testNvimModule moduleNoTSGrammars;
+        nvimNoBundledBins = testNvimModule moduleNoBundledBins;
       };
 
       # Nvim standalone module
-      packages.nvim = nixvim.makeNixvimWithModule moduleDev;
+      packages = {
+        nvim = nixvim.makeNixvimWithModule moduleDev;
+        # Smaller derivations
+        nvim-small = nixvim.makeNixvimWithModule moduleNoBundledBins;
+        nvim-no-ts = nixvim.makeNixvimWithModule moduleNoTSGrammars;
+        nvim-no-lsps = nixvim.makeNixvimWithModule moduleNoLsp;
+      };
     };
 }
