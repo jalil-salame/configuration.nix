@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, lib, ... }:
 {
   flake.overlays.nixvim = inputs.nixvim.overlays.default;
 
@@ -7,7 +7,7 @@
     let
       nixvimLib = inputs.nixvim.lib.${system};
       nixvim = inputs.nixvim.legacyPackages.${system};
-      module = {
+      moduleDev = {
         inherit pkgs;
         extraSpecialArgs = {
           inherit (inputs) unstable;
@@ -15,12 +15,24 @@
         };
         module = import ../nvim/standalone.nix { standalone = true; };
       };
+      moduleHeadless = {
+        inherit pkgs;
+        extraSpecialArgs = {
+          inherit (inputs) unstable;
+          inherit system;
+        };
+        module = {
+          imports = [ (import ../nvim/standalone.nix { standalone = true; }) ];
+          config.jhome.nvim.dev.enable = false;
+        };
+      };
     in
     {
       # Check standalone nvim build
-      checks.nvim = nixvimLib.check.mkTestDerivationFromNixvimModule module;
+      checks.nvimDev = nixvimLib.check.mkTestDerivationFromNixvimModule moduleDev;
+      checks.nvimHeadless = nixvimLib.check.mkTestDerivationFromNixvimModule moduleHeadless;
 
       # Nvim standalone module
-      packages.nvim = nixvim.makeNixvimWithModule module;
+      packages.nvim = nixvim.makeNixvimWithModule moduleDev;
     };
 }

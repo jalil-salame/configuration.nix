@@ -1,6 +1,13 @@
-{ helpers, ... }:
+{
+  config,
+  helpers,
+  lib,
+  ...
+}:
 let
   inherit (helpers) mkRaw;
+  cfg = config.jhome.nvim;
+  dev = cfg.dev.enable;
 in
 {
   config = {
@@ -9,41 +16,43 @@ in
       "lspConfig" = { };
       "restoreCursorPosition" = { };
     };
-    autoCmd = [
-      {
-        group = "highlightOnYank";
-        event = "TextYankPost";
-        pattern = "*";
-        callback =
-          mkRaw
-            # lua
-            ''
-              function()
-                vim.highlight.on_yank {
-                  higroup = (
-                    vim.fn['hlexists'] 'HighlightedyankRegion' > 0 and 'HighlightedyankRegion' or 'IncSearch'
-                  ),
-                  timeout = 200,
-                }
-              end
-            '';
-      }
-      {
-        group = "restoreCursorPosition";
-        event = "BufReadPost";
-        pattern = "*";
-        callback =
-          mkRaw
-            # lua
-            ''
-              function()
-                if vim.fn.line '\'"' > 0 and vim.fn.line '\'"' <= vim.fn.line '$' then
-                  vim.cmd [[execute "normal! g'\""]]
+    autoCmd =
+      [
+        {
+          group = "highlightOnYank";
+          event = "TextYankPost";
+          pattern = "*";
+          callback =
+            mkRaw
+              # lua
+              ''
+                function()
+                  vim.highlight.on_yank {
+                    higroup = (
+                      vim.fn['hlexists'] 'HighlightedyankRegion' > 0 and 'HighlightedyankRegion' or 'IncSearch'
+                    ),
+                    timeout = 200,
+                  }
                 end
-              end
-            '';
-      }
-      {
+              '';
+        }
+        {
+          group = "restoreCursorPosition";
+          event = "BufReadPost";
+          pattern = "*";
+          callback =
+            mkRaw
+              # lua
+              ''
+                function()
+                  if vim.fn.line '\'"' > 0 and vim.fn.line '\'"' <= vim.fn.line '$' then
+                    vim.cmd [[execute "normal! g'\""]]
+                  end
+                end
+              '';
+        }
+      ]
+      ++ lib.optional dev {
         group = "lspConfig";
         event = "LspAttach";
         pattern = "*";
@@ -94,7 +103,6 @@ in
                 vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, { desc = '[G]o to [I]mplementation', ${opts} })
               end
             '';
-      }
-    ];
+      };
   };
 }
