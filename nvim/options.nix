@@ -16,8 +16,8 @@ in
       type = types.submodule {
         options = {
           enable = mkDisableOption "development configuration";
-          bundleLSPs = mkDisableOption "bundling LSPs with Neovim";
-          bundleGrammars = mkDisableOption "bundling treesitter grammars with Neovim";
+          bundleLSPs = mkDisableOption "bundling LSPs with Neovim (decreases size when disabled)";
+          bundleGrammars = mkDisableOption "bundling treesitter grammars with Neovim (barely decreases size when disabled)";
         };
       };
       default = { };

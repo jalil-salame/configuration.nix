@@ -63,6 +63,14 @@ in
       }
       # Do not bundle treesitter grammars
       (lib.mkIf (!cfg.dev.bundleGrammars) { plugins.treesitter.grammarPackages = [ ]; })
+      # Remove tools for building gramars when bundling them
+      (lib.mkIf cfg.dev.bundleGrammars {
+        plugins.treesitter = {
+          gccPackage = null;
+          nodejsPackage = null;
+          treesitterPackage = null;
+        };
+      })
       # Configure Formatters
       {
         extraPackages = [
