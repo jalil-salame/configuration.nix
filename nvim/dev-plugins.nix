@@ -41,7 +41,10 @@ in
       # Configure LSPs
       {
         plugins = {
-          lsp.servers.bashls.package = lib.mkDefault pkgs.bash-language-server;
+          lsp = {
+            enable = true;
+            servers.bashls.package = lib.mkDefault pkgs.bash-language-server;
+          };
           lspkind = {
             enable = true;
             mode = "symbol";
