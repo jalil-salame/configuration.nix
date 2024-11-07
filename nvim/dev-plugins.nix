@@ -10,7 +10,7 @@ let
   cfg = config.jhome.nvim;
   enabledLSPs = [
     "bashls"
-    # "clangd" # Adds ~2GiB
+    "clangd"
     # "html" # Not writing html
     "jsonls"
     "marksman"
@@ -21,6 +21,7 @@ let
     # "texlab" # Not using it
     "typos_lsp"
     # "typst_lsp" # Not using it
+    "zls"
   ];
 in
 {
@@ -43,7 +44,13 @@ in
         plugins = {
           lsp = {
             enable = true;
-            servers.bashls.package = lib.mkDefault pkgs.bash-language-server;
+            servers = {
+              bashls.package = lib.mkDefault pkgs.bash-language-server;
+              # Adds ~2 GiB, install in a devShell instead
+              clangd.package = lib.mkDefault null;
+              # zls & other zig tools are big, install in a devShell instead
+              zls.package = lib.mkDefault null;
+            };
           };
           lspkind = {
             enable = true;
