@@ -85,10 +85,6 @@ in
             name = "treesitter";
             groupIndex = 2;
           }
-          {
-            name = "zsh";
-            groupIndex = 1;
-          }
         ];
         mapping =
           mkRaw

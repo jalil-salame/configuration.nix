@@ -49,6 +49,7 @@
       # Enable local configuration :h 'exrc'
       exrc = true; # safe since nvim 0.9
     };
+    performance.combinePlugins.enable = true;
     extraPlugins =
       let
         plugins = pkgs.vimPlugins;

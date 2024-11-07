@@ -114,7 +114,6 @@ in
         extraPackages = [
           pkgs.dash
           pkgs.statix
-          pkgs.zsh
         ];
         plugins.lint = {
           enable = true;
