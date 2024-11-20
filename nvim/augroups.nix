@@ -15,9 +15,23 @@ in
       "highlightOnYank" = { };
       "lspConfig" = { };
       "restoreCursorPosition" = { };
+      "terminalConfig" = { };
     };
     autoCmd =
       [
+        {
+          group = "terminalConfig";
+          event = "TermOpen";
+          pattern = "*";
+          callback =
+            # lua
+            mkRaw ''
+              function(args)
+                vim.wo.number = false
+                vim.wo.relativenumber = false
+              end
+            '';
+        }
         {
           group = "highlightOnYank";
           event = "TextYankPost";
