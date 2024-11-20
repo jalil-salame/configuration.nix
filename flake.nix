@@ -5,7 +5,7 @@
 
   # Flake inputs
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-24.05";
+    nixpkgs.url = "nixpkgs/nixos-24.11";
     unstable.url = "nixpkgs/nixos-unstable";
     # Lix
     lix-module = {
@@ -17,13 +17,16 @@
     };
     # Modules
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.05";
+      url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     stylix = {
-      url = "github:danth/stylix/release-24.05";
+      url = "github:danth/stylix"; # pin to release-24.11 once available
       inputs = {
         nixpkgs.follows = "nixpkgs";
+        flake-utils.follows = "lix-module/flake-utils";
+        systems.follows = "systems";
+
         home-manager.follows = "home-manager";
         # disable optional inputs
         flake-compat.follows = "";
