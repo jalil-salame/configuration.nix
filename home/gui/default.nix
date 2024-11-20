@@ -78,14 +78,16 @@ in
         settings = lib.mkIf config.jhome.styling.enable (
           import ./waybar-settings.nix { inherit config lib; }
         );
-        style = lib.optionalString config.jhome.styling.enable ''
-          .modules-left #workspaces button {
-            border-bottom: 3px solid @base01;
-          }
-          .modules-left #workspaces button.persistent {
-            border-bottom: 3px solid transparent;
-          }
-        '';
+        style =
+          lib.optionalString config.jhome.styling.enable # css
+            ''
+              .modules-left #workspaces button {
+                border-bottom: 3px solid @base01;
+              }
+              .modules-left #workspaces button.persistent {
+                border-bottom: 3px solid transparent;
+              }
+            '';
       };
       # Terminal
       wezterm = {
@@ -109,12 +111,14 @@ in
       # PDF reader
       zathura.enable = true;
       # Auto start sway
-      zsh.loginExtra = lib.optionalString cfg.sway.autostart ''
-        # Start Sway on login to TTY 1
-        if [ "$TTY" = /dev/tty1 ]; then
-          exec sway
-        fi
-      '';
+      zsh.loginExtra =
+        lib.optionalString cfg.sway.autostart # sh
+          ''
+            # Start Sway on login to TTY 1
+            if [ "$TTY" = /dev/tty1 ]; then
+              exec sway
+            fi
+          '';
     };
     services = {
       # Volume/Backlight control and notifications
