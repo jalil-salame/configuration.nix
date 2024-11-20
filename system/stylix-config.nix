@@ -26,8 +26,11 @@ in
     };
     sizes.popups = 12;
   };
-  targets.plymouth = {
-    logoAnimated = false;
-    logo = cfg.bootLogo;
+  targets = {
+    plymouth = {
+      logoAnimated = false;
+      logo = cfg.bootLogo;
+    };
+    nixvim.enable = false;
   };
 }
