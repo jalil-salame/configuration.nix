@@ -31,7 +31,8 @@ in
         lxqt.pcmanfm-qt
         wl-clipboard
         # Extra fonts
-        noto-fonts-cjk # Chinese, Japanese and Korean characters
+        noto-fonts-cjk-sans # Chinese, Japanese and Korean characters
+        noto-fonts-cjk-serif # Chinese, Japanese and Korean characters
         (nerdfonts.override { fonts = [ "NerdFontsSymbolsOnly" ]; })
       ])
       ++ lib.optional flatpakEnabled pkgs.flatpak;

@@ -2,7 +2,7 @@
 let
   system = "x86_64-linux";
   overlays = builtins.attrValues inputs.self.overlays;
-  config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ "steam-original" ];
+  config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ "steam-unwrapped" ];
   pkgs = import inputs.nixpkgs { inherit system overlays config; };
 in
 {

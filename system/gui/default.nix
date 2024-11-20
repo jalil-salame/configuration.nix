@@ -13,7 +13,7 @@ in
   config = lib.mkMerge [
     (lib.mkIf enable {
       environment.systemPackages = [
-        pkgs.gnome.adwaita-icon-theme
+        pkgs.adwaita-icon-theme
         pkgs.adwaita-qt
         pkgs.nordzy-cursor-theme
         pkgs.pinentry-qt
@@ -88,7 +88,7 @@ in
         # Consider using darkman like upstream
       };
       hardware = {
-        opengl.enable = true;
+        graphics.enable = true;
         uinput.enable = true;
         steam-hardware.enable = cfg.steamHardwareSupport;
       };
