@@ -90,12 +90,19 @@ in
       # Terminal
       wezterm = {
         enable = cfg.terminal == "wezterm";
-        extraConfig = lib.optionalString config.jhome.styling.enable ''
-          config = {}
-          config.hide_tab_bar_if_only_one_tab = true
-          config.window_padding = { left = 1, right = 1, top = 1, bottom = 1 }
-          return config
-        '';
+        extraConfig =
+          lib.optionalString config.jhome.styling.enable # lua
+            ''
+              local wezterm = require("wezterm")
+
+              local config = wezterm.config_builder()
+
+              config.front_end = "WebGpu"
+              config.hide_tab_bar_if_only_one_tab = true
+              config.window_padding = { left = 1, right = 1, top = 1, bottom = 1 }
+
+              return config
+            '';
       };
       alacritty.enable = cfg.terminal == "alacritty";
       zellij.enable = cfg.terminal == "alacritty"; # alacritty has no terminal multiplexer built-in
