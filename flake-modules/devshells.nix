@@ -7,7 +7,7 @@ _: {
           pkgs.just
           self'.packages.nvim
         ];
-        QEMU_OPTS_WL = "--enable-kvm -smp 4 -device virtio-gpu-rutabaga,gfxstream-vulkan=on,cross-domain=on,hostmem=2G,wsi=headless";
+        QEMU_OPTS_WL = "-enable-kvm -nodefaults -m 4G -cpu host -smp 4 -device virtio-gpu";
       };
     };
 }
