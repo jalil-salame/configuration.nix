@@ -30,15 +30,18 @@ in
     ];
 
   config = lib.mkMerge [
-    {
+    (lib.mkIf (cfg.enable && cfg.styling.enable) {
+      stylix = {
+        enable = true;
+        targets.nixvim.enable = false; # I prefer doing it myself
+      };
+    })
+    (lib.mkIf cfg.enable {
       nix.settings.use-xdg-base-directories = fromOs [
         "nix"
         "settings"
         "use-xdg-base-directories"
       ] true;
-    }
-    (lib.mkIf (cfg.enable && cfg.styling.enable) { stylix.enable = true; })
-    (lib.mkIf cfg.enable {
       programs = {
         # Better cat (bat)
         bat = {
