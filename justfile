@@ -26,7 +26,7 @@ update-vim-plugins:
         cd -
     fi
     # update vim plugins
-    nix run nixpkgs#vimPluginsUpdater -- --nixpkgs "$nixpkgs" --no-commit -i ./nvim/extraPlugins/plugins -o ./nvim/extraPlugins/generated.nix update
+    nix run nixpkgs#vimPluginsUpdater -- --proc=1 --nixpkgs "$nixpkgs" --no-commit -i ./nvim/extraPlugins/plugins -o ./nvim/extraPlugins/generated.nix update
     # format the generated output
     nix fmt ./nvim/extraPlugins/generated.nix
 
