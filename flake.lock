@@ -246,11 +246,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1733098942,
-        "narHash": "sha256-RnDTSTRYcfgqrkBPNN7uvojwRzEKPYiZaFg9VQ4m7hQ=",
+        "lastModified": 1733132296,
+        "narHash": "sha256-fYEf0IgsNJp/hcb+C3FKtJvVabPDQs64hdL0izNBwXc=",
         "owner": "nix-community",
         "repo": "nixvim",
-        "rev": "838829c8f9cb238a915fe3d6ac36df1a3f040d2c",
+        "rev": "e680b367c726e2ae37d541328fe81f8daaf49a6c",
         "type": "github"
       },
       "original": {
@@ -307,6 +307,7 @@
       },
       "original": {
         "owner": "danth",
+        "ref": "release-24.11",
         "repo": "stylix",
         "type": "github"
       }
@@ -398,11 +399,11 @@
     },
     "unstable": {
       "locked": {
-        "lastModified": 1732837521,
-        "narHash": "sha256-jNRNr49UiuIwaarqijgdTR2qLPifxsVhlJrKzQ8XUIE=",
+        "lastModified": 1733015953,
+        "narHash": "sha256-t4BBVpwG9B4hLgc6GUBuj3cjU7lP/PJfpTHuSqE+crk=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "970e93b9f82e2a0f3675757eb0bfc73297cc6370",
+        "rev": "ac35b104800bff9028425fec3b6e8a41de2bbfff",
         "type": "github"
       },
       "original": {

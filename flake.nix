@@ -21,7 +21,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     stylix = {
-      url = "github:danth/stylix"; # pin to release-24.11 once available
+      url = "github:danth/stylix/release-24.11";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         flake-utils.follows = "lix-module/flake-utils";
