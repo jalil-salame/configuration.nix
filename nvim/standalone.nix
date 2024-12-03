@@ -58,7 +58,7 @@
       [
         plugins.nui-nvim
         plugins.nvim-web-devicons
-        extraPlugins.vim-jjdescription
+        plugins.vim-jjdescription
         extraPlugins.nvim-silicon
       ];
     # Formatting & linters

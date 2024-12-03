@@ -20,16 +20,4 @@ final: prev: {
     meta.homepage = "https://github.com/michaelrommel/nvim-silicon/";
   };
 
-  vim-jjdescription = buildVimPlugin {
-    pname = "vim-jjdescription";
-    version = "2024-05-28";
-    src = fetchFromGitHub {
-      owner = "avm99963";
-      repo = "vim-jjdescription";
-      rev = "ca14325202f3cd894d01ba833451017624249222";
-      sha256 = "1y83fdih991ivlvgcwp0sx97icmf9k6px7mr26vb77izjlf011w2";
-    };
-    meta.homepage = "https://github.com/avm99963/vim-jjdescription/";
-  };
-
 }

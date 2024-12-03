@@ -7,5 +7,5 @@ let
 in
 {
   inherit overlay;
-  inherit (plugins) vim-jjdescription nvim-silicon;
+  inherit (plugins) nvim-silicon;
 }
