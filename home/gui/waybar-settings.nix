@@ -10,13 +10,16 @@ in
     # Choose the order of the modules
     modules-left = [ "sway/workspaces" ];
     modules-center = [ "clock" ];
-    modules-right = [
-      "pulseaudio"
-      "backlight"
-      "battery"
-      "sway/language"
-      "memory"
-    ] ++ lib.optional (cfg.tempInfo != null) "temperature" ++ [ "tray" ];
+    modules-right =
+      [
+        "pulseaudio"
+        "backlight"
+        "battery"
+        "sway/language"
+        "memory"
+      ]
+      ++ lib.optional (cfg.tempInfo != null) "temperature"
+      ++ [ "tray" ];
     "sway/workspaces" = {
       disable-scroll = true;
       persistent-workspaces = {

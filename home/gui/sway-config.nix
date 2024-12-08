@@ -73,9 +73,12 @@ in
     }
   ];
   # Startup scripts
-  startup = [
-    (cmdAlways "${configure-gtk}/bin/configure-gtk")
-  ] ++ (builtins.map cmdAlways cfg.exec.always) ++ (builtins.map cmdOnce cfg.exec.once);
+  startup =
+    [
+      (cmdAlways "${configure-gtk}/bin/configure-gtk")
+    ]
+    ++ (builtins.map cmdAlways cfg.exec.always)
+    ++ (builtins.map cmdOnce cfg.exec.once);
   # Keyboard configuration
   input."type:keyboard" = {
     repeat_delay = "300";
