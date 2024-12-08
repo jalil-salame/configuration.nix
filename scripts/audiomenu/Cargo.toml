@@ -5,8 +5,8 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-clap = { version = "4.5.9", features = ["derive", "env"] }
+clap = { version = "4.5.23", features = ["derive", "env"] }
 duct = "0.13.7"
-miette = { version = "7.2.0", features = ["fancy"] }
-serde = { version = "1.0.204", features = ["derive"] }
-serde_json = "1.0.120"
+miette = { version = "7.4.0", features = ["fancy"] }
+serde = { version = "1.0.215", features = ["derive"] }
+serde_json = "1.0.133"
