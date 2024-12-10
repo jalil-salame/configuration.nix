@@ -9,13 +9,13 @@ let
   inherit (helpers) enableExceptInTests;
   cfg = config.jhome.nvim;
   enabledLSPs = [
+    "basedpyright"
     "bashls"
     "clangd"
     # "html" # Not writing html
     "jsonls"
     "marksman"
     "nixd"
-    "pyright"
     "ruff"
     "taplo"
     # "texlab" # Not using it
@@ -45,6 +45,13 @@ in
           lsp = {
             enable = true;
             servers = {
+              # Pyright needs to have the project root set?
+              basedpyright.rootDir = # lua
+                ''
+                  function()
+                    return vim.fs.root(0, {'flake.nix', '.git', '.jj', 'pyproject.toml', 'setup.py'})
+                  end
+                '';
               bashls.package = lib.mkDefault pkgs.bash-language-server;
               # Adds ~2 GiB, install in a devShell instead
               clangd.package = lib.mkDefault null;
