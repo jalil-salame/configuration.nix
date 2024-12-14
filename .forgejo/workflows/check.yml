@@ -3,12 +3,15 @@ on:
 jobs:
   check:
     runs-on: nixos
+    needs: build
     steps:
       - uses: "https://code.forgejo.org/actions/checkout@v4"
       - run: nix --version
-      - run: nix flake check --keep-going --verbose
+      - name: Run Checks
+        run: nix flake check --keep-going --verbose
   build:
     runs-on: nixos
+    if: github.event_name == 'push'
     strategy:
       matrix:
         target:
@@ -20,4 +23,13 @@ jobs:
     steps:
       - uses: "https://code.forgejo.org/actions/checkout@v4"
       - run: nix --version
-      - run: nix build --print-build-logs '.#${{ matrix.target }}'
+      - name: Build target
+        run: nix build --print-build-logs '.#${{ matrix.target }}'
+  report-size:
+    runs-on: nixos
+    needs: build
+    steps:
+      - uses: "https://git.salame.cl/actions/checkout@v4"
+      - run: nix --version
+      - name: Report Size
+        run: ci-scripts/report-size.sh
