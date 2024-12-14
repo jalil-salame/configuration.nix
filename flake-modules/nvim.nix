@@ -1,4 +1,4 @@
-{ inputs, lib, ... }:
+{ inputs, ... }:
 {
   flake.overlays.nixvim = inputs.nixvim.overlays.default;
 
@@ -44,6 +44,7 @@
       packages = {
         nvim = nixvim.makeNixvimWithModule moduleDev;
         # Smaller derivations
+        nvim-headless = nixvim.makeNixvimWithModule moduleHeadless;
         nvim-small = nixvim.makeNixvimWithModule moduleNoBundledBins;
         nvim-no-ts = nixvim.makeNixvimWithModule moduleNoTSGrammars;
         nvim-no-lsps = nixvim.makeNixvimWithModule moduleNoLsp;
