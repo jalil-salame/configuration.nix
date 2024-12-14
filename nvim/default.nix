@@ -12,6 +12,7 @@ in
       nixpkgs = lib.mkForce { pkgs = import unstable { inherit system; }; };
       enable = true;
       defaultEditor = lib.mkDefault true;
+      jhome.nvim = cfg;
     })
   ];
 }
