@@ -173,9 +173,9 @@ in
       # Other plugins
       {
         plugins = {
-          nvim-colorizer = {
+          colorizer = {
             enable = true;
-            userDefaultOptions = {
+            settings.user_default_options = {
               names = false; # disable named colors (i.e. red)
               mode = "virtualtext";
             };
