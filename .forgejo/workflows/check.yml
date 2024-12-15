@@ -31,5 +31,5 @@ jobs:
     steps:
       - uses: "https://git.salame.cl/actions/checkout@v4"
       - run: nix --version
-      - name: Report Size
-        run: ci-scripts/report-size.sh
+      - name: Create Size Report 
+        uses: https://git.salame.cl/jalil/nix-flake-outputs-size@main
