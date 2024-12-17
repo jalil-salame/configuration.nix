@@ -33,3 +33,6 @@ jobs:
       - run: nix --version
       - name: Create Size Report 
         uses: https://git.salame.cl/jalil/nix-flake-outputs-size@main
+        with:
+          comment-on-pr: ${{ github.ref_name != 'main' }}
+          generate-artifact: ${{ github.ref_name == 'main' }}
