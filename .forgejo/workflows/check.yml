@@ -36,3 +36,5 @@ jobs:
         with:
           comment-on-pr: ${{ github.ref_name != 'main' }}
           generate-artifact: ${{ github.ref_name == 'main' }}
+          job-name: report-size
+          base-branch: main
