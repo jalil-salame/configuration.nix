@@ -34,7 +34,11 @@ jobs:
       - name: Create Size Report 
         uses: https://git.salame.cl/jalil/nix-flake-outputs-size@main
         with:
+          # Create a comment on the associated PR
           comment-on-pr: ${{ github.ref_name != 'main' }}
+          # Generate artifacts on main (to speed up comparisons)
           generate-artifact: ${{ github.ref_name == 'main' }}
+          # Generate comparisons to main
+          do-comparison: 'true'
+          # This job's name (so we can find the artifacts)
           job-name: report-size
-          base-branch: main
