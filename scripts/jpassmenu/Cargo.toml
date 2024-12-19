@@ -11,3 +11,8 @@ env_logger = "0.11.5"
 ignore = "0.4.23"
 log = "0.4.22"
 miette = { version = "7.4.0", features = ["fancy"] }
+
+[profile.release]
+lto = true
+opt-level = "s"
+panic = "abort"
