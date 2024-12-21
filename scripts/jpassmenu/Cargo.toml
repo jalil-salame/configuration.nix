@@ -16,3 +16,4 @@ miette = { version = "7.4.0", features = ["fancy"] }
 lto = true
 opt-level = "s"
 panic = "abort"
+strip = true
