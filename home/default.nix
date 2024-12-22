@@ -198,6 +198,20 @@ in
           enable = true;
           settings = {
             ui.pager = "bat";
+            # mimic git commit --verbose by adding a diff
+            templates.draft_commit_description = ''
+              concat(
+                description,
+                surround(
+                  "\nJJ: This commit contains the following changes:\n", "",
+                  indent("JJ:     ", diff.stat()),
+                ),
+                surround(
+                  "\nJJ: Diff:\n", "",
+                  indent("JJ:     ", diff.git()),
+                ),
+              )
+            '';
           };
         };
       };
