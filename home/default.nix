@@ -204,7 +204,7 @@ in
                 description,
                 surround(
                   "\nJJ: This commit contains the following changes:\n", "",
-                  indent("JJ:     ", diff.stat()),
+                  indent("JJ:     ", diff.stat(72)),
                 ),
                 surround(
                   "\nJJ: Diff:\n", "",
