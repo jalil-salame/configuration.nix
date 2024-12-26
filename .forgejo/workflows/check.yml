@@ -3,15 +3,25 @@ on:
 jobs:
   check:
     runs-on: nixos
-    needs: build
+    strategy:
+      matrix:
+        check:
+          - nvimDev
+          - nvimHeadless
+          - nvimNoBundledBins
+          - nvimNoLsp
+          - nvimNoTSGrammars
+          - treefmt
     steps:
-      - uses: "https://code.forgejo.org/actions/checkout@v4"
-      - run: nix --version
-      - name: Run Checks
-        run: nix flake check --keep-going --verbose
+      - uses: "https://git.salame.cl/actions/checkout@v4"
+      - name: Run checks
+        run: |
+          nix --version
+          # shellcheck disable=SC2016
+          nix build --print-build-logs '.#checks.x86_64-linux.${{ matrix.check }}'
   build:
     runs-on: nixos
-    if: github.event_name == 'push'
+    needs: check
     strategy:
       matrix:
         target:
@@ -21,17 +31,19 @@ jobs:
           - nixosConfigurations.vm.config.system.build.toplevel
           - nvim
     steps:
-      - uses: "https://code.forgejo.org/actions/checkout@v4"
-      - run: nix --version
+      - uses: "https://git.salame.cl/actions/checkout@v4"
       - name: Build target
-        run: nix build --print-build-logs '.#${{ matrix.target }}'
+        run: |
+          nix --version
+          # shellcheck disable=SC2016
+          nix build --print-build-logs '.#${{ matrix.target }}'
   report-size:
     runs-on: nixos
     needs: build
     steps:
       - uses: "https://git.salame.cl/actions/checkout@v4"
       - run: nix --version
-      - name: Create Size Report 
+      - name: Create Size Report
         uses: https://git.salame.cl/jalil/nix-flake-outputs-size@main
         with:
           # Create a comment on the associated PR
