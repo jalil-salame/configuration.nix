@@ -16,7 +16,7 @@
   ];
 
   config = {
-    nixpkgs = lib.optionalAttrs standalone { pkgs = import unstable { inherit system; }; };
+    nixpkgs = lib.optionalAttrs standalone { pkgs = unstable.legacyPackages.${system}; };
     globals.mapleader = " ";
     # Appearance
     colorschemes.gruvbox = {
