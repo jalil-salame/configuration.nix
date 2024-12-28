@@ -1,0 +1,36 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "assignees": [
+    "jalil"
+  ],
+  "automerge": true,
+  "automergeStrategy": "fast-forward",
+  "automergeType": "pr",
+  "commitBodyTable": true,
+  "dependencyDashboard": true,
+  "prCreation": "immediate",
+  "extends": [
+    "config:recommended"
+  ],
+  "nix": {
+    "fileMatch": [
+      "(^|/)flake\\.nix$"
+    ],
+    "commitMessageTopic": "nixpkgs",
+    "commitMessageExtra": "to {{newValue}}",
+    "enabled": true
+  },
+  "lockFileMaintenance": {
+    "enabled": true,
+    "recreateWhen": "always",
+    "rebaseStalePrs": true,
+    "branchTopic": "lock-file-maintenance",
+    "commitMessageAction": "Lock file maintenance",
+    "schedule": [
+      "* 1-2 * * *"
+    ]
+  },
+  "automergeSchedule": [
+    "* 1-2 * * *"
+  ]
+}
