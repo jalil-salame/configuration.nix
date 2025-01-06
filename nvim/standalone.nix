@@ -16,6 +16,7 @@
   ];
 
   config = {
+    withRuby = false;
     nixpkgs = lib.optionalAttrs standalone { pkgs = unstable.legacyPackages.${system}; };
     globals.mapleader = " ";
     # Appearance
