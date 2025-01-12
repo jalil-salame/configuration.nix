@@ -39,13 +39,9 @@ in
         environment.systemPackages = [
           # CLI tools
           pkgs.fd
-          pkgs.bat
-          pkgs.skim
           pkgs.ripgrep
           pkgs.du-dust
           pkgs.curl
-          pkgs.wget
-          pkgs.eza
           pkgs.zip
           pkgs.unzip
         ];
