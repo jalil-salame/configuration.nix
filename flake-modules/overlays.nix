@@ -17,7 +17,6 @@
       inherit (unstablePkgs)
         gitoxide
         jujutsu
-        # wezterm
         ;
     };
 

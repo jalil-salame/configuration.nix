@@ -155,8 +155,8 @@ let
     };
     terminal = lib.mkOption {
       description = "The terminal emulator to use.";
-      default = "wezterm";
-      example = "alacritty";
+      default = "alacritty";
+      example = "wezterm";
       type = types.enum [
         "wezterm"
         "alacritty"
