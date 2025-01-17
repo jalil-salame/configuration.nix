@@ -54,22 +54,25 @@ in
           # Shell prompt
           starship = {
             enable = true;
-            settings = {
-              format = "$time$all";
-              add_newline = false;
-              cmd_duration.min_time = 500;
-              cmd_duration.show_milliseconds = true;
-              time = {
-                format = "[$time](bold yellow) ";
-                disabled = false;
-              };
-              status = {
-                format = "[$signal_name$common_meaning$maybe_int](red)";
-                symbol = "[✗](bold red)";
-                disabled = false;
-              };
-              sudo.disabled = false;
-            };
+            settings = lib.mkMerge [
+              {
+                format = "$time$all";
+                add_newline = false;
+                cmd_duration.min_time = 500;
+                cmd_duration.show_milliseconds = true;
+                time.disabled = false;
+                status = {
+                  format = "[$signal_name$common_meaning$maybe_int](red)";
+                  symbol = "[✗](bold red)";
+                  disabled = false;
+                };
+                sudo.disabled = false;
+              }
+              # Add nerdfont symbols
+              (lib.mkIf cfg.styling.enable (import ./starship-nerdfont-symbols.nix))
+              # Remove the `in`s and `on`s from the prompt
+              (lib.mkIf cfg.styling.enable (import ./starship-shorter-text.nix))
+            ];
           };
           # Default shell
           zsh.enable = true;
