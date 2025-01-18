@@ -15,7 +15,6 @@ let
     # "html" # Not writing html
     "jsonls"
     "marksman"
-    "nixd"
     "ruff"
     "taplo"
     # "texlab" # Not using it
