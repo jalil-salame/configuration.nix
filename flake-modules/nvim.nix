@@ -3,7 +3,7 @@
   flake.overlays.nixvim = inputs.nixvim.overlays.default;
 
   perSystem =
-    { system, ... }:
+    { lib, system, ... }:
     let
       nixvimLib = inputs.nixvim.lib.${system};
       nixvim = inputs.nixvim.legacyPackages.${system};
@@ -12,7 +12,10 @@
         pkgs = inputs.unstable.legacyPackages.${system};
         module = {
           imports = [ ../nvim/standalone.nix ];
-          config = extraConfig;
+          config = lib.mkMerge [
+            { performance.combinePlugins.enable = true; }
+            extraConfig
+          ];
         };
       };
       moduleDev = nvimModule { };
