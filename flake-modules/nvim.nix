@@ -3,19 +3,15 @@
   flake.overlays.nixvim = inputs.nixvim.overlays.default;
 
   perSystem =
-    { pkgs, system, ... }:
+    { system, ... }:
     let
       nixvimLib = inputs.nixvim.lib.${system};
       nixvim = inputs.nixvim.legacyPackages.${system};
       testNvimModule = nixvimLib.check.mkTestDerivationFromNixvimModule;
       nvimModule = extraConfig: {
-        inherit pkgs;
-        extraSpecialArgs = {
-          inherit (inputs) unstable;
-          inherit system;
-        };
+        pkgs = inputs.unstable.legacyPackages.${system};
         module = {
-          imports = [ (import ../nvim/standalone.nix { standalone = true; }) ];
+          imports = [ ../nvim/standalone.nix ];
           config = extraConfig;
         };
       };

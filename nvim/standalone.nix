@@ -1,11 +1,4 @@
-{ standalone }:
-{
-  pkgs,
-  system,
-  unstable,
-  lib,
-  ...
-}:
+{ pkgs, ... }:
 {
   imports = [
     ./options.nix
@@ -17,7 +10,6 @@
 
   config = {
     withRuby = false;
-    nixpkgs = lib.optionalAttrs standalone { pkgs = unstable.legacyPackages.${system}; };
     globals.mapleader = " ";
     # Appearance
     colorschemes.gruvbox = {
