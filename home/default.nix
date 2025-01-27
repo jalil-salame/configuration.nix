@@ -118,7 +118,7 @@ in
         packages = [
           pkgs.gopass
           pkgs.sshfs
-          pkgs.gitoxide
+          pkgs.unstable.gitoxide
         ];
         # Extra variables
         sessionVariables = {
@@ -196,6 +196,7 @@ in
         # Jujutsu (alternative DVCS (git-compatible))
         jujutsu = {
           enable = true;
+          package = pkgs.unstable.jujutsu;
           settings = {
             ui.pager = "bat";
             # mimic git commit --verbose by adding a diff
