@@ -16,6 +16,7 @@
       nixosModule = {
         imports = [
           (import ../system { inherit (inputs) stylix; })
+          inputs.niri.nixosModules.niri
           inputs.home-manager.nixosModules.home-manager
         ] ++ lib.optional (inputs.lix-module != null) inputs.lix-module.nixosModules.default;
         home-manager = {

@@ -23,6 +23,15 @@
       url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    niri = {
+      url = "github:sodiboo/niri-flake";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        nixpkgs-stable.follows = "nixpkgs";
+        niri-unstable.follows = "";
+        xwayland-satellite-unstable.follows = "";
+      };
+    };
     stylix = {
       url = "github:danth/stylix/release-24.11";
       inputs = {

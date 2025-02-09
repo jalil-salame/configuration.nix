@@ -78,12 +78,22 @@ let
     example = "/sys/class/hwmon/hwmon2/temp1_input";
   };
 
-  sway.options = {
-    enable = lib.mkEnableOption "sway" // {
+  windowManager.options = {
+    enable = lib.mkEnableOption "window manager" // {
       default = fromConfig [
         "gui"
-        "sway"
+        "windowManager"
+        "enable"
       ] true;
+    };
+    windowManager = lib.mkOption {
+      description = "Which window manager to enable";
+      type = types.enum [ "niri" ];
+      default = fromConfig [
+        "gui"
+        "windowManager"
+        "windowManager"
+      ] "niri";
     };
     background = lib.mkOption {
       description = "The wallpaper to use.";
@@ -114,55 +124,60 @@ let
       default = true;
       example = false;
     };
-    exec = lib.mkOption {
-      description = "Run commands when starting sway.";
-      default = { };
-      type = types.submodule {
-        options = {
-          once = lib.mkOption {
-            description = "Programs to start only once (`exec`).";
-            type = types.listOf types.str;
-            default = [ ];
-            example = [ "signal-desktop --start-in-tray" ];
-          };
-          always = lib.mkOption {
-            description = "Programs to start whenever the config is sourced (`exec_always`).";
-            type = types.listOf types.str;
-            default = [ ];
-            example = [ "signal-desktop --start-in-tray" ];
-          };
-        };
-      };
-    };
   };
 
-  gui.options = {
-    enable = lib.mkEnableOption "GUI applications" // {
-      default = fromConfig [
-        "gui"
-        "enable"
-      ] false;
+  gui.options =
+    let
+      cfg = attrs.config.jhome.gui;
+    in
+    {
+      enable = lib.mkEnableOption "GUI applications" // {
+        default = fromConfig [
+          "gui"
+          "enable"
+        ] false;
+      };
+      tempInfo = lib.mkOption {
+        description = "Temperature info to display in the statusbar.";
+        default = null;
+        type = types.nullOr (types.submodule tempInfo);
+      };
+      windowManager = lib.mkOption {
+        description = "Window manager configuration.";
+        default = { };
+        type = types.submodule windowManager;
+      };
+      terminal = lib.mkOption {
+        description = "The terminal emulator to use.";
+        default = "alacritty";
+        example = "wezterm";
+        type = types.enum [
+          "wezterm"
+          "alacritty"
+        ];
+      };
+      terminalCommand = lib.mkOption {
+        description = "The command to run in order to start the terminal.";
+        default =
+          if cfg.terminal == "wezterm" then
+            [
+              "wezterm"
+              "start"
+            ]
+          else if cfg.terminal == "alacritty" then
+            [
+              "alacritty"
+              "-e"
+            ]
+          else
+            builtins.abort "no command configured for ${cfg.terminal}";
+        example = [
+          "wezterm"
+          "start"
+        ];
+        type = types.listOf types.str;
+      };
     };
-    tempInfo = lib.mkOption {
-      description = "Temperature info to display in the statusbar.";
-      default = null;
-      type = types.nullOr (types.submodule tempInfo);
-    };
-    sway = lib.mkOption {
-      description = "Sway window manager configuration.";
-      default = { };
-      type = types.submodule sway;
-    };
-    terminal = lib.mkOption {
-      description = "The terminal emulator to use.";
-      default = "alacritty";
-      example = "wezterm";
-      type = types.enum [
-        "wezterm"
-        "alacritty"
-      ];
-    };
-  };
 in
 {
   options.jhome = lib.mkOption {

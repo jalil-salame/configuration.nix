@@ -37,7 +37,20 @@ let
         options.autoStart = mkDisableOption "autostarting ydotool at login";
       };
     };
-    sway = mkDisableOption "sway";
+    windowManager = lib.mkOption {
+      description = "Window manager configuration";
+      default = { };
+      type = types.submodule {
+        options = {
+          enable = mkDisableOption "window manager";
+          windowManager = lib.mkOption {
+            description = "Which window manager to enable";
+            type = types.enum [ "niri" ];
+            default = "niri";
+          };
+        };
+      };
+    };
   };
 
   styling.options = {

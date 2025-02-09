@@ -45,14 +45,9 @@ in
       fonts.fontDir.enable = true;
       programs = {
         dconf.enable = true;
-        sway = {
-          enable = cfg.sway;
-          # No extra packages (by default it adds foot, dmenu, and other stuff)
-          extraPackages = [ ];
-          wrapperFeatures = {
-            base = true;
-            gtk = true;
-          };
+        niri = {
+          enable = cfg.windowManager;
+          package = pkgs.niri; # use nixpkgs' package instead of the flake's
         };
       };
       security = {

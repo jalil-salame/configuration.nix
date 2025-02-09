@@ -2,14 +2,7 @@
 let
   cfg = config.jhome.gui.sway;
   modifier = "Mod4";
-  inherit (config.jhome.gui) terminal;
-  termCmd =
-    if terminal == "wezterm" then
-      "wezterm start"
-    else if terminal == "alacritty" then
-      "alacritty -e"
-    else
-      builtins.abort "no command configured for ${terminal}";
+  termCmd = builtins.concatStringsSep " " config.jhome.gui.terminalCommand;
   menu = "${pkgs.fuzzel}/bin/fuzzel --terminal '${termCmd}'";
   # currently, there is some friction between sway and gtk:
   # https://github.com/swaywm/sway/wiki/GTK-3-settings-on-Wayland
@@ -46,7 +39,8 @@ let
   };
 in
 {
-  inherit modifier terminal menu;
+  inherit (config.jhome.gui) terminal;
+  inherit modifier menu;
   keybindings = import ./keybindings.nix { inherit config pkgs; };
   # Appearance
   bars = [ ]; # Waybar is started as a systemd service

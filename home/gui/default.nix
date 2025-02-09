@@ -158,13 +158,59 @@ in
     };
 
     # Window Manager
-    wayland.windowManager.sway = {
-      inherit (cfg.sway) enable;
-      package = swayPkg; # no sway package if it comes from the OS
-      config = import ./sway-config.nix { inherit config pkgs; };
-      systemd = {
-        enable = true;
-        xdgAutostart = true;
+    programs.niri = {
+      package = pkgs.niri; # use nixpkgs' package instead of the flake's
+      settings = {
+        binds =
+          let
+            # Modifier key
+            mod = "Mod";
+            # Available workspaces (1..=9)
+            workspaces = lib.range 1 9;
+            # Run function for each workspace
+            perWorkspace = f: lib.mergeAttrsList (builtins.map f workspaces);
+            # alias for concatStringsSep
+            joinWith = lib.strings.concatStringsSep;
+          in
+          with config.lib.niri.actions;
+          {
+            # Open Terminal
+            "${mod}+Return".action.spawn =
+              if config.jhome.gui.terminal == "alacritty" then "alacritty" else config.jhome.gui.terminalCommand;
+            # Open menu
+            "${mod}+D".action =
+              spawn "${lib.getExe pkgs.fuzzel}" "--terminal"
+                "${joinWith " " config.jhome.gui.terminalCommand}";
+            # Close Window
+            "${mod}+Q".action = close-window;
+            # Fullscreen
+            "${mod}+F".action = fullscreen-window;
+            # Hotkey help menu
+            "${mod}+Shift+Slash".action = show-hotkey-overlay;
+            # Media Keys
+            "XF86AudioRaiseVolume" = {
+              action = spawn "${pkgs.avizo}/bin/volumectl" "up";
+              allow-when-locked = true;
+            };
+            "XF86AudioLowerVolume" = {
+              action = spawn "${pkgs.avizo}/bin/volumectl" "down";
+              allow-when-locked = true;
+            };
+            "XF86AudioMute" = {
+              action = spawn "${pkgs.avizo}/bin/volumectl" "toggle-mute";
+              allow-when-locked = true;
+            };
+            # FIXME: swaylock is missing so this doesn't work anyways
+            # Lock screen
+            # "XF86ScreenSaver".action = spawn "swaylock" "--image" "${cfg.background}";
+            # Screen brightness
+            "XF86MonBrightnessUp".action = spawn "${pkgs.avizo}/bin/lightctl" "up";
+            "XF86MonBrightnessDown".action = spawn "${pkgs.avizo}/bin/lightctl" "down";
+          }
+          // perWorkspace (workspace: {
+            # Focus workspace N
+            "${mod}+${builtins.toString workspace}".action = focus-workspace workspace;
+          });
       };
     };
 
