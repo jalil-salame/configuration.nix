@@ -3,10 +3,13 @@
   # A helpful description of your flake
   description = "My NixOS configuration";
 
+  # Trick renovate into accepting this lockfile (see https://github.com/renovatebot/renovate/issues/29721)
+  # "github:NixOS/nixpkgs/nixos-unstable"
+
   # Flake inputs
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
-    unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    unstable.follows = "nixvim/nixpkgs";
     # Lix
     lix-module = {
       url = "https://git.lix.systems/lix-project/nixos-module/archive/2.92.0.tar.gz";
@@ -35,7 +38,6 @@
     nixvim = {
       url = "github:nix-community/nixvim";
       inputs = {
-        nixpkgs.follows = "unstable";
         home-manager.follows = "home-manager";
         flake-parts.follows = "flake-parts";
         treefmt-nix.follows = "treefmt-nix";

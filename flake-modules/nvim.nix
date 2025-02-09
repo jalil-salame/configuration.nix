@@ -1,7 +1,5 @@
 { inputs, ... }:
 {
-  flake.overlays.nixvim = inputs.nixvim.overlays.default;
-
   perSystem =
     { lib, system, ... }:
     let
