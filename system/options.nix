@@ -37,7 +37,7 @@ let
         options.autoStart = mkDisableOption "autostarting ydotool at login";
       };
     };
-    sway = mkDisableOption "sway";
+    windowManager = mkDisableOption "window manager";
   };
 
   styling.options = {

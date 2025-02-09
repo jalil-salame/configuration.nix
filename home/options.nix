@@ -136,33 +136,58 @@ let
     };
   };
 
-  gui.options = {
-    enable = lib.mkEnableOption "GUI applications" // {
-      default = fromConfig [
-        "gui"
-        "enable"
-      ] false;
+  gui.options =
+    let
+      cfg = attrs.config.jhome.gui;
+    in
+    {
+      enable = lib.mkEnableOption "GUI applications" // {
+        default = fromConfig [
+          "gui"
+          "enable"
+        ] false;
+      };
+      tempInfo = lib.mkOption {
+        description = "Temperature info to display in the statusbar.";
+        default = null;
+        type = types.nullOr (types.submodule tempInfo);
+      };
+      sway = lib.mkOption {
+        description = "Sway window manager configuration.";
+        default = { };
+        type = types.submodule sway;
+      };
+      terminal = lib.mkOption {
+        description = "The terminal emulator to use.";
+        default = "alacritty";
+        example = "wezterm";
+        type = types.enum [
+          "wezterm"
+          "alacritty"
+        ];
+      };
+      terminalCommand = lib.mkOption {
+        description = "The command to run in order to start the terminal.";
+        default =
+          if cfg.terminal == "wezterm" then
+            [
+              "wezterm"
+              "start"
+            ]
+          else if cfg.terminal == "alacritty" then
+            [
+              "alacritty"
+              "-e"
+            ]
+          else
+            builtins.abort "no command configured for ${cfg.terminal}";
+        example = [
+          "wezterm"
+          "start"
+        ];
+        type = types.listOf types.str;
+      };
     };
-    tempInfo = lib.mkOption {
-      description = "Temperature info to display in the statusbar.";
-      default = null;
-      type = types.nullOr (types.submodule tempInfo);
-    };
-    sway = lib.mkOption {
-      description = "Sway window manager configuration.";
-      default = { };
-      type = types.submodule sway;
-    };
-    terminal = lib.mkOption {
-      description = "The terminal emulator to use.";
-      default = "alacritty";
-      example = "wezterm";
-      type = types.enum [
-        "wezterm"
-        "alacritty"
-      ];
-    };
-  };
 in
 {
   options.jhome = lib.mkOption {

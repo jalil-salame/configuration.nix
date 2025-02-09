@@ -146,13 +146,55 @@ in
     };
 
     # Window Manager
-    wayland.windowManager.sway = {
-      inherit (cfg.sway) enable;
-      package = swayPkg; # no sway package if it comes from the OS
-      config = import ./sway-config.nix { inherit config pkgs; };
-      systemd = {
-        enable = true;
-        xdgAutostart = true;
+    niri = {
+      package = pkgs.niri; # use nixpkgs' package instead of the flake's
+      settings = {
+        binds =
+          let
+            # Modifier key
+            mod = "Mod";
+            # Available workspaces (1..=9)
+            workspaces = lib.range 1 9;
+            # Run function for each workspace
+            perWorkspace = f: lib.mergeAttrsList (builtins.map f workspaces);
+          in
+          with config.lib.niri.actions;
+          {
+            # Open Terminal
+            "${mod}+Return".action.spawn = config.jhome.gui.terminalCommand;
+            # Open menu
+            "${mod}+D".action =
+              spawn "${lib.getExe pkgs.fuzzel}" "--terminal"
+                "${builtins.concatStringSep " " terminalCommand}";
+            # Close Window
+            "${mod}+Q".action = close-window;
+            # Fullscreen
+            "${mod}+F".action = fullscreen-window;
+            # Hotkey help menu
+            "${mod}+Shift+/".action = show-hotkey-overlay;
+            # Media Keys
+            "XF86AudioRaiseVolume" = {
+              action = spawn "${pkgs.avizo}/bin/volumectl" "up";
+              allow-when-locked = true;
+            };
+            "XF86AudioLowerVolume" = {
+              action = spawn "${pkgs.avizo}/bin/volumectl" "down";
+              allow-when-locked = true;
+            };
+            "XF86AudioMute" = {
+              action = spawn "${pkgs.avizo}/bin/volumectl" "toggle-mute";
+              allow-when-locked = true;
+            };
+            # Lock screen
+            "XF86ScreenSaver".action = spawn "swaylock" "--image" "${cfg.background}";
+            # Screen brightness
+            "XF86MonBrightnessUp".action = spawn "${pkgs.avizo}/bin/lightctl" "up";
+            "XF86MonBrightnessDown".action = spawn "${pkgs.avizo}/bin/lightctl" "down";
+          }
+          // perWorkspace (workspace: {
+            # Focus workspace N
+            "${mod}+${builtins.toString workspace}".action = focus-workspace workspace;
+          });
       };
     };
 
