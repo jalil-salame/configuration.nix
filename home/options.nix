@@ -199,6 +199,7 @@ in
                 [ "typos" ] # low false positive rate typo checker
                 [ "gcc" ] # GNU Compiler Collection
                 [ "git-absorb" ] # fixup! but automatic
+                [ "gitoxide" ] # git but RiiR
                 [ "man-pages" ] # gimme the man pages
                 [ "man-pages-posix" ] # I said gimme the man pages!!!
               ];
