@@ -38,7 +38,7 @@ in
     })
     (lib.mkIf cfg.enable {
       # Add gopass if pass is enabled
-      packages = lib.optional config.programs.password-store.enable pkgs.gopass;
+      home.packages = lib.optional config.programs.password-store.enable pkgs.gopass;
 
       nix.settings.use-xdg-base-directories = fromOs [
         "nix"
