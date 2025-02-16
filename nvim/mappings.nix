@@ -7,7 +7,6 @@
 let
   inherit (helpers) mkRaw;
   cfg = config.jhome.nvim;
-  dev = cfg.dev.enable;
 in
 {
   config.keymaps =
@@ -202,21 +201,21 @@ in
             '';
         options.desc = "Find Quickfix";
       }
-      # Nvim Silicon
-      {
-        mode = "v";
-        key = "<leader>sc";
-        action =
-          mkRaw
-            # lua
-            ''
-              require('nvim-silicon').clip
-
-            '';
-        options.desc = "Snap Code (to clipboard)";
-      }
     ]
-    ++ lib.optional dev {
+    # Nvim Silicon
+    ++ lib.optional (!cfg.reduceSize) {
+      mode = "v";
+      key = "<leader>sc";
+      action =
+        mkRaw
+          # lua
+          ''
+            require('nvim-silicon').clip
+
+          '';
+      options.desc = "Snap Code (to clipboard)";
+    }
+    ++ lib.optional cfg.dev.enable {
       mode = "n";
       key = "<leader>w";
       action =

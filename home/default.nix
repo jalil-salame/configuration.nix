@@ -69,12 +69,10 @@ in
           homedir = "${config.xdg.dataHome}/gnupg";
         };
         # Mail client
-        himalaya.enable = true;
-        # Another shell
-        nushell.enable = true;
+        himalaya.enable = lib.mkDefault true;
         # Password manager
         password-store = {
-          enable = true;
+          enable = lib.mkDefault true;
           package = pkgs.pass-nodmenu;
           settings.PASSWORD_STORE_DIR = "${config.xdg.dataHome}/pass";
         };

@@ -71,6 +71,8 @@ in
         enable = true;
         scripts = builtins.attrValues { inherit (pkgs.mpvScripts) uosc thumbfast; };
       };
+      # Text editor
+      nixvim.clipboard.providers.wl-copy.enable = lib.mkDefault true;
       # Status bar
       waybar = {
         enable = true;

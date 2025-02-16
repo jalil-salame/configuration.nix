@@ -12,6 +12,7 @@ in
 {
   options.jhome.nvim = {
     enable = mkDisableOption "jalil's Neovim configuration";
+    reduceSize = mkEnableOption "reduce size by disabling big modules";
     dev = mkOption {
       type = types.submodule {
         options = {

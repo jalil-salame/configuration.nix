@@ -17,7 +17,10 @@
         };
       };
       moduleDev = nvimModule { };
-      moduleHeadless = nvimModule { jhome.nvim.dev.enable = false; };
+      moduleHeadless = nvimModule {
+        jhome.nvim.dev.enable = false;
+        jhome.nvim.reduceSize = true;
+      };
       moduleNoLsp = nvimModule { jhome.nvim.dev.bundleLSPs = false; };
       moduleNoTSGrammars = nvimModule { jhome.nvim.dev.bundleGrammars = false; };
       moduleNoBundledBins = nvimModule {
