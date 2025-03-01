@@ -23,7 +23,8 @@ let
       datadir = "${schema}/share/gsettings-schemas/${schema.name}";
     in
     pkgs.writers.writeDashBin "configure-gtk" ''
-      export XDG_DATA_DIRS=${datadir}:$XDG_DATA_DIRS
+      export XDG_DATA_DIRS="${datadir}:$XDG_DATA_DIRS"
+
       gnome_schema=org.gnome.desktop.interface
       config="${config.xdg.configHome}/gtk-3.0/settings.ini"
       if [ ! -f "$config" ]; then exit 1; fi
@@ -56,22 +57,25 @@ in
   };
   output."*".bg = "${cfg.background} fill";
   # Window Appearance
-  window.border = 2;
-  # Make certain windows floating
-  window.commands = [
-    {
-      command = "floating enable";
-      criteria.title = "zoom";
-    }
-    {
-      command = "floating enable";
-      criteria.class = "floating";
-    }
-    {
-      command = "floating enable";
-      criteria.app_id = "floating";
-    }
-  ];
+  window = {
+    border = 2;
+    titlebar = false;
+    # Make certain windows floating
+    commands = [
+      {
+        command = "floating enable";
+        criteria.title = "zoom";
+      }
+      {
+        command = "floating enable";
+        criteria.class = "floating";
+      }
+      {
+        command = "floating enable";
+        criteria.app_id = "floating";
+      }
+    ];
+  };
   # Startup scripts
   startup =
     [
