@@ -11,12 +11,12 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - uses:  DeterminateSystems/nix-installer-action@v13
         with:
           source-url: "https://install.lix.systems/lix/lix-installer-x86_64-linux"
           diagnostic-endpoint: ""
-      - uses: DeterminateSystems/magic-nix-cache-action@v9
+      - uses: DeterminateSystems/magic-nix-cache-action@6221693898146dc97e38ad0e013488a16477a4c4 # v9
       - name: Run `nix flake check`
         run: |
           nix flake check --verbose --keep-going
@@ -24,8 +24,8 @@ jobs:
   build-docs:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: DeterminateSystems/magic-nix-cache-action@v9
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: DeterminateSystems/magic-nix-cache-action@6221693898146dc97e38ad0e013488a16477a4c4 # v9
       - uses:  DeterminateSystems/nix-installer-action@v13
         with:
           source-url: "https://install.lix.systems/lix/lix-installer-x86_64-linux"
@@ -33,7 +33,7 @@ jobs:
       - name: Build documentation
         run: nix build .#docs --print-build-logs
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3
         with:
           path: ./result
   deploy-docs:
@@ -49,4 +49,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4
