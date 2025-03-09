@@ -23,7 +23,7 @@
   "lockFileMaintenance": {
     "enabled": true,
     "recreateWhen": "always",
-    "rebaseStalePrs": true,
+    "rebaseWhen": "behind-base-branch",
     "branchTopic": "lock-file-maintenance",
     "commitMessageAction": "Lock file maintenance",
     "schedule": [
