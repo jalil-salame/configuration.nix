@@ -10,7 +10,7 @@
   "dependencyDashboard": true,
   "prCreation": "immediate",
   "extends": [
-    "config:recommended"
+    "config:best-practices"
   ],
   "nix": {
     "fileMatch": [

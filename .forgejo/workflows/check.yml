@@ -19,6 +19,14 @@ jobs:
           nix --version
           # shellcheck disable=SC2016
           nix build --print-build-logs '.#checks.x86_64-linux.${{ matrix.check }}'
+  check-renovaterc:
+    runs-on: nixos
+    steps:
+      - uses: "https://git.salame.cl/actions/checkout@v4"
+      - name: Validate renovaterc.json
+        run: |
+          nix --version
+          nix shell nixpkgs#renovate --command renovate-config-validator
   build:
     runs-on: nixos
     needs: check
