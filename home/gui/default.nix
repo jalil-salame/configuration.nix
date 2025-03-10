@@ -108,13 +108,15 @@ in
               return config
             '';
       };
-      alacritty.settings = {
+      alacritty = {
         enable = cfg.terminal == "alacritty";
-        # hide mouse when typing, this ensures I don't have to move the mouse when it hides text
-        mouse.hide_when_typing = true;
-        # Start zellij when it is enabled
-        terminal.shell = lib.mkIf (config.jhome.dev.enable && config.programs.zellij.enable) {
-          program = "${lib.getExe config.programs.zellij.package}";
+        settings = {
+          # hide mouse when typing, this ensures I don't have to move the mouse when it hides text
+          mouse.hide_when_typing = true;
+          # Start zellij when it is enabled
+          terminal.shell = lib.mkIf (config.jhome.dev.enable && config.programs.zellij.enable) {
+            program = "${lib.getExe config.programs.zellij.package}";
+          };
         };
       };
       zellij.enable = cfg.terminal == "alacritty"; # alacritty has no terminal multiplexer built-in
