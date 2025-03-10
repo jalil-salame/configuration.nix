@@ -28,7 +28,7 @@ in
         ferdium
         xournalpp
         signal-desktop
-        lxqt.pcmanfm-qt
+        pcmanfm
         wl-clipboard
         # Extra fonts
         noto-fonts-cjk-sans # Chinese, Japanese and Korean characters

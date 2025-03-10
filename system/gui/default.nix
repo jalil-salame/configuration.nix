@@ -73,6 +73,8 @@ in
         };
         # Dbus
         dbus.enable = true;
+        # Virtual Filesystem (for PCManFM)
+        gvfs.enable = true;
       };
       xdg.portal = {
         # XDG portals
