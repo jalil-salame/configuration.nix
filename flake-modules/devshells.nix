@@ -11,7 +11,7 @@
           pkgs.nvd
           pkgs.uv
         ];
-        QEMU_OPTS_WL = "-enable-kvm -nodefaults -m 4G -cpu host -smp 4 -device virtio-gpu";
+        QEMU_OPTS_WL = "-enable-kvm -nodefaults -m 4G -cpu host -smp 4 -display gtk,gl=on,grab-on-hover=on -device virtio-gpu-gl";
       };
     };
 }
