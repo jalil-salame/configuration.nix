@@ -113,13 +113,13 @@ let
     };
     autostartWindowManager = lib.mkOption {
       description = ''
-        Autostart a configured window manager when logging in to /dev/tty1. Set
-        to `"none"` to disable.
+        Autostart one of the configured window managers when logging in to
+        `/dev/tty1`. Set to `"none"` to disable autostarting.
 
         This will make it so `exec $windowManager` is run when logging in to
         TTY1, if you want a non-graphical session (ie. your GPU drivers are
-        broken) you can switch TTYs when logging in by using CTRL+ALT+F2 (for
-        TTY2, F3 for TTY3, etc).
+        broken) you can switch TTYs when logging in by using `CTRL+ALT+F2` for
+        TTY2, `CTRL+ALT+F3` for TTY3, etc.
       '';
       type = types.enum [
         "sway"
@@ -180,7 +180,6 @@ in
               ];
               neovimAsManPager = lib.mkEnableOption "neovim as the man pager";
               extraPackages = mkExtraPackagesOption "dev" [
-                # FIXME: readd on new lix version with fix [ "devenv" ] # a devshell alternative
                 [ "jq" ] # json parser
                 [ "just" ] # just a command runner
                 [ "typos" ] # low false positive rate typo checker
