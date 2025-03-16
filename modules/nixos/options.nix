@@ -65,6 +65,7 @@ in
                 };
               };
               sway = mkDisableOption "the sway window manager";
+              niri = lib.mkEnableOption "the niri window manager";
             };
           };
         };

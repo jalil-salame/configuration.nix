@@ -21,9 +21,15 @@ in
             DefaultEnvironment="PATH=/run/wrappers/bin:/etc/profiles/per-user/%u/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin"
           '';
 
+          niri-flake.cache.enable = false; # we don't use the niri-flake packages
+
           fonts.fontDir.enable = true;
           programs = {
             dconf.enable = true;
+            niri = {
+              enable = cfg.niri;
+              package = lib.mkDefault pkgs.niri;
+            };
             sway = {
               enable = cfg.sway;
               # No extra packages (by default it adds foot, dmenu, and other stuff)
