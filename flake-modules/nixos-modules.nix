@@ -9,22 +9,10 @@ let
 in
 {
   flake = {
-    nixvimModules =
-      let
-        standalone = modules + "/nixvim/standalone.nix";
-        homeManager = {
-          imports = [
-            inputs.nixvim.homeManagerModules.nixvim
-            (modules + "/nixvim")
-          ];
-        };
-      in
-      {
-        inherit standalone homeManager;
-      };
     homeManagerModules =
       let
         defaultModules = [
+          inputs.nixvim.homeManagerModules.nixvim
           self.nixvimModules.homeManager
           (modules + "/hm")
         ];

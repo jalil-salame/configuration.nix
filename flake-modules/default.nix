@@ -10,7 +10,7 @@ in
     ./docs.nix
     ./example-vm.nix
     ./nixos-modules.nix
-    ./nvim.nix
+    ./nixvim-modules.nix
     ./overlays.nix
     ./scripts.nix
   ];
