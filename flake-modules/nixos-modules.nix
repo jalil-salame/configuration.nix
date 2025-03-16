@@ -1,45 +1,82 @@
-{ inputs, lib, ... }:
 {
-  flake.nixosModules =
-    let
-      nvim-config = {
-        imports = [
-          inputs.nixvim.homeManagerModules.nixvim
-          ../nvim
-        ];
-      };
-      homeManagerModuleSandalone = import ../home {
-        inherit nvim-config;
-        inherit (inputs) stylix;
-      };
-      homeManagerModuleNixOS = import ../home { inherit nvim-config; };
-      nixosModule = {
-        imports = [
-          (import ../system { inherit (inputs) stylix; })
-          inputs.home-manager.nixosModules.home-manager
-        ] ++ lib.optional (inputs.lix-module != null) inputs.lix-module.nixosModules.default;
-        home-manager = {
-          useGlobalPkgs = true;
-          useUserPackages = true;
-          sharedModules = [ homeManagerModuleNixOS ];
+  self,
+  inputs,
+  lib,
+  ...
+}:
+let
+  modules = ../modules;
+in
+{
+  flake = {
+    nixvimModules =
+      let
+        standalone = modules + "/nixvim/standalone.nix";
+        homeManager = {
+          imports = [
+            inputs.nixvim.homeManagerModules.nixvim
+            (modules + "/nixvim")
+          ];
         };
-        # Pin nixpkgs
-        nix.registry.nixpkgs.flake = inputs.nixpkgs;
+      in
+      {
+        inherit standalone homeManager;
       };
-
-      machines = [ "vm" ];
-      mkMachine = hostname: {
-        imports = [
-          nixosModule
-          (import (../machines + "/${hostname}"))
+    homeManagerModules =
+      let
+        defaultModules = [
+          self.nixvimModules.homeManager
+          (modules + "/hm")
         ];
-        home-manager.sharedModules = [ { jhome.hostName = hostname; } ];
+        nixos = {
+          imports = defaultModules;
+        };
+        standalone = {
+          imports = defaultModules ++ [
+            inputs.stylix.homeManagerModules.stilyx
+            (
+              { config, ... }:
+              {
+                stylix.image = config.jhome.sway.background;
+              }
+            )
+          ];
+        };
+      in
+      {
+        inherit standalone nixos;
       };
-      machineModules = lib.genAttrs machines mkMachine;
-    in
-    {
-      default = nixosModule;
-      inherit nixosModule homeManagerModuleNixOS homeManagerModuleSandalone;
-    }
-    // machineModules;
+    nixosModules =
+      let
+        nixosModule = {
+          imports = [
+            inputs.stylix.nixosModules.stylix
+            inputs.home-manager.nixosModules.home-manager
+            (modules + "/nixos")
+          ] ++ lib.optional (inputs.lix-module != null) inputs.lix-module.nixosModules.default;
+          home-manager = {
+            useGlobalPkgs = true;
+            useUserPackages = true;
+            sharedModules = [ self.homeManagerModules.nixos ];
+          };
+          # Pin nixpkgs
+          nix.registry.nixpkgs.flake = inputs.nixpkgs;
+        };
+
+        machines = [ "vm" ];
+        mkMachine = hostname: {
+          imports = [
+            nixosModule
+            (import (../machines + "/${hostname}"))
+          ];
+          home-manager.sharedModules = [ { jhome.hostName = hostname; } ];
+        };
+        machineModules = lib.genAttrs machines mkMachine;
+      in
+      {
+        default = nixosModule;
+        inherit nixosModule;
+      }
+      // machineModules;
+  };
 }

@@ -9,7 +9,7 @@
       nvimModule = extraConfig: {
         pkgs = inputs.unstable.legacyPackages.${system};
         module = {
-          imports = [ ../nvim/standalone.nix ];
+          imports = [ ../modules/nixvim/standalone.nix ];
           config = lib.mkMerge [
             { performance.combinePlugins.enable = true; }
             extraConfig

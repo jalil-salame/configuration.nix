@@ -1,8 +1,4 @@
 {
-  nvim-config,
-  stylix ? null,
-}:
-{
   config,
   pkgs,
   lib,
@@ -17,17 +13,11 @@ let
     path: default: if osConfig == null then default else lib.attrsets.attrByPath path default osConfig;
 in
 {
-  imports =
-    [
-      nvim-config
-      ./options.nix
-      ./gui
-      ./users.nix
-    ]
-    ++ lib.optionals (stylix != null) [
-      stylix.homeManagerModules.stylix
-      { stylix.image = cfg.sway.background; }
-    ];
+  imports = [
+    ./options.nix
+    ./gui
+    ./users.nix
+  ];
 
   config = lib.mkMerge [
     (lib.mkIf (cfg.enable && cfg.styling.enable) {

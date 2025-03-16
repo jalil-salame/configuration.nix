@@ -5,17 +5,18 @@
     {
       packages =
         let
+          modules = ../modules;
           filterVisible =
             toplevelOption: option:
             option // { visible = option.visible && builtins.elemAt option.loc 0 == toplevelOption; };
           home-eval = lib.evalModules {
-            modules = [ ../home/options.nix ];
+            modules = [ (modules + "/hm/options.nix") ];
             specialArgs = {
               inherit pkgs;
             };
           };
-          nvim-eval = lib.evalModules { modules = [ ../nvim/options.nix ]; };
-          nixos-eval = lib.evalModules { modules = [ ../system/options.nix ]; };
+          nvim-eval = lib.evalModules { modules = [ (modules + "/nixvim/options.nix") ]; };
+          nixos-eval = lib.evalModules { modules = [ (modules + "/nixos/options.nix") ]; };
           home-markdown =
             (pkgs.nixosOptionsDoc {
               inherit (home-eval) options;

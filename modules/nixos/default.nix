@@ -1,4 +1,3 @@
-{ stylix }:
 {
   config,
   pkgs,
@@ -22,7 +21,6 @@ in
   imports = [
     ./options.nix
     ./gui
-    stylix.nixosModules.stylix
     { stylix = import ./stylix-config.nix { inherit config pkgs; }; }
   ];
 
