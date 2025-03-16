@@ -97,6 +97,13 @@ let
     };
   };
 
+  niri.options = {
+    enable = mkFromConfigDisableOption "Enable niri" [
+      "gui"
+      "niri"
+    ];
+  };
+
   gui.options = {
     enable = mkFromConfigEnableOption "GUI applications" [
       "gui"
@@ -114,19 +121,16 @@ let
     autostartWindowManager = lib.mkOption {
       description = ''
         Autostart one of the configured window managers when logging in to
-        `/dev/tty1`. Set to `"none"` to disable autostarting.
+        `/dev/tty1`. Set to `false` to disable autostarting.
 
         This will make it so `exec $windowManager` is run when logging in to
         TTY1, if you want a non-graphical session (ie. your GPU drivers are
         broken) you can switch TTYs when logging in by using `CTRL+ALT+F2` for
         TTY2, `CTRL+ALT+F3` for TTY3, etc.
       '';
-      type = types.enum [
-        "sway"
-        "none"
-      ];
-      default = "sway";
-      example = "none";
+      type = types.bool;
+      default = true;
+      example = false;
     };
     tempInfo = lib.mkOption {
       description = "Temperature info to display in the statusbar.";
@@ -137,6 +141,11 @@ let
       description = "Sway window manager configuration.";
       default = { };
       type = types.submodule sway;
+    };
+    niri = lib.mkOption {
+      description = "Niri window manager configuration.";
+      default = { };
+      type = types.submodule niri;
     };
     terminal = lib.mkOption {
       description = "The terminal emulator to use.";
@@ -151,7 +160,26 @@ let
 in
 {
   # add fromOs function to args
-  config._module.args = { inherit (fromOsOptions) fromOs; };
+  config =
+    let
+      guiCfg = attrs.config.jhome.gui;
+    in
+    lib.mkMerge [
+      { _module.args = { inherit (fromOsOptions) fromOs; }; }
+      (lib.mkIf guiCfg.enable {
+        warnings =
+          lib.optional (guiCfg.niri.enable && guiCfg.sway.enable && guiCfg.autostartWindowManager)
+            ''
+              Both `sway` and `niri` are enabled, will autostart `niri`.
+            '';
+        assertions = [
+          {
+            assertion = guiCfg.autostartWindowManager -> (guiCfg.niri.enable || guiCfg.sway.enable);
+            message = "One of `niri` or `sway` should be enabled in order to `autostartWindowManager`";
+          }
+        ];
+      })
+    ];
 
   options.jhome = lib.mkOption {
     description = "Jalil's default home-manager configuration.";

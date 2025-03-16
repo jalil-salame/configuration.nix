@@ -9,6 +9,7 @@
     let
       nixosModule = {
         imports = [
+          inputs.niri.nixosModules.niri
           inputs.stylix.nixosModules.stylix
           inputs.home-manager.nixosModules.home-manager
           ../modules/nixos

@@ -36,6 +36,10 @@
       enable = true;
       jupyter.enable = true;
     };
-    gui.enable = true;
+    gui = {
+      enable = true;
+      sway = false;
+      niri = true;
+    };
   };
 }

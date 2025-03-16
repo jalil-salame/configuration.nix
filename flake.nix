@@ -34,6 +34,19 @@
         nuschtosSearch.follows = "";
       };
     };
+    niri = {
+      url = "github:sodiboo/niri-flake";
+      inputs = {
+        # Deduplicate
+        nixpkgs.follows = "unstable";
+        nixpkgs-stable.follows = "nixpkgs";
+        # Unused
+        niri-stable.follows = "";
+        niri-unstable.follows = "";
+        xwayland-satellite-stable.follows = "";
+        xwayland-satellite-unstable.follows = "";
+      };
+    };
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
       inputs.nixpkgs-lib.follows = "nixpkgs";

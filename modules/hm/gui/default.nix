@@ -18,6 +18,7 @@ in
 {
   imports = [
     ./sway.nix
+    ./niri.nix
     ./waybar.nix
   ];
 
@@ -170,11 +171,20 @@ in
       zathura.enable = true;
       # Auto start window manager
       fish.loginShellInit =
-        lib.optionalString (cfg.autostartWindowManager != "none") # fish
+        let
+          prog =
+            if cfg.niri.enable then
+              "niri-session"
+            else if cfg.sway.enable then
+              "sway"
+            else
+              throw "no configured window manager to autostart";
+        in
+        lib.optionalString cfg.autostartWindowManager # fish
           ''
             # Start window manager on login to TTY 1
             if test "$(tty)" = /dev/tty1
-              exec ${cfg.autostartWindowManager}
+              exec ${prog} >/tmp/niri.log 2>/tmp/niri.err
             end
           '';
     };
