@@ -18,6 +18,7 @@ in
 {
   imports = [
     ./sway.nix
+    ./niri.nix
     ./waybar.nix
   ];
 
@@ -176,7 +177,7 @@ in
       fish.loginShellInit =
         lib.optionalString (cfg.autostartWindowManager != "none") # fish
           ''
-            # Start Sway on login to TTY 1
+            # Start window manager on login to TTY 1
             if test "$(tty)" = /dev/tty1
               exec ${cfg.autostartWindowManager}
             end

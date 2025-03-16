@@ -64,7 +64,8 @@ in
                   options.autoStart = mkDisableOption "autostarting ydotool at login";
                 };
               };
-              sway = mkDisableOption "sway";
+              sway = mkDisableOption "the sway window manager";
+              niri = lib.mkEnableOption "the niri window manager";
             };
           };
         };

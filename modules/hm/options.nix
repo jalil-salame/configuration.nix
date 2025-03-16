@@ -97,6 +97,13 @@ let
     };
   };
 
+  niri.options = {
+    enable = mkFromConfigDisableOption "Enable niri" [
+      "gui"
+      "niri"
+    ];
+  };
+
   gui.options = {
     enable = mkFromConfigEnableOption "GUI applications" [
       "gui"
@@ -113,16 +120,17 @@ let
     };
     autostartWindowManager = lib.mkOption {
       description = ''
-        Autostart a configured window manager when logging in to /dev/tty1. Set
-        to `"none"` to disable.
+        Autostart one of the configured window managers when logging in to
+        `/dev/tty1`. Set to `"none"` to disable autostarting.
 
-        This will make it so `exec $windowManager` is run when logging in to
-        TTY1, if you want a non-graphical session (ie. your GPU drivers are
-        broken) you can switch TTYs when logging in by using CTRL+ALT+F2 (for
-        TTY2, F3 for TTY3, etc).
+        This will make it so `exec sway` is run when logging in to TTY1, if you
+        want a non-graphical session (ie. your GPU drivers are broken) you can
+        switch TTYs when logging in by using `CTRL+ALT+F2` for TTY2,
+        `CTRL+ALT+F3` for TTY3, etc.
       '';
       type = types.enum [
         "sway"
+        "niri"
         "none"
       ];
       default = "sway";
@@ -137,6 +145,11 @@ let
       description = "Sway window manager configuration.";
       default = { };
       type = types.submodule sway;
+    };
+    niri = lib.mkOption {
+      description = "Niri window manager configuration.";
+      default = { };
+      type = types.submodule niri;
     };
     terminal = lib.mkOption {
       description = "The terminal emulator to use.";
@@ -180,7 +193,6 @@ in
               ];
               neovimAsManPager = lib.mkEnableOption "neovim as the man pager";
               extraPackages = mkExtraPackagesOption "dev" [
-                # FIXME: readd on new lix version with fix [ "devenv" ] # a devshell alternative
                 [ "jq" ] # json parser
                 [ "just" ] # just a command runner
                 [ "typos" ] # low false positive rate typo checker

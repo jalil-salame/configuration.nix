@@ -253,6 +253,33 @@
         "url": "https://git.lix.systems/lix-project/nixos-module/archive/release-2.93.tar.gz"
       }
     },
+    "niri": {
+      "inputs": {
+        "niri-stable": [],
+        "niri-unstable": [],
+        "nixpkgs": [
+          "unstable"
+        ],
+        "nixpkgs-stable": [
+          "nixpkgs"
+        ],
+        "xwayland-satellite-stable": [],
+        "xwayland-satellite-unstable": []
+      },
+      "locked": {
+        "lastModified": 1756127747,
+        "narHash": "sha256-Zc9+83Vg1FCOIjf1E/tZxk7mwyKPrGystc+48OkeDhM=",
+        "owner": "sodiboo",
+        "repo": "niri-flake",
+        "rev": "d63f7848d0e0b9d2860be5ba9c4f6ed09e91049e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "sodiboo",
+        "repo": "niri-flake",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1756019846,
@@ -323,6 +350,7 @@
         "flake-parts": "flake-parts",
         "home-manager": "home-manager",
         "lix-module": "lix-module",
+        "niri": "niri",
         "nixpkgs": "nixpkgs",
         "nixvim": "nixvim",
         "nuschtosSearch": "nuschtosSearch",
