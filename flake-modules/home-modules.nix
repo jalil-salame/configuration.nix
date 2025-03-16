@@ -1,0 +1,34 @@
+{ self, inputs, ... }:
+let
+  modules = ../modules;
+in
+{
+  # FIXME(25.05): this version of HM should have the flake module
+  # imports = [ inputs.home-manager.flakeModules.home-manager ];
+
+  flake.homeModules =
+    let
+      defaultModules = [
+        inputs.nixvim.homeManagerModules.nixvim
+        self.nixvimModules.homeManager
+        (modules + "/hm")
+      ];
+      nixos = {
+        imports = defaultModules;
+      };
+      standalone = {
+        imports = defaultModules ++ [
+          inputs.stylix.homeManagerModules.stilyx
+          (
+            { config, ... }:
+            {
+              stylix.image = config.jhome.sway.background;
+            }
+          )
+        ];
+      };
+    in
+    {
+      inherit standalone nixos;
+    };
+}
