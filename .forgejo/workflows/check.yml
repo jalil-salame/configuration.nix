@@ -3,22 +3,13 @@ on:
 jobs:
   check:
     runs-on: nixos
-    strategy:
-      matrix:
-        check:
-          - nvimDev
-          - nvimHeadless
-          - nvimNoBundledBins
-          - nvimNoLsp
-          - nvimNoTSGrammars
-          - treefmt
     steps:
       - uses: "https://git.salame.cl/actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683" # v4
       - name: Run checks
         run: |
           nix --version
-          # shellcheck disable=SC2016
-          nix build --print-build-logs '.#checks.x86_64-linux.${{ matrix.check }}'
+          nix-fast-build --max-jobs 2 --no-nom --skip-cached --no-link \
+            --flake ".#checks.$(nix eval --raw --impure --expr builtins.currentSystem)"
   check-renovaterc:
     runs-on: nixos
     steps:
@@ -27,24 +18,25 @@ jobs:
         run: |
           nix --version
           nix shell nixpkgs#renovate --command renovate-config-validator
-  build:
+  build-packages:
     runs-on: nixos
     needs: check
-    strategy:
-      matrix:
-        target:
-          - audiomenu
-          - docs
-          - jpassmenu
-          - nixosConfigurations.vm.config.system.build.toplevel
-          - nvim
     steps:
       - uses: "https://git.salame.cl/actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683" # v4
       - name: Build target
         run: |
           nix --version
-          # shellcheck disable=SC2016
-          nix build --print-build-logs '.#${{ matrix.target }}'
+          nix-fast-build --max-jobs 2 --no-nom --skip-cached --no-link \
+            --flake ".#packages.$(nix eval --raw --impure --expr builtins.currentSystem)"
+  build-vm:
+    runs-on: nixos
+    needs: build-packages
+    steps:
+      - uses: "https://git.salame.cl/actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683" # v4
+      - name: Build VM configuration
+        run: |
+          nix --version
+          nix build --print-build-logs '.#nixosConfigurations.vm.config.system.build.toplevel'
   report-size:
     runs-on: nixos
     needs: build
