@@ -13,22 +13,19 @@ run-vm: build-vm
 
 update-vim-plugins:
     #!/bin/sh
-    # Use local nixpkgs if available
-    nixpkgs="$HOME/Dev/nixpkgs"
+    plugindir=./modules/nixvim/extraPlugins
     # copy nixpkgs from local checkout
-    if [ ! -d "$nixpkgs" ]; then
-        nixpkgs="$(mktemp -d)"
-        cp -r /nix/var/nix/profiles/per-user/root/channels/nixos/nixpkgs/. "$nixpkgs"
-        cd "$nixpkgs"
-        git init .
-        git add .
-        git commit -m 'dummy commit'
-        cd -
-    fi
+    nixpkgs="$(mktemp -d)"
+    cp -r /nix/var/nix/profiles/per-user/root/channels/nixos/nixpkgs/. "$nixpkgs"
+    cd "$nixpkgs"
+    git init .
+    git add .
+    git commit -m 'dummy commit'
+    cd -
     # update vim plugins
-    nix run nixpkgs#vimPluginsUpdater -- --proc=1 --nixpkgs "$nixpkgs" --no-commit -i ./nvim/extraPlugins/plugins -o ./nvim/extraPlugins/generated.nix update
+    nix run nixpkgs#vimPluginsUpdater -- --proc=1 --nixpkgs "$nixpkgs" --no-commit -i "$plugindir/plugins" -o "$plugindir/generated.nix" update
     # format the generated output
-    nix fmt ./nvim/extraPlugins/generated.nix
+    nix fmt "$plugindir/generated.nix"
 
 # Amend Update flake.lock PR
 flake-pr:
