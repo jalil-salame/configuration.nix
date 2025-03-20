@@ -80,8 +80,10 @@ in
         settings = lib.mkIf config.jhome.styling.enable (
           import ./waybar-settings.nix { inherit config lib; }
         );
+        # Style overrides to highlight workspaces with windows
         style =
-          lib.optionalString config.jhome.styling.enable # css
+          lib.pipe
+            # css
             ''
               .modules-left #workspaces button {
                 border-bottom: 3px solid @base01;
@@ -89,7 +91,11 @@ in
               .modules-left #workspaces button.persistent {
                 border-bottom: 3px solid transparent;
               }
-            '';
+            ''
+            [
+              (lib.optionalString config.jhome.styling.enable)
+              lib.mkAfter
+            ];
       };
       # Terminal
       wezterm = {
