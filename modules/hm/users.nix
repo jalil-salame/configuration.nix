@@ -22,8 +22,9 @@ in
       };
       programs.jujutsu.settings = {
         user = lib.mkIf (cfg.defaultIdentity != null) { inherit (cfg.defaultIdentity) name email; };
+        git.sign-on-push = lib.mkDefault hasKey;
         signing = lib.mkIf hasKey {
-          sign-all = true;
+          behaviour = "own";
           backend = "gpg";
           key = signingKey;
         };
