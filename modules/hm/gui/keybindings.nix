@@ -93,7 +93,7 @@ builtins.foldl' (l: r: l // r)
     "XF86AudioRaiseVolume" = "exec ${pkgs.avizo}/bin/volumectl up";
     "XF86AudioLowerVolume" = "exec ${pkgs.avizo}/bin/volumectl down";
     "XF86AudioMute" = "exec ${pkgs.avizo}/bin/volumectl toggle-mute";
-    "XF86ScreenSaver" = "exec swaylock --image ${cfg.background}";
+    "XF86ScreenSaver" = "exec ${pkgs.swaylock}/bin/swaylock --image ${cfg.background}";
     "XF86MonBrightnessUp" = "exec ${pkgs.avizo}/bin/lightctl up";
     "XF86MonBrightnessDown" = "exec ${pkgs.avizo}/bin/lightctl down";
     # Floating

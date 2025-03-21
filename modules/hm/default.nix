@@ -108,8 +108,6 @@ in
       };
 
       home = {
-        stateVersion = "22.11";
-        # Extra packages
         # Extra variables
         sessionVariables = {
           CARGO_HOME = "${config.xdg.dataHome}/cargo";

@@ -16,6 +16,7 @@
     home = {
       username = "jdoe";
       homeDirectory = "/home/jdoe";
+      stateVersion = "24.11";
     };
     jhome = {
       enable = true;
