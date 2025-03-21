@@ -4,15 +4,12 @@ let
   inherit (cfg.defaultIdentity) signingKey;
 
   cfg = jhome.user;
-  hasConfig = jhome.enable && cfg != null;
   hasKey = signingKey != null;
-  gpgHome = config.programs.gpg.homedir;
-  unlockKey = hasConfig && cfg.gpg.unlockKeys != [ ];
 in
 {
-  config = lib.mkMerge [
-    (lib.mkIf hasConfig {
-      programs.git = {
+  config = lib.mkIf (jhome.enable && cfg != null) {
+    programs = {
+      git = {
         userName = cfg.defaultIdentity.name;
         userEmail = cfg.defaultIdentity.email;
         signing = lib.mkIf hasKey {
@@ -20,7 +17,8 @@ in
           key = signingKey;
         };
       };
-      programs.jujutsu.settings = {
+
+      jujutsu.settings = {
         user = lib.mkIf (cfg.defaultIdentity != null) { inherit (cfg.defaultIdentity) name email; };
         git.sign-on-push = lib.mkDefault hasKey;
         signing = lib.mkIf hasKey {
@@ -29,14 +27,13 @@ in
           key = signingKey;
         };
       };
-    })
-    (lib.mkIf unlockKey {
-      xdg.configFile.pam-gnupg.text =
-        ''
-          ${gpgHome}
+    };
 
-        ''
-        + (lib.strings.concatLines cfg.gpg.unlockKeys);
-    })
-  ];
+    xdg.configFile.pam-gnupg.text =
+      lib.mkIf (cfg.unlockKeys != [ ]) ''
+        ${config.programs.gpg.homedir}
+
+      ''
+      + (lib.strings.concatLines cfg.gpg.unlockKeys);
+  };
 }
