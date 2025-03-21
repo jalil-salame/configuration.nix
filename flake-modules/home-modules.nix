@@ -1,7 +1,4 @@
 { self, inputs, ... }:
-let
-  modules = ../modules;
-in
 {
   # FIXME(25.05): this version of HM should have the flake module
   # imports = [ inputs.home-manager.flakeModules.home-manager ];
@@ -11,7 +8,7 @@ in
       defaultModules = [
         inputs.nixvim.homeManagerModules.nixvim
         self.nixvimModules.homeManager
-        (modules + "/hm")
+        ../modules/hm
       ];
       nixos = {
         imports = defaultModules;
