@@ -1,11 +1,6 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}:
+{ pkgs, lib, ... }@args:
 let
-  cfg = config.jconfig;
+  cfg = args.config.jconfig;
   keysFromGithub = lib.attrsets.mapAttrs' (username: sha256: {
     name = "pubkeys/${username}";
     value = {
@@ -20,108 +15,88 @@ in
 {
   imports = [
     ./options.nix
-    ./gui
-    { stylix = import ./stylix-config.nix { inherit config pkgs; }; }
+    ./dev.nix
+    ./gui.nix
+    ./styling.nix
   ];
 
-  config = lib.mkIf cfg.enable (
-    lib.mkMerge [
-      {
-        boot.plymouth = {
-          inherit (cfg.styling) enable;
-        };
+  config = lib.mkIf cfg.enable {
+    # Enable unlocking the gpg-agent at boot (configured through home.nix)
+    security.pam.services.login.gnupg.enable = true;
 
-        # Enable unlocking the gpg-agent at boot (configured through home.nix)
-        security.pam.services.login.gnupg.enable = true;
+    environment.systemPackages = [
+      # CLI tools
+      pkgs.fd
+      pkgs.ripgrep
+      pkgs.du-dust
+      pkgs.curl
+      pkgs.zip
+      pkgs.unzip
+    ];
 
-        environment.systemPackages = [
-          # CLI tools
-          pkgs.fd
-          pkgs.ripgrep
-          pkgs.du-dust
-          pkgs.curl
-          pkgs.zip
-          pkgs.unzip
+    programs = {
+      # Shell prompt
+      starship = {
+        enable = true;
+        settings = lib.mkMerge [
+          {
+            format = "$time$all";
+            add_newline = false;
+            cmd_duration.min_time = 500;
+            cmd_duration.show_milliseconds = true;
+            time.disabled = false;
+            status = {
+              format = "[$signal_name$common_meaning$maybe_int](red)";
+              symbol = "[✗](bold red)";
+              disabled = false;
+            };
+            sudo.disabled = false;
+          }
+          # Add nerdfont symbols
+          (lib.mkIf cfg.styling.enable (import ./starship-nerdfont-symbols.nix))
+          # Remove the `in`s and `on`s from the prompt
+          (import ./starship-shorter-text.nix)
         ];
+      };
+      # Default shell
+      zsh.enable = true;
+    };
 
-        # Enable dev documentation
-        documentation.dev = {
-          inherit (cfg.dev) enable;
-        };
-        programs = {
-          # Shell prompt
-          starship = {
-            enable = true;
-            settings = lib.mkMerge [
-              {
-                format = "$time$all";
-                add_newline = false;
-                cmd_duration.min_time = 500;
-                cmd_duration.show_milliseconds = true;
-                time.disabled = false;
-                status = {
-                  format = "[$signal_name$common_meaning$maybe_int](red)";
-                  symbol = "[✗](bold red)";
-                  disabled = false;
-                };
-                sudo.disabled = false;
-              }
-              # Add nerdfont symbols
-              (lib.mkIf cfg.styling.enable (import ./starship-nerdfont-symbols.nix))
-              # Remove the `in`s and `on`s from the prompt
-              (lib.mkIf cfg.styling.enable (import ./starship-shorter-text.nix))
-            ];
-          };
-          # Default shell
-          zsh.enable = true;
-        };
-
-        environment.etc = keysFromGithub;
-        services = {
-          # Enable printer autodiscovery if printing is enabled
-          avahi = {
-            inherit (config.services.printing) enable;
-            nssmdns4 = true;
-            openFirewall = true;
-          };
-          openssh.authorizedKeysFiles = builtins.map (path: "/etc/${path}") (
-            builtins.attrNames keysFromGithub
-          );
-        };
-        users.defaultUserShell = pkgs.zsh;
-        # Open ports for spotifyd
-        networking.firewall = {
-          allowedUDPPorts = [ 5353 ];
-          allowedTCPPorts = [ 2020 ];
-        };
-        # Nix Settings
-        nix = {
-          gc = {
-            automatic = true;
-            dates = "weekly";
-            options = "--delete-older-than 30d";
-            # run between 0 and 45min after boot if run was missed
-            randomizedDelaySec = "45min";
-          };
-          settings = {
-            use-xdg-base-directories = true;
-            auto-optimise-store = true;
-            experimental-features = [
-              "nix-command"
-              "flakes"
-            ];
-          };
-        };
-      }
-      # dev configuration
-      (lib.mkIf cfg.dev.enable {
-        users.extraUsers = lib.mkIf cfg.dev.jupyter.enable { jupyter.group = "jupyter"; };
-        services.jupyter = {
-          inherit (cfg.dev.jupyter) enable;
-          group = "jupyter";
-          user = "jupyter";
-        };
-      })
-    ]
-  );
+    environment.etc = keysFromGithub;
+    services = {
+      # Enable printer autodiscovery if printing is enabled
+      avahi = {
+        inherit (args.config.services.printing) enable;
+        nssmdns4 = true;
+        openFirewall = true;
+      };
+      openssh.authorizedKeysFiles = builtins.map (keys: "/etc/${keys}") (
+        builtins.attrNames keysFromGithub
+      );
+    };
+    users.defaultUserShell = pkgs.zsh;
+    # Open ports for spotifyd
+    networking.firewall = {
+      allowedUDPPorts = [ 5353 ];
+      allowedTCPPorts = [ 2020 ];
+    };
+    # Nix Settings
+    nix = {
+      gc = {
+        automatic = true;
+        dates = "weekly";
+        options = "--delete-older-than 30d";
+        # run between 0 and 45min after boot if run was missed
+        randomizedDelaySec = "45min";
+      };
+      settings = {
+        use-xdg-base-directories = true;
+        auto-optimise-store = true;
+        experimental-features = [
+          "nix-command"
+          "flakes"
+        ];
+      };
+    };
+  };
 }

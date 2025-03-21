@@ -10,13 +10,13 @@
             toplevelOption: option:
             option // { visible = option.visible && builtins.elemAt option.loc 0 == toplevelOption; };
           home-eval = lib.evalModules {
-            modules = [ (modules + "/hm/options.nix") ];
+            modules = [ "${modules}/hm/options.nix" ];
             specialArgs = {
               inherit pkgs;
             };
           };
-          nvim-eval = lib.evalModules { modules = [ (modules + "/nixvim/options.nix") ]; };
-          nixos-eval = lib.evalModules { modules = [ (modules + "/nixos/options.nix") ]; };
+          nvim-eval = lib.evalModules { modules = [ "${modules}/nixvim/options.nix" ]; };
+          nixos-eval = lib.evalModules { modules = [ "${modules}/nixos/options.nix" ]; };
           home-markdown =
             (pkgs.nixosOptionsDoc {
               inherit (home-eval) options;
@@ -56,7 +56,7 @@
             '';
 
             nativeBuildInputs = [ pkgs.mdbook-toc ];
-            buildPhase = "${pkgs.mdbook}/bin/mdbook build --dest-dir $out";
+            buildPhase = "${pkgs.mdbook}/bin/mdbook build --dest-dir \"$out\"";
           };
         };
     };
