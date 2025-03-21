@@ -16,7 +16,6 @@ jobs:
         with:
           source-url: "https://install.lix.systems/lix/lix-installer-x86_64-linux"
           diagnostic-endpoint: ""
-      - uses: DeterminateSystems/magic-nix-cache-action@6221693898146dc97e38ad0e013488a16477a4c4 # v9
       - name: Run `nix flake check`
         run: |
           nix flake check --verbose --keep-going
@@ -25,7 +24,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-      - uses: DeterminateSystems/magic-nix-cache-action@6221693898146dc97e38ad0e013488a16477a4c4 # v9
       - uses:  DeterminateSystems/nix-installer-action@v13
         with:
           source-url: "https://install.lix.systems/lix/lix-installer-x86_64-linux"
