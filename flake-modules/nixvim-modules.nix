@@ -1,7 +1,4 @@
 { self, inputs, ... }:
-let
-  modules = ../modules;
-in
 {
   imports = [ inputs.nixvim.flakeModules.default ];
 
@@ -10,10 +7,14 @@ in
     checks.enable = false; # FIXME: borked due to nix-community/nixvim#3074
   };
 
-  flake.nixvimModules = {
-    standalone = modules + "/nixvim/standalone.nix";
-    homeManager = modules + "/nixvim";
-  };
+  flake.nixvimModules =
+    let
+      module = ../modules/nixvim;
+    in
+    {
+      standalone = "${module}/standalone.nix";
+      homeManager = module;
+    };
 
   perSystem =
     { system, ... }:
