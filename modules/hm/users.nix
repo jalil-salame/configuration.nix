@@ -29,7 +29,7 @@ in
       };
     };
 
-    xdg.configFile.pam-gnupg = lib.mkIf (cfg.unlockKeys != [ ]) {
+    xdg.configFile.pam-gnupg = lib.mkIf (cfg.gpg.unlockKeys != [ ]) {
       text = ''
         ${config.programs.gpg.homedir}
 
