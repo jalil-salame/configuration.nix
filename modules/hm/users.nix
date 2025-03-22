@@ -29,11 +29,12 @@ in
       };
     };
 
-    xdg.configFile.pam-gnupg.text =
-      lib.mkIf (cfg.unlockKeys != [ ]) ''
+    xdg.configFile.pam-gnupg = lib.mkIf (cfg.unlockKeys != [ ]) {
+      text = ''
         ${config.programs.gpg.homedir}
 
-      ''
-      + (lib.strings.concatLines cfg.gpg.unlockKeys);
+        ${lib.strings.concatLines cfg.gpg.unlockKeys}
+      '';
+    };
   };
 }
