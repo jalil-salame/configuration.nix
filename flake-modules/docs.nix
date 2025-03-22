@@ -1,46 +1,50 @@
-{ lib, inputs, ... }:
+{ lib, ... }:
 {
   perSystem =
-    { pkgs, ... }:
+    { inputs', pkgs, ... }:
     {
       packages =
         let
-          modules = ../modules;
           filterVisible =
             toplevelOption: option:
             option // { visible = option.visible && builtins.elemAt option.loc 0 == toplevelOption; };
-          home-eval = lib.evalModules {
-            modules = [ "${modules}/hm/options.nix" ];
-            specialArgs = {
-              inherit pkgs;
+          genOptionsDoc =
+            toplevelOption: module:
+            pkgs.nixosOptionsDoc {
+              inherit (lib.evalModules { modules = [ module ]; }) options;
+              transformOptions = filterVisible toplevelOption;
             };
+          mkScope = name: options: {
+            inherit name;
+            optionsJSON = "${options.optionsJSON}/share/doc/nixos/options.json";
+            urlPrefix = "https://github.com/jalil-salame/configuration.nix/blob/main/";
           };
-          nvim-eval = lib.evalModules { modules = [ "${modules}/nixvim/options.nix" ]; };
-          nixos-eval = lib.evalModules { modules = [ "${modules}/nixos/options.nix" ]; };
-          home-markdown =
-            (pkgs.nixosOptionsDoc {
-              inherit (home-eval) options;
-              transformOptions = filterVisible "jhome";
-            }).optionsCommonMark;
-          nvim-markdown =
-            (pkgs.nixosOptionsDoc {
-              inherit (nvim-eval) options;
-              transformOptions = filterVisible "jhome";
-            }).optionsCommonMark;
-          nixos-markdown =
-            (pkgs.nixosOptionsDoc {
-              inherit (nixos-eval) options;
-              transformOptions = filterVisible "jconfig";
-            }).optionsCommonMark;
+          search = inputs'.nuschtosSearch.packages.mkMultiSearch {
+            title = "Search Jalil'\"'\"'s configuration.nix";
+            baseHref = "/";
+
+            scopes = [
+              (mkScope "NixOS" nixos)
+              (mkScope "Home-Manager" home)
+              (mkScope "NixVIM" nvim)
+            ];
+          };
+          home = genOptionsDoc "jhome" ../modules/hm/options.nix;
+          nvim = genOptionsDoc "jhome" ../modules/nixvim/options.nix;
+          nixos = genOptionsDoc "jconfig" ../modules/nixos/options.nix;
+          nixos-markdown = nixos.optionsCommonMark;
+          home-markdown = home.optionsCommonMark;
+          nvim-markdown = nvim.optionsCommonMark;
         in
         {
+          inherit search;
           docs-home-markdown = home-markdown;
           docs-nixos-markdown = nixos-markdown;
           docs-nvim-markdown = nvim-markdown;
           # Documentation
           docs = pkgs.stdenvNoCC.mkDerivation {
             name = "nixos-configuration-book";
-            src = inputs.self + "/docs";
+            src = ../docs;
 
             patchPhase = ''
               cleanup_md() {
@@ -53,7 +57,9 @@
               cleanup_md ${home-markdown} >> ./src/home-options.md
               cleanup_md ${nvim-markdown} >> ./src/nvim-options.md
               cleanup_md ${nixos-markdown} >> ./src/nixos-options.md
-            '';
+              # link search site
+              ln -s "${search.override { baseHref = "/configuration.nix/search/"; }}" ./src/search
+            ''; # FIXME: only add the `/configuration.nix/` part for GH CI
 
             nativeBuildInputs = [ pkgs.mdbook-toc ];
             buildPhase = "${pkgs.mdbook}/bin/mdbook build --dest-dir \"$out\"";

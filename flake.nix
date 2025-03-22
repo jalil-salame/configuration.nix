@@ -47,9 +47,18 @@
       url = "github:hercules-ci/flake-parts";
       inputs.nixpkgs-lib.follows = "nixpkgs";
     };
+    # For the formatter (can be set to null)
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+    # For generating the docs (can be set to null)
+    nuschtosSearch = {
+      url = "github:NuschtOS/search";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-utils.follows = "lix-module/flake-utils";
+      };
     };
     # For deduplication
     systems.url = "github:nix-systems/default";
