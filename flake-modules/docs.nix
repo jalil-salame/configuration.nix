@@ -20,7 +20,7 @@
             urlPrefix = "https://github.com/jalil-salame/configuration.nix/blob/main/";
           };
           search = inputs'.nuschtosSearch.packages.mkMultiSearch {
-            title = "Search Jalil'\"'\"'s configuration.nix";
+            title = "Search Jalil's configuration.nix";
             baseHref = "/";
 
             scopes = [
