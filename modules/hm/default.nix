@@ -58,6 +58,11 @@ in
           git = true;
           icons = "auto";
         };
+        # Shell
+        fish = {
+          enable = true;
+          preferAbbrs = true; # when defining an alias, prefer instead to define an abbreviation
+        };
         # GnuPG
         gpg = {
           enable = true;
@@ -75,16 +80,6 @@ in
         ssh.enable = true;
         # cd replacement
         zoxide.enable = true;
-        # Shell
-        zsh = {
-          enable = true;
-          autosuggestion.enable = true;
-          enableCompletion = true;
-          autocd = true;
-          dotDir = ".config/zsh";
-          history.path = "${config.xdg.dataHome}/zsh/zsh_history";
-          syntaxHighlighting.enable = true;
-        };
       };
 
       services = {

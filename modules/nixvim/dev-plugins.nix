@@ -21,6 +21,7 @@ let
     "typos_lsp"
     # "typst_lsp" # Not using it
     "zls"
+    "fish_lsp"
   ];
 in
 {
@@ -95,6 +96,7 @@ in
           pkgs.stylua
           pkgs.taplo
           pkgs.yamlfmt
+          pkgs.fish
         ];
         plugins.conform-nvim = {
           enable = true;
@@ -111,6 +113,7 @@ in
               toml = [ "taplo" ];
               yaml = [ "yamlfmt" ];
               zig = [ "zigfmt" ];
+              fish = [ "fish_indent" ];
             };
           };
         };
@@ -127,7 +130,6 @@ in
             # latex = [ "chktex" ]; # Not in use
             nix = [ "statix" ];
             sh = [ "dash" ];
-            zsh = [ "zsh" ];
           };
         };
       }

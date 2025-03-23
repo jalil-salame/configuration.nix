@@ -12,7 +12,7 @@ in
     modules = [
       inputs.self.nixosModules.default
       ../example-vm # import vm configuration
-      { nix.registry.nixpkgs.flake = inputs.nixpkgs; }
+      { nix.registry.nixpkgs.flake = inputs.nixpkgs; } # pin nixpkgs to the one used by the system
     ];
   };
 

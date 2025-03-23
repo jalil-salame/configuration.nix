@@ -129,13 +129,13 @@ in
       # PDF reader
       zathura.enable = true;
       # Auto start sway
-      zsh.loginExtra =
-        lib.optionalString cfg.sway.autostart # sh
+      fish.loginShellInit =
+        lib.optionalString cfg.sway.autostart # fish
           ''
             # Start Sway on login to TTY 1
-            if [ "$TTY" = /dev/tty1 ]; then
+            if test "$(tty)" = /dev/tty1
               exec sway
-            fi
+            end
           '';
     };
     services = {
