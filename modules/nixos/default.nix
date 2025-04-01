@@ -35,11 +35,6 @@ in
     ];
 
     programs = {
-      # Launch fish if shell is interactive (from https://wiki.nixos.org/wiki/Fish)
-      bash.interactiveShellInit = # bash
-        ''
-          if [[ "$(${pkgs.procps}/bin/ps --no-header --pid=$PPID --format=comm)" != "fish" && -z "$BASH_EXECUTION_STRING" ]]; then shopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=""; exec ${pkgs.fish}/bin/fish "$LOGIN_OPTION"; fi
-        '';
       # Default shell
       fish.enable = true;
       # Shell prompt
