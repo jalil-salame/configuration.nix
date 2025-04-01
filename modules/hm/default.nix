@@ -59,6 +59,7 @@ in
           icons = "auto";
         };
         # Shell
+        bash.enable = true; # ensure HM variables are passed to `bash` too (otherwise `jpassmenu` doesn't work)
         fish = {
           enable = true;
           preferAbbrs = true; # when defining an alias, prefer instead to define an abbreviation
