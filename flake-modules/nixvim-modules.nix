@@ -23,7 +23,8 @@
         inherit system;
         modules = [
           self.nixvimModules.standalone
-          { performance.combinePlugins.enable = true; }
+          # FIXME: borked due to https://github.com/nix-community/nixvim/issues/3140
+          # { performance.combinePlugins.enable = true; }
           extraConfig
         ];
       };
