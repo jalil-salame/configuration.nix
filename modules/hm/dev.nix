@@ -17,17 +17,6 @@ in
       [
         (lib.mkIf cfg.rust.enable {
           home.packages = [ pkgs.rustup ] ++ cfg.rust.extraPackages;
-          # Background code checker (for Rust)
-          programs.bacon = {
-            enable = true;
-            settings = {
-              export = {
-                enabled = true;
-                path = ".bacon-locations";
-                line_format = "{kind} {path}:{line}:{column} {message}";
-              };
-            };
-          };
         })
         {
           home = {

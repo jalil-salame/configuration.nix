@@ -7,6 +7,7 @@
 }:
 let
   inherit (helpers) enableExceptInTests;
+  inherit (lib.trivial) const;
   cfg = config.jhome.nvim;
   enabledLSPs = [
     "basedpyright"
@@ -23,21 +24,18 @@ let
     "zls"
     "fish_lsp"
   ];
+
+  enableOpt.enable = true;
+  noPackage.package = null;
 in
 {
   config = lib.mkIf cfg.dev.enable (
     lib.mkMerge [
       # Enable LSPs
-      {
-        plugins.lsp.servers = lib.genAttrs enabledLSPs (_: {
-          enable = true;
-        });
-      }
+      { plugins.lsp.servers = lib.genAttrs enabledLSPs (const enableOpt); }
       # Remove bundled LSPs
       (lib.mkIf (!cfg.dev.bundleLSPs) {
-        plugins.lsp.servers = lib.genAttrs enabledLSPs (_: {
-          package = null;
-        });
+        plugins.lsp.servers = lib.genAttrs enabledLSPs (const noPackage);
       })
       # Configure LSPs
       {
@@ -52,11 +50,12 @@ in
                     return vim.fs.root(0, {'flake.nix', '.git', '.jj', 'pyproject.toml', 'setup.py'})
                   end
                 '';
-              bashls.package = lib.mkDefault pkgs.bash-language-server;
-              # Adds ~2 GiB, install in a devShell instead
-              clangd.package = lib.mkDefault null;
-              # zls & other zig tools are big, install in a devShell instead
-              zls.package = lib.mkDefault null;
+              # Big but infrequently used dependencies.
+              #
+              # Configure the LSPs, but don't install the packages.
+              # If you need to use them, add them to your project's devShell
+              clangd = noPackage;
+              zls = noPackage;
             };
           };
           lspkind = {
@@ -82,10 +81,10 @@ in
       (lib.mkIf (!cfg.dev.bundleGrammars) { plugins.treesitter.grammarPackages = [ ]; })
       # Remove tools for building gramars when bundling them
       (lib.mkIf cfg.dev.bundleGrammars {
-        plugins.treesitter = {
-          gccPackage = null;
-          nodejsPackage = null;
-          treesitterPackage = null;
+        dependencies = {
+          gcc.enable = false;
+          nodejs.enable = false;
+          tree-sitter.enable = false;
         };
       })
       # Configure Formatters
@@ -159,17 +158,9 @@ in
       }
       # Rust plugins
       {
-        plugins = {
-          bacon = {
-            enable = true;
-            settings.quickfix.enabled = true;
-          };
-          rustaceanvim = {
-            enable = true;
-            # Install through rustup
-            rustAnalyzerPackage = null;
-          };
-        };
+        plugins.rustaceanvim.enable = true;
+        # install through rustup
+        dependencies.rust-analyzer.enable = false;
       }
       # Other plugins
       {
