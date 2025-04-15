@@ -55,7 +55,6 @@ in
       extraPlugins = [
         plugins.nui-nvim
         plugins.nvim-web-devicons
-        plugins.vim-jjdescription # FIXME: included since neovim nightly
       ];
       extraPackages = [ pkgs.luajitPackages.jsregexp ];
       extraConfigLuaPre =

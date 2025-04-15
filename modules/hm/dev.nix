@@ -72,13 +72,14 @@ in
                 templates.draft_commit_description = ''
                   concat(
                     description,
+                    "\n",
                     surround(
                       "\nJJ: This commit contains the following changes:\n", "",
-                      indent("JJ:     ", diff.stat(72)),
+                      indent("JJ:     ", diff.summary()),
                     ),
                     surround(
-                      "\nJJ: Diff:\n", "",
-                      indent("JJ:     ", diff.git()),
+                      "JJ: ignore-rest\n", "",
+                      diff.git(),
                     ),
                   )
                 '';
