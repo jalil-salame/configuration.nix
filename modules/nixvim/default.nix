@@ -6,7 +6,7 @@ in
   imports = [ ./options.nix ];
 
   config.programs.nixvim = lib.mkMerge [
-    (import ./standalone.nix)
+    ./standalone.nix
     (lib.mkIf cfg.enable {
       enable = true;
       defaultEditor = lib.mkDefault true;
