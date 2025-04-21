@@ -3,10 +3,10 @@ default:
 
 # Update a specific flake input
 update input:
-    nix flake lock --update-input {{input}} --commit-lock-file
+    nix flake lock --update-input "{{input}}" --commit-lock-file
 
 build-vm:
-    nixos-rebuild build-vm --flake .#vm --print-build-logs
+    nixos-rebuild build-vm --fallback --flake .#vm --print-build-logs
 
 run-vm: build-vm
     QEMU_OPTS="$QEMU_OPTS_WL" result/bin/run-nixos-vm

@@ -21,6 +21,11 @@ let
   };
 in
 {
+  imports = [
+    ./sway.nix
+    ./waybar.nix
+  ];
+
   config = lib.mkIf (jhome.enable && cfg.enable) {
     home.packages =
       (with pkgs; [
@@ -73,30 +78,6 @@ in
       };
       # Text editor
       nixvim.clipboard.providers.wl-copy.enable = lib.mkDefault true;
-      # Status bar
-      waybar = {
-        enable = true;
-        systemd.enable = true;
-        settings = lib.mkIf config.jhome.styling.enable (
-          import ./waybar-settings.nix { inherit config lib; }
-        );
-        # Style overrides to highlight workspaces with windows
-        style =
-          lib.pipe
-            # css
-            ''
-              .modules-left #workspaces button {
-                border-bottom: 3px solid @base01;
-              }
-              .modules-left #workspaces button.persistent {
-                border-bottom: 3px solid transparent;
-              }
-            ''
-            [
-              (lib.optionalString config.jhome.styling.enable)
-              lib.mkAfter
-            ];
-      };
       # Terminal
       wezterm = {
         enable = cfg.terminal == "wezterm";
@@ -170,17 +151,6 @@ in
         layer = "overlay";
         borderRadius = 8;
         defaultTimeout = 15000;
-      };
-    };
-
-    # Window Manager
-    wayland.windowManager.sway = {
-      inherit (cfg.sway) enable;
-      package = swayPkg; # no sway package if it comes from the OS
-      config = import ./sway-config.nix { inherit config pkgs; };
-      systemd = {
-        enable = true;
-        xdgAutostart = true;
       };
     };
 
