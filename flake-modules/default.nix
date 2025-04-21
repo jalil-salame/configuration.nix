@@ -13,7 +13,7 @@ in
     ./home-modules.nix
     ./nixvim-modules.nix
     ./overlays.nix
-    ./scripts.nix
+    ../scripts
   ];
 
   perSystem =
