@@ -7,7 +7,12 @@
 let
   cfg = config.jhome.nvim;
   plugins = pkgs.vimPlugins;
-  extraPlugins = import ./extraPlugins { inherit pkgs; };
+  jExtraVimPlugins = pkgs.vimPlugins.extend (
+    pkgs.callPackage ./extraPlugins/generated.nix {
+      inherit (pkgs.vimUtils) buildVimPlugin;
+      inherit (pkgs.neovimUtils) buildNeovimPlugin;
+    }
+  );
 in
 {
   imports = [
@@ -78,7 +83,7 @@ in
     }
     # Big packages that are kinda unnecessary
     (lib.mkIf (!cfg.reduceSize) {
-      extraPlugins = [ extraPlugins.nvim-silicon ];
+      extraPlugins = [ jExtraVimPlugins.nvim-silicon ];
       extraPackages = [ pkgs.silicon ];
       extraConfigLua =
         # lua
