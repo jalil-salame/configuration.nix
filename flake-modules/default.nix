@@ -1,7 +1,4 @@
 { inputs, ... }:
-let
-  overlays = builtins.attrValues inputs.self.overlays;
-in
 {
   imports = [
     inputs.treefmt-nix.flakeModule
@@ -19,8 +16,6 @@ in
   perSystem =
     { system, ... }:
     {
-      _module.args.pkgs = import inputs.nixpkgs { inherit system overlays; };
-
       # Setup formatters
       treefmt = {
         projectRootFile = "flake.nix";
