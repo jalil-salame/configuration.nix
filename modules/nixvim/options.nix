@@ -1,13 +1,7 @@
 { lib, ... }:
 let
   inherit (lib) mkEnableOption mkOption types;
-  mkDisableOption =
-    desc:
-    mkEnableOption desc
-    // {
-      default = true;
-      example = false;
-    };
+  inherit (import ../lib.nix { inherit lib; }) mkDisableOption;
 in
 {
   options.jhome.nvim = {

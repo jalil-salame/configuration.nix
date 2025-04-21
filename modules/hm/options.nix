@@ -1,7 +1,8 @@
 { lib, pkgs, ... }@attrs:
 let
-  osConfig = attrs.osConfig or null;
   inherit (lib) types;
+  inherit (import ../lib.nix { inherit lib; }) mkExtraPackagesOption;
+  osConfig = attrs.osConfig or null;
   fromOs =
     let
       get =
@@ -10,22 +11,6 @@ let
     in
     path: default: if osConfig == null then default else get path osConfig;
   fromConfig = path: default: fromOs ([ "jconfig" ] ++ path) default;
-
-  mkExtraPackagesOption =
-    name: defaultPkgsPath:
-    let
-      text = lib.strings.concatMapStringsSep " " (
-        pkgPath: "pkgs." + (lib.strings.concatStringsSep "." pkgPath)
-      ) defaultPkgsPath;
-      defaultText = lib.literalExpression "[ ${text} ]";
-      default = builtins.map (pkgPath: lib.attrsets.getAttrFromPath pkgPath pkgs) defaultPkgsPath;
-    in
-    lib.mkOption {
-      description = "Extra ${name} Packages.";
-      type = types.listOf types.package;
-      inherit default defaultText;
-      example = [ ];
-    };
 
   identity.options = {
     email = lib.mkOption {
