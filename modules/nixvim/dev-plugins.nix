@@ -44,12 +44,13 @@ in
             enable = true;
             servers = {
               # Pyright needs to have the project root set?
-              basedpyright.rootDir = # lua
-                ''
-                  function()
-                    return vim.fs.root(0, {'flake.nix', '.git', '.jj', 'pyproject.toml', 'setup.py'})
-                  end
-                '';
+              basedpyright.rootMarkers = [
+                "flake.nix"
+                ".git"
+                ".jj"
+                "pyproject.toml"
+                "setup.py"
+              ];
               # Big but infrequently used dependencies.
               #
               # Configure the LSPs, but don't install the packages.
