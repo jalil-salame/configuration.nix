@@ -342,11 +342,11 @@
         "nuschtosSearch": []
       },
       "locked": {
-        "lastModified": 1746042926,
-        "narHash": "sha256-r6fMbet8n+5RgsVqfMJZXqwRjfEX/4XXOu6jxi9XP8E=",
+        "lastModified": 1746046178,
+        "narHash": "sha256-cdx9+2aSYc7ffKK/8D7P7x34P8jHxzB7EG4pnwY3ud0=",
         "owner": "nix-community",
         "repo": "nixvim",
-        "rev": "eeae36203848b34a7ef3f8710d357c7dce84cfa4",
+        "rev": "913a3521ab9ce9223957a1679914e71498a4be43",
         "type": "github"
       },
       "original": {
