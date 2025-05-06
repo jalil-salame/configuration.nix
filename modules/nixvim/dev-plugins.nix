@@ -174,6 +174,7 @@ in
               mode = "virtualtext";
             };
           };
+          hunk.enable = true;
           otter.enable = true;
         };
       }
