@@ -90,18 +90,18 @@ in
       })
       # Configure Formatters
       {
-        extraPackages = [
-          pkgs.luajitPackages.jsregexp
-          pkgs.shfmt
-          pkgs.stylua
-          pkgs.taplo
-          pkgs.yamlfmt
-          pkgs.fish
-        ];
+        extraPackages = [ pkgs.luajitPackages.jsregexp ];
         plugins.conform-nvim = {
           enable = true;
           settings = {
-            formatters.nixfmt.command = "${lib.getExe pkgs.nixfmt-rfc-style}";
+            formatters = {
+              fish.command = lib.getExe pkgs.fish;
+              nixfmt.command = lib.getExe pkgs.nixfmt-rfc-style;
+              shfmt.command = lib.getExe pkgs.shfmt;
+              stylua.command = lib.getExe pkgs.stylua;
+              taplo.command = lib.getExe pkgs.taplo;
+              yamlfmt.command = lib.getExe' pkgs.yamlfmt "fish_indent";
+            };
             formatters_by_ft = {
               "_" = [ "trim_whitespace" ];
               c = [ "clang_format" ];
@@ -120,12 +120,13 @@ in
       }
       # Configure Linters
       {
-        extraPackages = [
-          pkgs.dash
-          pkgs.statix
-        ];
         plugins.lint = {
           enable = true;
+          linters = {
+            dash.command = lib.getExe pkgs.dash;
+            statix.command = lib.getExe pkgs.statix;
+            # chktex = lib.getExe pkgs.chktex; # Not in use
+          };
           lintersByFt = {
             # latex = [ "chktex" ]; # Not in use
             nix = [ "statix" ];
