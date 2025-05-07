@@ -95,12 +95,12 @@ in
           enable = true;
           settings = {
             formatters = {
-              fish.command = lib.getExe pkgs.fish;
+              fish.command = lib.getExe' pkgs.fish "fish_indent";
               nixfmt.command = lib.getExe pkgs.nixfmt-rfc-style;
               shfmt.command = lib.getExe pkgs.shfmt;
               stylua.command = lib.getExe pkgs.stylua;
               taplo.command = lib.getExe pkgs.taplo;
-              yamlfmt.command = lib.getExe' pkgs.yamlfmt "fish_indent";
+              yamlfmt.command = lib.getExe pkgs.yamlfmt;
             };
             formatters_by_ft = {
               "_" = [ "trim_whitespace" ];
