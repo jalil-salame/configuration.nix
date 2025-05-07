@@ -6,6 +6,64 @@
 }:
 let
   cfg = config.jhome.dev;
+  nvimFormatters = builtins.mapAttrs (
+    name: value: value.command
+  ) config.programs.nixvim.plugins.conform-nvim.settings.formatters;
+  jjFormatters =
+    let
+      ext = extension: "glob:'**/*.${extension}'";
+    in
+    {
+      fish = cmd: {
+        command = [ cmd ];
+        patterns = [ (ext "fish") ];
+      };
+      nixfmt = cmd: {
+        command = [
+          cmd
+          "--filename=$path"
+        ];
+        patterns = [ (ext "nix") ];
+      };
+      shfmt = cmd: {
+        command = [
+          cmd
+          "--filename"
+          "$path"
+          "-"
+        ];
+        patterns = [
+          (ext "sh")
+          (ext "bash")
+        ];
+      };
+      stylua = cmd: {
+        command = [
+          cmd
+          "--stdin-filepath=$path"
+          "-"
+        ];
+        patterns = [ (ext "lua") ];
+      };
+      taplo = cmd: {
+        command = [
+          cmd
+          "--stdin-filepath=$path"
+          "-"
+        ];
+        patterns = [ (ext "toml") ];
+      };
+      yamlfmt = cmd: {
+        command = [
+          cmd
+          "-in"
+        ];
+        patterns = [
+          (ext "yaml")
+          (ext "yml")
+        ];
+      };
+    };
 in
 {
   config =
@@ -68,6 +126,7 @@ in
               package = pkgs.unstable.jujutsu;
               settings = {
                 ui.pager = "bat";
+                fix.tools = builtins.mapAttrs (tool: cmd: jjFormatters.${tool} cmd) nvimFormatters;
                 # mimic git commit --verbose by adding a diff
                 templates.draft_commit_description = ''
                   concat(
