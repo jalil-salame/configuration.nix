@@ -17,9 +17,9 @@
         imports = defaultModules ++ [
           inputs.stylix.homeManagerModules.stylix
           (
-            { config, ... }:
-            {
-              stylix.image = config.jhome.sway.background;
+            { lib, config, ... }:
+            lib.mkIf config.jhome.gui.enable {
+              stylix.image = config.jhome.gui.sway.background;
             }
           )
         ];
