@@ -15,7 +15,7 @@
       };
       standalone = {
         imports = defaultModules ++ [
-          inputs.stylix.homeManagerModules.stilyx
+          inputs.stylix.homeManagerModules.stylix
           (
             { config, ... }:
             {
