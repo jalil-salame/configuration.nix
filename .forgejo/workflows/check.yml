@@ -26,7 +26,7 @@ jobs:
       - name: Build target
         run: |
           nix --version
-          nix-fast-build --max-jobs 2 --no-nom --skip-cached --no-link \
+          nix-fast-build --max-jobs 1 --no-nom --skip-cached --no-link \
             --flake ".#packages.$(nix eval --raw --impure --expr builtins.currentSystem)"
   build-vm:
     runs-on: nixos
