@@ -63,6 +63,7 @@ let
       taplo = cmd: {
         command = [
           cmd
+          "format"
           "--stdin-filepath=$path"
           "-"
         ];
