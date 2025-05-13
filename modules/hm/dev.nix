@@ -11,19 +11,34 @@ let
   ) config.programs.nixvim.plugins.conform-nvim.settings.formatters;
   jjFormatters =
     let
-      ext = extension: "glob:'**/*.${extension}'";
+      ext_to_glob = ext: "glob:'**/*.${ext}'";
+      exts = builtins.map ext_to_glob;
     in
     {
       fish = cmd: {
         command = [ cmd ];
-        patterns = [ (ext "fish") ];
+        patterns = exts [ "fish" ];
+      };
+      clang_format = cmd: {
+        command = [
+          cmd
+          "--assume-filename=$path"
+        ];
+        patterns = exts [
+          "c"
+          "cc"
+          "cpp"
+          "h"
+          "hh"
+          "hpp"
+        ];
       };
       nixfmt = cmd: {
         command = [
           cmd
           "--filename=$path"
         ];
-        patterns = [ (ext "nix") ];
+        patterns = exts [ "nix" ];
       };
       shfmt = cmd: {
         command = [
@@ -32,9 +47,9 @@ let
           "$path"
           "-"
         ];
-        patterns = [
-          (ext "sh")
-          (ext "bash")
+        patterns = exts [
+          "sh"
+          "bash"
         ];
       };
       stylua = cmd: {
@@ -43,7 +58,7 @@ let
           "--stdin-filepath=$path"
           "-"
         ];
-        patterns = [ (ext "lua") ];
+        patterns = exts [ "lua" ];
       };
       taplo = cmd: {
         command = [
@@ -51,16 +66,16 @@ let
           "--stdin-filepath=$path"
           "-"
         ];
-        patterns = [ (ext "toml") ];
+        patterns = exts [ "toml" ];
       };
       yamlfmt = cmd: {
         command = [
           cmd
           "-in"
         ];
-        patterns = [
-          (ext "yaml")
-          (ext "yml")
+        patterns = exts [
+          "yaml"
+          "yml"
         ];
       };
     };
