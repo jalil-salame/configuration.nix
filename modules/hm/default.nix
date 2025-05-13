@@ -31,11 +31,23 @@ in
       # Add gopass if pass is enabled
       home.packages = lib.optional config.programs.password-store.enable pkgs.gopass;
 
-      nix.settings.use-xdg-base-directories = fromOs [
-        "nix"
-        "settings"
-        "use-xdg-base-directories"
-      ] true;
+      nix = {
+        # Run GC for Home Manager generations
+        gc = {
+          automatic = true;
+          frequency = "weekly";
+          options = "--delete-older-than 30d";
+          # run between 0 and 45min after boot if run was missed
+          randomizedDelaySec = "45min";
+        };
+
+        # Use XDG directories
+        settings.use-xdg-base-directories = fromOs [
+          "nix"
+          "settings"
+          "use-xdg-base-directories"
+        ] true;
+      };
 
       programs = {
         # Better cat (bat)
