@@ -111,6 +111,8 @@ in
           pinentryPackage = if config.jhome.gui.enable then pkgs.pinentry-qt else pkgs.pinentry-curses;
           extraConfig = "allow-preset-passphrase";
         };
+        # Delete old generations (>month)
+        home-manager.autoExpire.enable = true;
         # Spotifyd
         spotifyd = {
           inherit (config.jhome.gui) enable;
