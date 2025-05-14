@@ -8,8 +8,8 @@
 
   # Flake inputs
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
-    unstable.follows = "nixvim/nixpkgs";
+    nixpkgs.url = "https://channels.nixos.org/nixos-24.11/nixexprs.tar.xz";
+    unstable.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.xz";
     # Lix
     lix-module = {
       url = "https://git.lix.systems/lix-project/nixos-module/archive/release-2.92.tar.gz";
@@ -40,6 +40,7 @@
       inputs = {
         flake-parts.follows = "flake-parts";
         systems.follows = "systems";
+        nixpkgs.follows = "unstable";
         # disable optional inputs
         nuschtosSearch.follows = "";
       };
