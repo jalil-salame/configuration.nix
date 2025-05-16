@@ -1,37 +1,48 @@
 { lib, ... }:
 let
-  src = ./.;
-  # Autodetects files with a package.nix and calls `callPackage` on them.
-  #
-  # Will add a package .#dirname to the flake if it finds a ./dirname/package.nix file.
-  files = builtins.readDir src;
-  isPackage = path: type: (type == "directory") && (builtins.readDir path) ? "package.nix";
-  toPackage = name: pkgs: {
-    inherit name;
-    value = pkgs.callPackage "${src}/${name}/package.nix" { };
+  # Clean the package source leaving only the relevant rust files
+  cleanRustSrc =
+    pname: src:
+    lib.cleanSourceWith {
+      inherit src;
+      name = "${pname}-source";
+      # Adapted from <https://github.com/ipetkov/crane/blob/master/lib/filterCargoSources.nix>
+      # no need to pull in crane for just this
+      filter =
+        orig_path: type:
+        let
+          path_str = toString orig_path;
+          base = baseNameOf path_str;
+          parentDir = baseNameOf (dirOf path_str);
+          matchesSuffix = lib.any (suffix: lib.hasSuffix suffix base) [
+            # Rust sources
+            ".rs"
+            # TOML files are often used to configure cargo based tools (e.g. .cargo/config.toml)
+            ".toml"
+          ];
+          isCargoLock = base == "Cargo.lock";
+          # .cargo/config.toml is captured above
+          isOldStyleCargoConfig = parentDir == ".cargo" && base == "config";
+        in
+        type == "directory" || matchesSuffix || isCargoLock || isOldStyleCargoConfig;
+    };
+  # callPackage but for my rust Packages
+  callRustPackage =
+    pkgs: pname: nixSrc:
+    pkgs.callPackage nixSrc { cleanRustSrc = cleanRustSrc pname; };
+  packages = {
+    jpassmenu = ./jpassmenu/package.nix;
+    audiomenu = ./audiomenu/package.nix;
   };
-  # call pkgs.callPackage on all ./*/package.nix
-  makePackage =
-    pkgs: name:
-    let
-      type = files.${name};
-      path = "${src}/${name}";
-      package = toPackage name pkgs;
-    in
-    # if it is a package then return a package otherwise return no package c:
-    if isPackage path type then [ package ] else [ ];
-  # we have lib.filterMapAttrs at home
-  scripts =
-    pkgs: builtins.listToAttrs (builtins.concatMap (makePackage pkgs) (builtins.attrNames files));
 in
 {
   # Add scripts to overlay
-  flake.overlays.scripts = final: scripts;
+  flake.overlays.scripts = _final: prev: builtins.mapAttrs (callRustPackage prev) packages;
 
   # Add scripts to packages
   perSystem =
     { pkgs, ... }:
     {
-      packages = scripts pkgs;
+      packages = builtins.mapAttrs (callRustPackage pkgs) packages;
     };
 }
