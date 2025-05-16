@@ -5,27 +5,19 @@ jobs:
     runs-on: nixos
     steps:
       - uses: "https://git.salame.cl/actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683" # v4
+      - run: nix --version
       - name: Run checks
         run: |
-          nix --version
           nix-fast-build --max-jobs 2 --no-nom --skip-cached --no-link \
             --flake ".#checks.$(nix eval --raw --impure --expr builtins.currentSystem)"
-  check-renovaterc:
-    runs-on: nixos
-    steps:
-      - uses: "https://git.salame.cl/actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683" # v4
-      - name: Validate renovaterc.json
-        run: |
-          nix --version
-          nix shell nixpkgs#renovate --command renovate-config-validator
   build-packages:
     runs-on: nixos
     needs: check
     steps:
       - uses: "https://git.salame.cl/actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683" # v4
+      - run: nix --version
       - name: Build target
         run: |
-          nix --version
           nix-fast-build --max-jobs 1 --no-nom --skip-cached --no-link \
             --flake ".#packages.$(nix eval --raw --impure --expr builtins.currentSystem)"
   build-vm:
@@ -33,9 +25,9 @@ jobs:
     needs: build-packages
     steps:
       - uses: "https://git.salame.cl/actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683" # v4
+      - run: nix --version
       - name: Build VM configuration
         run: |
-          nix --version
           nix build --print-build-logs '.#nixosConfigurations.vm.config.system.build.toplevel'
   report-size:
     runs-on: nixos

@@ -1,0 +1,14 @@
+on:
+  push:
+    paths:
+      # only run if the renovate config changed
+      - renovate.json
+jobs:
+  check-renovaterc:
+    runs-on: nixos
+    steps:
+      - uses: https://git.salame.cl/actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - run: nix --version
+      - name: Validate renovaterc.json
+        run: |
+          nix shell nixpkgs#renovate --command renovate-config-validator
