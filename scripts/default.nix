@@ -30,19 +30,19 @@ let
   callRustPackage =
     pkgs: pname: nixSrc:
     pkgs.callPackage nixSrc { cleanRustSrc = cleanRustSrc pname; };
-  packages = {
-    jpassmenu = ./jpassmenu/package.nix;
-    audiomenu = ./audiomenu/package.nix;
+  packages = pkgs: {
+    jpassmenu = pkgs.callPackage ./jpassmenu/package.nix { };
+    audiomenu = callRustPackage pkgs "audiomenu" ./audiomenu/package.nix;
   };
 in
 {
   # Add scripts to overlay
-  flake.overlays.scripts = _final: prev: builtins.mapAttrs (callRustPackage prev) packages;
+  flake.overlays.scripts = _final: packages;
 
   # Add scripts to packages
   perSystem =
     { pkgs, ... }:
     {
-      packages = builtins.mapAttrs (callRustPackage pkgs) packages;
+      packages = packages pkgs;
     };
 }

@@ -1,0 +1,9 @@
+[project]
+name = "jpassmenu"
+version = "0.1.0"
+description = "A simple program that uses dmenu compatible menu to select a password to type/copy"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "click>=8.1.7",
+]
