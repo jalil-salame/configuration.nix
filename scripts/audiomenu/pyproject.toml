@@ -1,0 +1,9 @@
+[project]
+name = "audiomenu"
+version = "0.1.0"
+description = "fuzzel script to select the default audio device for pipewire+wireplumber"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "click>=8.1.7",
+]
