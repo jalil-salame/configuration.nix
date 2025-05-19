@@ -108,7 +108,7 @@ in
         gpg-agent = {
           enable = true;
           maxCacheTtl = 86400;
-          pinentryPackage = if config.jhome.gui.enable then pkgs.pinentry-qt else pkgs.pinentry-curses;
+          pinentry.package = if config.jhome.gui.enable then pkgs.pinentry-qt else pkgs.pinentry-curses;
           extraConfig = "allow-preset-passphrase";
         };
         # Delete old generations (>month)

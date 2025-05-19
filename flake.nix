@@ -8,7 +8,7 @@
 
   # Flake inputs
   inputs = {
-    nixpkgs.url = "https://channels.nixos.org/nixos-24.11/nixexprs.tar.xz";
+    nixpkgs.url = "https://channels.nixos.org/nixos-25.05/nixexprs.tar.xz";
     unstable.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.xz";
     # Lix
     lix-module = {
@@ -20,15 +20,16 @@
     };
     # Modules
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.11";
+      url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     stylix = {
-      url = "github:danth/stylix/release-24.11";
+      url = "github:nix-community/stylix/master"; # FIXME: pin to 25.05 once released
       inputs = {
         nixpkgs.follows = "nixpkgs";
-        flake-utils.follows = "lix-module/flake-utils";
+        flake-parts.follows = "flake-parts";
         systems.follows = "systems";
+        nur.follows = "";
 
         home-manager.follows = "home-manager";
         # disable optional inputs

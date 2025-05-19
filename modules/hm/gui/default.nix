@@ -13,6 +13,7 @@ let
   cfg = jhome.gui;
   cursor = {
     package = pkgs.nordzy-cursor-theme;
+    size = 48;
     name = "Nordzy-cursors";
   };
   iconTheme = {
@@ -27,20 +28,18 @@ in
   ];
 
   config = lib.mkIf (jhome.enable && cfg.enable) {
-    home.packages =
-      (with pkgs; [
-        webcord
-        ferdium
-        xournalpp
-        signal-desktop
-        pcmanfm
-        wl-clipboard
-        # Extra fonts
-        noto-fonts-cjk-sans # Chinese, Japanese and Korean characters
-        noto-fonts-cjk-serif # Chinese, Japanese and Korean characters
-        (nerdfonts.override { fonts = [ "NerdFontsSymbolsOnly" ]; })
-      ])
-      ++ lib.optional flatpakEnabled pkgs.flatpak;
+    home.packages = [
+      pkgs.webcord
+      pkgs.ferdium
+      pkgs.xournalpp
+      pkgs.signal-desktop
+      pkgs.pcmanfm
+      pkgs.wl-clipboard
+      # Extra fonts
+      pkgs.noto-fonts-cjk-sans # Chinese, Japanese and Korean characters
+      pkgs.noto-fonts-cjk-serif # Chinese, Japanese and Korean characters
+      pkgs.nerd-fonts.symbols-only
+    ] ++ lib.optional flatpakEnabled pkgs.flatpak;
     fonts.fontconfig = {
       enable = true;
       defaultFonts = lib.mkIf config.jhome.styling.enable {
@@ -61,7 +60,75 @@ in
     };
     # Browser
     programs = {
-      firefox.enable = true;
+      firefox = {
+        enable = true;
+        profiles."${config.home.username}" = {
+          search = {
+            engines =
+              let
+                queryParam = name: value: { inherit name value; };
+              in
+              {
+                # Add search.nixos.org as search engines
+                nix-packages = {
+                  name = "Nix Packages";
+                  urls = [
+                    {
+                      template = "https://search.nixos.org/packages";
+                      params = [
+                        (queryParam "type" "packages")
+                        (queryParam "query" "{searchTerms}")
+                      ];
+                    }
+                  ];
+
+                  icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+                  definedAliases = [
+                    "@np"
+                    "@nixpackages"
+                  ];
+                };
+
+                nixos-options = {
+                  name = "NixOS Options";
+                  urls = [
+                    {
+                      template = "https://search.nixos.org/options";
+                      params = [
+                        (queryParam "type" "packages")
+                        (queryParam "query" "{searchTerms}")
+                      ];
+                    }
+                  ];
+
+                  icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+                  definedAliases = [
+                    "@no"
+                    "@nixopts"
+                  ];
+                };
+
+                nixos-wiki = {
+                  name = "NixOS Wiki";
+                  urls = [
+                    {
+                      template = "https://wiki.nixos.org/w/index.php";
+                      params = [ (queryParam "search" "{searchTerms}") ];
+                    }
+                  ];
+                  iconMapObj."16" = "https://wiki.nixos.org/favicon.ico";
+                  definedAliases = [
+                    "@nw"
+                    "@nixwiki"
+                  ];
+                };
+
+                # hide bing
+                bing.metaData.hidden = true;
+              };
+          };
+        };
+      };
       # Dynamic Menu
       fuzzel = {
         enable = true;
@@ -148,14 +215,19 @@ in
       # Notifications
       mako = {
         enable = true;
-        layer = "overlay";
-        borderRadius = 8;
-        defaultTimeout = 15000;
+        settings = {
+          layer = "overlay";
+          border-radius = 8;
+          default-timeout = 15000;
+        };
       };
     };
 
-    # Set cursor style
-    stylix = lib.mkIf config.jhome.styling.enable { inherit cursor; };
+    stylix = lib.mkIf config.jhome.styling.enable {
+      # Set cursor style
+      inherit cursor;
+      targets.firefox.profileNames = [ config.home.username ];
+    };
     home.pointerCursor = lib.mkIf config.jhome.styling.enable (
       lib.mkDefault {
         gtk.enable = true;
@@ -170,10 +242,7 @@ in
       gtk4.extraConfig.gtk-application-prefer-dark-theme = 1;
     };
     # Set Qt theme
-    qt = lib.mkIf config.jhome.styling.enable {
-      enable = true;
-      platformTheme.name = "gtk";
-    };
+    qt = lib.mkIf config.jhome.styling.enable { enable = true; };
 
     xdg.systemDirs.data = [
       "/usr/share"

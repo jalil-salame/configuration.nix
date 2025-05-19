@@ -7,10 +7,10 @@ import typing
 import click
 
 
-def expect[T](typ: type[T], value: object) -> T:
-    if not isinstance(value, typ):
+def expect[T](type_: type[T], value: object) -> T:
+    if not isinstance(value, type_):
         raise ValueError(
-            f"expected value to be of type {typ} but was of type {type(value)}"
+            f"expected value to be of type {type_} but was of type {type(value)}"
         )
     return value
 
