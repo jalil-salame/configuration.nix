@@ -176,13 +176,16 @@ in
       zellij = {
         enable = cfg.terminal == "alacritty"; # alacritty has no terminal multiplexer built-in
         # Set default shell
-        settings.default_shell =
-          if config.programs.fish.enable then
-            "fish"
-          else if config.programs.zsh.enable then
-            "zsh"
-          else
-            "bash";
+        settings = {
+          show_startup_tips = false; # disable the startup tips dialogue
+          default_shell =
+            if config.programs.fish.enable then
+              "fish"
+            else if config.programs.zsh.enable then
+              "zsh"
+            else
+              "bash";
+        };
       };
       # PDF reader
       zathura.enable = true;
