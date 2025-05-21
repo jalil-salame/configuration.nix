@@ -24,7 +24,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     stylix = {
-      url = "github:nix-community/stylix/master"; # FIXME: pin to 25.05 once released
+      url = "github:nix-community/stylix/release-25.05";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         flake-parts.follows = "flake-parts";
