@@ -1,5 +1,5 @@
 { writers, python3Packages }:
-writers.writePython3 "audiomenu" {
+writers.writePython3Bin "audiomenu" {
   libraries = [ python3Packages.click ];
 
   flakeIgnore = [
