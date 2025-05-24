@@ -64,6 +64,7 @@ in
         enable = true;
         profiles."${config.home.username}" = {
           search = {
+            force = true; # firefox replaces the search settings, force replace them back
             engines =
               let
                 queryParam = name: value: { inherit name value; };
