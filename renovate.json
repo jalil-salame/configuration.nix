@@ -13,11 +13,6 @@
     "config:best-practices"
   ],
   "nix": {
-    "fileMatch": [
-      "(^|/)flake\\.nix$"
-    ],
-    "commitMessageTopic": "nixpkgs",
-    "commitMessageExtra": "to {{newValue}}",
     "enabled": true
   },
   "lockFileMaintenance": {
