@@ -6,7 +6,7 @@
   flake.homeModules =
     let
       defaultModules = [
-        inputs.nixvim.homeManagerModules.nixvim
+        inputs.nixvim.homeModules.nixvim
         self.nixvimModules.homeManager
         ../modules/hm
       ];
@@ -15,7 +15,7 @@
       };
       standalone = {
         imports = defaultModules ++ [
-          inputs.stylix.homeManagerModules.stylix
+          inputs.stylix.homeModules.stylix
           (
             { lib, config, ... }:
             lib.mkIf config.jhome.gui.enable {
