@@ -1,28 +1,65 @@
 on:
   push:
 jobs:
-  check:
+  check-fmt:
     runs-on: nixos
     steps:
-      - uses: "https://git.salame.cl/actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683" # v4
+      - uses: https://git.salame.cl/actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - run: nix --version
-      - name: Run checks
+      - name: Run treefmt
         run: |
-          nix-fast-build --max-jobs 2 --no-nom --skip-cached --no-link \
-            --flake ".#checks.$(nix eval --raw --impure --expr builtins.currentSystem)"
-  build-packages:
+          nix build --print-build-logs ".#checks.$(nix eval --raw --impure --expr builtins.currentSystem).treefmt"
+  build-package:
     runs-on: nixos
-    needs: check
+    needs: check-fmt
+    strategy:
+      matrix:
+        package:
+          - audiomenu
+          - docs
+          - docs-home-markdown
+          - docs-nixos-markdown
+          - docs-nvim-markdown
+          - jpassmenu
+          - nvim
+          - nvim-headless
+          - nvim-no-lsps
+          - nvim-no-ts
+          - nvim-small
+          - search
     steps:
       - uses: "https://git.salame.cl/actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683" # v4
       - run: nix --version
       - name: Build target
+        env:
+          PACKAGE: ${{ matrix.package }}
         run: |
-          nix-fast-build --max-jobs 1 --no-nom --skip-cached --no-link \
-            --flake ".#packages.$(nix eval --raw --impure --expr builtins.currentSystem)"
+          # shellcheck disable=SC2016
+          nix build --print-build-logs ".#$PACKAGE"
+  check-nvim:
+    runs-on: nixos
+    needs: build-package
+    strategy:
+      matrix:
+        nvim:
+          - nvim
+          - nvim-headless
+          - nvim-no-lsps
+          - nvim-no-ts
+          - nvim-small
+    steps:
+      - uses: "https://git.salame.cl/actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683" # v4
+      - run: nix --version
+      - name: Build target
+        env:
+          NVIM: ${{ matrix.nvim }}
+        run: |
+          nix build --print-build-logs ".#checks.$(nix eval --raw --impure --expr builtins.currentSystem).$NVIM"
   build-vm:
     runs-on: nixos
-    needs: build-packages
+    needs:
+      - build-package
+      - check-nvim
     steps:
       - uses: "https://git.salame.cl/actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683" # v4
       - run: nix --version
@@ -32,7 +69,6 @@ jobs:
   report-size:
     runs-on: nixos
     needs:
-      - build-packages
       - build-vm
     steps:
       - uses: "https://git.salame.cl/actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683" # v4
