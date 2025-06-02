@@ -13,6 +13,7 @@ let
     "basedpyright"
     "bashls"
     "clangd"
+    "gopls"
     # "html" # Not writing html
     "jsonls"
     "marksman"
@@ -56,6 +57,7 @@ in
               # Configure the LSPs, but don't install the packages.
               # If you need to use them, add them to your project's devShell
               clangd = noPackage;
+              gopls = noPackage;
               zls = noPackage;
             };
           };
