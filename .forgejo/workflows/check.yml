@@ -66,10 +66,22 @@ jobs:
       - name: Build VM configuration
         run: |
           nix build --print-build-logs '.#nixosConfigurations.vm.config.system.build.toplevel'
+  build-hm:
+    runs-on: nixos
+    needs:
+      - build-package
+      - check-nvim
+    steps:
+      - uses: "https://git.salame.cl/actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683" # v4
+      - run: nix --version
+      - name: Build Home Manager configuration
+        run: |
+          nix build --print-build-logs '.#homeConfigurations.example.activationPackage'
   report-size:
     runs-on: nixos
     needs:
       - build-vm
+      - build-hm
     steps:
       - uses: "https://git.salame.cl/actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683" # v4
       - run: nix --version

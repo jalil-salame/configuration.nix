@@ -5,7 +5,7 @@
 
     ./devshells.nix
     ./docs.nix
-    ./example-vm.nix
+    ./example-configs.nix
     ./nixos-modules.nix
     ./home-modules.nix
     ./nixvim-modules.nix
