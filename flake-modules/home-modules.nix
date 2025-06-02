@@ -1,7 +1,6 @@
 { self, inputs, ... }:
 {
-  # FIXME(25.05): this version of HM should have the flake module
-  # imports = [ inputs.home-manager.flakeModules.home-manager ];
+  imports = [ inputs.home-manager.flakeModules.home-manager ];
 
   flake.homeModules =
     let
