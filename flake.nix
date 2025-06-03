@@ -12,7 +12,7 @@
     unstable.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.xz";
     # Lix
     lix-module = {
-      url = "https://git.lix.systems/lix-project/nixos-module/archive/release-2.92.tar.gz";
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/release-2.93.tar.gz";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         flake-utils.inputs.systems.follows = "systems";
