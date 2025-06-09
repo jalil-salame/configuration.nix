@@ -353,15 +353,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1749419246,
-        "narHash": "sha256-rQctLGA1kF8B/wLIe7TTy+mQk23/zkkKzy/dr3nCAvE=",
+        "lastModified": 1749507435,
+        "narHash": "sha256-EHlfZyOywnFxU3f7bgaEio073LO/HwqQjdTQRKaqUuk=",
         "owner": "NuschtOS",
         "repo": "search",
-        "rev": "b8a5bb93097d5a5f51c2ca136d1fe33e06188f31",
+        "rev": "ca64563e12ec6f54842bb6182a3d2b9517d54bed",
         "type": "github"
       },
       "original": {
         "owner": "NuschtOS",
+        "ref": "pull/232/head",
         "repo": "search",
         "type": "github"
       }

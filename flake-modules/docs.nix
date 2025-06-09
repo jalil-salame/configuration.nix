@@ -62,7 +62,7 @@
             ''; # FIXME: only add the `/configuration.nix/` part for GH CI
 
             nativeBuildInputs = [ pkgs.mdbook-toc ];
-            buildPhase = "${pkgs.mdbook}/bin/mdbook build --dest-dir \"$out\"";
+            buildPhase = "${pkgs.mdbook}/bin/mdbook build --dest-dir $out";
           };
         };
     };

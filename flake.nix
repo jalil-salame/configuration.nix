@@ -57,7 +57,7 @@
     };
     # For generating the docs (can be set to null)
     nuschtosSearch = {
-      url = "github:NuschtOS/search";
+      url = "github:NuschtOS/search/pull/232/head"; # fix
       inputs = {
         nixpkgs.follows = "nixpkgs";
         flake-utils.follows = "lix-module/flake-utils";
