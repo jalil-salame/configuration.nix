@@ -97,8 +97,6 @@ in
           input."type:keyboard" = {
             repeat_delay = "300";
             repeat_rate = "50";
-            xkb_options = "caps:swapescape,compose:ralt";
-            xkb_numlock = "enabled";
           };
           # Touchpad
           input."type:touchpad" = {
