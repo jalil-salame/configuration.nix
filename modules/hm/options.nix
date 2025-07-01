@@ -209,8 +209,6 @@ in
                   options.extraPackages = mkExtraPackagesOption "Rust" [
                     [ "cargo-insta" ] # snapshot testing
                     [ "cargo-nextest" ] # better testing harness
-                    [ "cargo-udeps" ] # check for unused dependencies (requires nightly)
-                    [ "cargo-watch" ] # watch for file changes and run commands
                   ];
                 };
               };
