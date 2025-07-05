@@ -16,10 +16,6 @@ let
     size = 48;
     name = "Nordzy-cursors";
   };
-  iconTheme = {
-    name = "Papirus-Dark";
-    package = pkgs.papirus-icon-theme;
-  };
 in
 {
   imports = [
@@ -134,7 +130,6 @@ in
       fuzzel = {
         enable = true;
         settings.main = lib.mkIf config.jhome.styling.enable {
-          icon-theme = "Papirus-Dark";
           inherit (cfg) terminal;
           layer = "overlay";
         };
@@ -231,6 +226,12 @@ in
       # Set cursor style
       inherit cursor;
       targets.firefox.profileNames = [ config.home.username ];
+      iconTheme = {
+        enable = true;
+        light = "Papirus-Light";
+        dark = "Papirus-Dark";
+        package = pkgs.papirus-icon-theme;
+      };
     };
     home.pointerCursor = lib.mkIf config.jhome.styling.enable (
       lib.mkDefault {
@@ -241,7 +242,6 @@ in
     # Set Gtk theme
     gtk = lib.mkIf config.jhome.styling.enable {
       enable = true;
-      inherit iconTheme;
       gtk3.extraConfig.gtk-application-prefer-dark-theme = 1;
       gtk4.extraConfig.gtk-application-prefer-dark-theme = 1;
     };
