@@ -30,10 +30,6 @@
         flake-parts.follows = "flake-parts";
         systems.follows = "systems";
         nur.follows = "";
-
-        home-manager.follows = "home-manager";
-        # disable optional inputs
-        flake-compat.follows = "";
       };
     };
     nixvim = {
