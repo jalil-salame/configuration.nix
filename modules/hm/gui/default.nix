@@ -169,20 +169,8 @@ in
           };
         };
       };
-      zellij = {
-        enable = cfg.terminal == "alacritty"; # alacritty has no terminal multiplexer built-in
-        # Set default shell
-        settings = {
-          show_startup_tips = false; # disable the startup tips dialogue
-          default_shell =
-            if config.programs.fish.enable then
-              "fish"
-            else if config.programs.zsh.enable then
-              "zsh"
-            else
-              "bash";
-        };
-      };
+      # alacritty has no terminal multiplexer built-in use zellij
+      zellij.enable = cfg.terminal == "alacritty";
       # PDF reader
       zathura.enable = true;
       # Auto start sway

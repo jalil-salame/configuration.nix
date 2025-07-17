@@ -172,6 +172,19 @@ in
                 '';
               };
             };
+
+            # configure zellij without enabling it
+            zellij.settings = {
+              show_startup_tips = false; # disable the startup tips dialogue
+              # Set default shell
+              default_shell =
+                if config.programs.fish.enable then
+                  "fish"
+                else if config.programs.zsh.enable then
+                  "zsh"
+                else
+                  "bash";
+            };
           };
         }
       ];
