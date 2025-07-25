@@ -2,9 +2,6 @@ name: Check flake
 on:
   push:
     branches: [main]
-    path:
-      - ./**.nix
-      - ./flake.lock
   pull_request:
 
 jobs:
@@ -12,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-      - uses:  DeterminateSystems/nix-installer-action@v13
+      - uses:  DeterminateSystems/nix-installer-action@v19
         with:
           source-url: "https://install.lix.systems/lix/lix-installer-x86_64-linux"
           diagnostic-endpoint: ""
@@ -24,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-      - uses:  DeterminateSystems/nix-installer-action@v13
+      - uses:  DeterminateSystems/nix-installer-action@v19
         with:
           source-url: "https://install.lix.systems/lix/lix-installer-x86_64-linux"
           diagnostic-endpoint: ""

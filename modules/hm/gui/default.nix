@@ -35,7 +35,8 @@ in
       pkgs.noto-fonts-cjk-sans # Chinese, Japanese and Korean characters
       pkgs.noto-fonts-cjk-serif # Chinese, Japanese and Korean characters
       pkgs.nerd-fonts.symbols-only
-    ] ++ lib.optional flatpakEnabled pkgs.flatpak;
+    ]
+    ++ lib.optional flatpakEnabled pkgs.flatpak;
     fonts.fontconfig = {
       enable = true;
       defaultFonts = lib.mkIf config.jhome.styling.enable {
