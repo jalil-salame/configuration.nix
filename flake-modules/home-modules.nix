@@ -9,22 +9,25 @@
         self.nixvimModules.homeManager
         ../modules/hm
       ];
-      nixos = {
-        imports = defaultModules;
-      };
-      standalone = {
-        imports = defaultModules ++ [
-          inputs.stylix.homeModules.stylix
-          (
-            { lib, config, ... }:
-            lib.mkIf config.jhome.gui.enable {
-              stylix.image = config.jhome.gui.sway.background;
-            }
-          )
-        ];
-      };
     in
     {
-      inherit standalone nixos;
+      nixos.imports = defaultModules;
+      standalone.imports = defaultModules ++ [
+        inputs.stylix.homeModules.stylix
+        (
+          { lib, config, ... }:
+          lib.mkMerge [
+            {
+              nixpkgs.overlays = [
+                inputs.self.overlays.unstable
+                inputs.lix-module.overlays.default
+              ];
+            }
+            (lib.mkIf config.jhome.gui.enable {
+              stylix.image = config.jhome.gui.sway.background;
+            })
+          ]
+        )
+      ];
     };
 }

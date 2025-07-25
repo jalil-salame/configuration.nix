@@ -21,12 +21,6 @@
       modules = [
         inputs.self.homeModules.standalone
         ../example-hm/home.nix # import home-manager configuration
-        {
-          nixpkgs.overlays = [
-            inputs.self.overlays.unstable
-            inputs.lix-module.overlays.default
-          ];
-        }
       ];
     };
   };
