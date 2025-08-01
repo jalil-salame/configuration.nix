@@ -24,6 +24,7 @@ def select(options: list[str]) -> int | None:
 @click.option(
     "--type",
     "typeit",
+    is_flag=True,
     help="Type the password using ydotool instead of copying it to the clipboard",
 )
 @click.option(
