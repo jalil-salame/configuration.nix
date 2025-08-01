@@ -1,70 +1,22 @@
 { lib, pkgs, ... }@attrs:
 let
-  osConfig = attrs.osConfig or null;
+  inherit (import ../lib.nix { inherit lib; })
+    fromOsOptions
+    mkDisableOption
+    mkExtraPackagesOption'
+    ;
+
+  mkExtraPackagesOption = mkExtraPackagesOption' pkgs;
+
+  inherit (fromOsOptions attrs)
+    mkFromOsOption
+    mkFromConfigOption
+    mkFromConfigImageOption
+    mkFromConfigEnableOption
+    mkFromConfigDisableOption
+    ;
+
   inherit (lib) types;
-  fromOs =
-    let
-      get =
-        path: set:
-        if path == [ ] then set else get (builtins.tail path) (builtins.getAttr (builtins.head path) set);
-    in
-    path: default: if osConfig == null then default else get path osConfig;
-  fromConfig = path: default: fromOs ([ "jconfig" ] ++ path) default;
-
-  mkFromConfigOption =
-    {
-      description,
-      type,
-      path,
-      default,
-    }:
-    lib.mkOption {
-      inherit description type;
-      default = fromConfig path default;
-      defaultText =
-        lib.concatStringsSep "." (
-          [
-            "osConfig"
-            "jconfig"
-          ]
-          ++ path
-        )
-        + " or ${builtins.toString default}";
-    };
-
-  mkFromConfigEnableOption =
-    description: path:
-    mkFromConfigOption {
-      description = "Whether to enable ${description}.";
-      type = types.bool;
-      inherit path;
-      default = true;
-    };
-
-  mkFromConfigDisableOption =
-    description: path:
-    mkFromConfigOption {
-      description = "Whether to enable ${description}.";
-      type = types.bool;
-      inherit path;
-      default = false;
-    };
-
-  mkExtraPackagesOption =
-    name: defaultPkgsPath:
-    let
-      text = lib.strings.concatMapStringsSep " " (
-        pkgPath: "pkgs." + (lib.strings.concatStringsSep "." pkgPath)
-      ) defaultPkgsPath;
-      defaultText = lib.literalExpression "[ ${text} ]";
-      default = builtins.map (pkgPath: lib.attrsets.getAttrFromPath pkgPath pkgs) defaultPkgsPath;
-    in
-    lib.mkOption {
-      description = "Extra ${name} Packages.";
-      type = types.listOf types.package;
-      inherit default defaultText;
-      example = [ ];
-    };
 
   identity.options = {
     email = lib.mkOption {
@@ -122,17 +74,14 @@ let
       "gui"
       "sway"
     ];
-    background = mkFromConfigOption {
+    background = mkFromConfigImageOption {
       description = "The wallpaper to use.";
-      type = types.path;
       path = [
         "styling"
         "wallpaper"
       ];
-      default = builtins.fetchurl {
-        url = "https://raw.githubusercontent.com/lunik1/nixos-logo-gruvbox-wallpaper/d4937c424fad79c1136a904599ba689fcf8d0fad/png/gruvbox-dark-rainbow.png";
-        sha256 = "036gqhbf6s5ddgvfbgn6iqbzgizssyf7820m5815b2gd748jw8zc";
-      };
+      url = "https://raw.githubusercontent.com/lunik1/nixos-logo-gruvbox-wallpaper/d4937c424fad79c1136a904599ba689fcf8d0fad/png/gruvbox-dark-rainbow.png";
+      sha256 = "036gqhbf6s5ddgvfbgn6iqbzgizssyf7820m5815b2gd748jw8zc";
     };
     autostart = lib.mkOption {
       description = ''
@@ -202,14 +151,15 @@ in
     type = types.submodule {
       options = {
         enable = lib.mkEnableOption "jalil's home defaults";
-        hostName = lib.mkOption {
+        hostName = mkFromOsOption {
           description = "The hostname of this system.";
           type = types.str;
-          default = fromOs [
+          path = [
             "networking"
             "hostName"
-          ] "nixos";
-          example = "my pc";
+          ];
+          default = "nixos";
+          example = "my-cool-pc-name";
         };
         dev = lib.mkOption {
           description = "Setup development environment for programming languages.";
