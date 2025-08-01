@@ -11,6 +11,45 @@ let
     path: default: if osConfig == null then default else get path osConfig;
   fromConfig = path: default: fromOs ([ "jconfig" ] ++ path) default;
 
+  mkFromConfigOption =
+    {
+      description,
+      type,
+      path,
+      default,
+    }:
+    lib.mkOption {
+      inherit description type;
+      default = fromConfig path default;
+      defaultText =
+        lib.concatStringsSep "." (
+          [
+            "osConfig"
+            "jconfig"
+          ]
+          ++ path
+        )
+        + " or ${builtins.toString default}";
+    };
+
+  mkFromConfigEnableOption =
+    description: path:
+    mkFromConfigOption {
+      description = "Whether to enable ${description}.";
+      type = types.bool;
+      inherit path;
+      default = true;
+    };
+
+  mkFromConfigDisableOption =
+    description: path:
+    mkFromConfigOption {
+      description = "Whether to enable ${description}.";
+      type = types.bool;
+      inherit path;
+      default = false;
+    };
+
   mkExtraPackagesOption =
     name: defaultPkgsPath:
     let
@@ -79,27 +118,21 @@ let
   };
 
   sway.options = {
-    enable = lib.mkEnableOption "sway" // {
-      default = fromConfig [
-        "gui"
-        "sway"
-      ] true;
-    };
-    background = lib.mkOption {
+    enable = mkFromConfigDisableOption "Enable sway" [
+      "gui"
+      "sway"
+    ];
+    background = mkFromConfigOption {
       description = "The wallpaper to use.";
       type = types.path;
-      default =
-        fromConfig
-          [
-            "styling"
-            "wallpaper"
-          ]
-          (
-            builtins.fetchurl {
-              url = "https://raw.githubusercontent.com/lunik1/nixos-logo-gruvbox-wallpaper/d4937c424fad79c1136a904599ba689fcf8d0fad/png/gruvbox-dark-rainbow.png";
-              sha256 = "036gqhbf6s5ddgvfbgn6iqbzgizssyf7820m5815b2gd748jw8zc";
-            }
-          );
+      path = [
+        "styling"
+        "wallpaper"
+      ];
+      default = builtins.fetchurl {
+        url = "https://raw.githubusercontent.com/lunik1/nixos-logo-gruvbox-wallpaper/d4937c424fad79c1136a904599ba689fcf8d0fad/png/gruvbox-dark-rainbow.png";
+        sha256 = "036gqhbf6s5ddgvfbgn6iqbzgizssyf7820m5815b2gd748jw8zc";
+      };
     };
     autostart = lib.mkOption {
       description = ''
@@ -137,12 +170,10 @@ let
   };
 
   gui.options = {
-    enable = lib.mkEnableOption "GUI applications" // {
-      default = fromConfig [
-        "gui"
-        "enable"
-      ] false;
-    };
+    enable = mkFromConfigEnableOption "GUI applications" [
+      "gui"
+      "enable"
+    ];
     tempInfo = lib.mkOption {
       description = "Temperature info to display in the statusbar.";
       default = null;
@@ -185,12 +216,10 @@ in
           default = { };
           type = types.submodule {
             options = {
-              enable = lib.mkEnableOption "development settings" // {
-                default = fromConfig [
-                  "dev"
-                  "enable"
-                ] false;
-              };
+              enable = mkFromConfigEnableOption "development settings" [
+                "dev"
+                "enable"
+              ];
               neovimAsManPager = lib.mkEnableOption "neovim as the man pager";
               extraPackages = mkExtraPackagesOption "dev" [
                 # FIXME: readd on new lix version with fix [ "devenv" ] # a devshell alternative
@@ -229,14 +258,10 @@ in
           description = "My custom styling (uses stylix)";
           default = { };
           type = types.submodule {
-            options = {
-              enable = lib.mkEnableOption "styling" // {
-                default = fromConfig [
-                  "styling"
-                  "enable"
-                ] true;
-              };
-            };
+            options.enable = mkFromConfigEnableOption "styling" [
+              "styling"
+              "enable"
+            ];
           };
         };
       };
