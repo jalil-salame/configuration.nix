@@ -9,25 +9,29 @@
         self.nixvimModules.homeManager
         ../modules/hm
       ];
-    in
-    {
-      nixos.imports = defaultModules;
-      standalone.imports = defaultModules ++ [
-        inputs.stylix.homeModules.stylix
-        (
-          { lib, config, ... }:
-          lib.mkMerge [
+      standaloneModule =
+        { lib, config, ... }:
+        let
+          cfg = config.jhome;
+        in
+        {
+          imports = [ (import ../modules/shared/starship.nix { inherit cfg; }) ];
+          config = lib.mkMerge [
             {
               nixpkgs.overlays = [
                 inputs.self.overlays.unstable
                 inputs.lix-module.overlays.default
               ];
             }
-            (lib.mkIf config.jhome.gui.enable {
-              stylix.image = config.jhome.gui.sway.background;
-            })
-          ]
-        )
+            (lib.mkIf cfg.gui.enable { stylix.image = cfg.gui.sway.background; })
+          ];
+        };
+    in
+    {
+      nixos.imports = defaultModules;
+      standalone.imports = defaultModules ++ [
+        inputs.stylix.homeModules.stylix
+        standaloneModule
       ];
     };
 }

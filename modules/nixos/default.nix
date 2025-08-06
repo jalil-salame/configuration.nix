@@ -17,8 +17,8 @@ in
     ./options.nix
     ./dev.nix
     ./gui.nix
-    ./starship.nix
     ./styling.nix
+    (import ../shared/starship.nix { inherit cfg; })
   ];
 
   config = lib.mkIf cfg.enable {
