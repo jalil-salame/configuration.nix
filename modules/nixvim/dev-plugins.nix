@@ -63,8 +63,10 @@ in
           };
           lspkind = {
             enable = true;
-            mode = "symbol";
-            extraOptions.maxwidth = 50;
+            settings = {
+              mode = "symbol";
+              maxwidth = 50;
+            };
           };
           lsp-lines.enable = true;
         };
