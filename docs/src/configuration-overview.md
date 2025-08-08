@@ -40,7 +40,7 @@ using `~/.config/nixos`. You then want to run `nixos-generate-config --root /mnt
 have `configuration.nix` and `hardware-configuration.nix` inside
 `~/.config/nixos`. I like renaming `configuration.nix` to `default.nix` and
 putting it in a folder with the same hostname as the machine (See [the source
-repo](https://github.com/jalil-salame/configuration.nix/tree/main/machines)).
+repo](https://github.com/jalil-salame/configuration.nix/tree/main/example-vm)).
 
 Now you can add a `flake.nix` file to your `~/.config/nixos` and make it a flake
 based configuration. This is the general structure you'll want:
@@ -55,15 +55,8 @@ based configuration. This is the general structure you'll want:
   outputs = { self, nixpkgs, config }: let
     pc = import (./. + hostname);
     hostname = "nixos";
-    system = "x86_64-linux";
-    overlays = builtins.attrValues config.overlays;
-    config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-      "steam-original"
-    ];
-    pkgs = import nixpkgs { inherit system overlays config; };
   in {
     nixosConfigurations.${hostname} = nixpkgs.lib.nixosSystem {
-      inherit system pkgs;
       modules = [
         # My configuration module (includes home-manager)
         config.nixosModules.nixosModule
@@ -71,6 +64,11 @@ based configuration. This is the general structure you'll want:
         pc
         # Custom options (see module configuration options)
         {
+          nixpkgs = {
+            overlays = builtins.attrValues inputs.self.overlays;
+            config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ "steam-unwrapped" ];
+          };
+
           # Enable my custom configuration
           jconfig.enable = true;
           jconfig.gui.enable = true; # Enable gui environment
@@ -93,6 +91,10 @@ based configuration. This is the general structure you'll want:
 
 Now you should be ready to do `sudo nixos-rebuild switch --flake .#$hostname`
 and use the configuration c:.
+
+See the [example
+configuration](https://github.com/jalil-salame/configuration.nix/tree/main/example-vm))
+for a more up to date configuration.
 
 ### home-manager Module Setup
 
@@ -119,15 +121,12 @@ for more information):
   outputs = { self, nixpkgs, home-manager, config }: let
     hostname = "nixos";
     username = "jdoe";
-    system = "x86_64-linux";
-    overlays = builtins.attrValues config.overlays;
-    pkgs = import nixpkgs { inherit system overlays; };
   in {
     homeConfigurations.${username} = home-manager.lib.homeManagerConfiguration {
-      inherit pkgs;
+      pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
       modules = [
         # My configuration module (includes home-manager)
-        config.nixosModules.homeManagerModuleSandalone
+        config.homeModules.standalone
         # Custom options (see module configuration options and home-manager options)
         {
           # Enable my custom configuration
@@ -142,6 +141,10 @@ for more information):
   };
 }
 ```
+
+See the [example
+configuration](https://github.com/jalil-salame/configuration.nix/tree/main/example-hm))
+for a more up to date configuration.
 
 ### NeoVIM Standalone setup
 
