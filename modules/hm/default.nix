@@ -8,9 +8,6 @@
 let
   cfg = config.jhome;
   devcfg = cfg.dev;
-  # Query the osConfig for a setting. Return the default value if missing or in standalone mode
-  fromOs =
-    path: default: if osConfig == null then default else lib.attrsets.attrByPath path default osConfig;
 in
 {
   imports = [
@@ -51,12 +48,9 @@ in
           randomizedDelaySec = "45min";
         };
 
-        # Use XDG directories
-        settings.use-xdg-base-directories = fromOs [
-          "nix"
-          "settings"
-          "use-xdg-base-directories"
-        ] true;
+        # Use XDG directories if in standalone mode, in NixOS module mode use
+        # the NixOS settings to set this.
+        settings.use-xdg-base-directories = osConfig == null;
       };
 
       programs = {

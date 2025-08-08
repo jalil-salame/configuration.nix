@@ -56,13 +56,7 @@ in
     attrs:
     let
       osConfig = attrs.osConfig or null;
-      fromOs =
-        let
-          get =
-            path: set:
-            if path == [ ] then set else get (builtins.tail path) (builtins.getAttr (builtins.head path) set);
-        in
-        path: default: if osConfig == null then default else get path osConfig;
+      fromOs = path: default: if osConfig == null then default else lib.getAttrByPath path osConfig;
 
       mkFromOsOption =
         {
