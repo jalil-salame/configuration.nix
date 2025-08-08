@@ -150,7 +150,7 @@ in
               dir2resize.right = "resize grow width";
               dir2resize.left = "resize shrink width";
               # Bind a key combo to an action
-              genKeybind = prefix: action: key: { "${prefix key}" = "${action key}"; };
+              genKeybind = prefix: action: key: { ${prefix key} = action key; };
               genKey =
                 prefix: action: genKeybind ({ key, ... }: prefix key) ({ direction, ... }: action direction);
               genArrow =

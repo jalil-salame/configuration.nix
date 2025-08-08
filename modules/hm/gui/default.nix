@@ -53,7 +53,7 @@ in
     programs = {
       firefox = {
         enable = true;
-        profiles."${config.home.username}" = {
+        profiles.${config.home.username} = {
           search = {
             force = true; # firefox replaces the search settings, force replace them back
             engines =
