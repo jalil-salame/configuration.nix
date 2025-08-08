@@ -5,7 +5,7 @@ let
     name = "pubkeys/${username}";
     value = {
       mode = "0755";
-      source = builtins.fetchurl {
+      source = pkgs.fetchurl {
         inherit sha256;
         url = "https://github.com/${username}.keys";
       };

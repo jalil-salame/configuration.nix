@@ -166,7 +166,7 @@ in
           mouse.hide_when_typing = true;
           # Start zellij when it is enabled
           terminal.shell = lib.mkIf (config.jhome.dev.enable && config.programs.zellij.enable) {
-            program = "${lib.getExe config.programs.zellij.package}";
+            program = lib.getExe config.programs.zellij.package;
           };
         };
       };

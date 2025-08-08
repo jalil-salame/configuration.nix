@@ -2,36 +2,43 @@
 {
   imports = [ inputs.home-manager.flakeModules.home-manager ];
 
-  flake.homeModules =
-    let
-      defaultModules = [
-        inputs.nixvim.homeModules.nixvim
-        self.nixvimModules.homeManager
-        ../modules/hm
-      ];
-      standaloneModule =
-        { lib, config, ... }:
+  flake =
+    { lib, ... }:
+    {
+      homeModules =
         let
-          cfg = config.jhome;
+          defaultModules = [
+            inputs.nixvim.homeModules.nixvim
+            self.nixvimModules.homeManager
+            ../modules/hm
+          ];
+          standaloneModule =
+            { lib, config, ... }:
+            let
+              cfg = config.jhome;
+            in
+            {
+              imports = [ (import ../modules/shared/starship.nix { inherit cfg; }) ];
+              config = lib.mkMerge [
+                {
+                  nixpkgs.overlays = [
+                    inputs.self.overlays.unstable
+                    inputs.lix-module.overlays.default
+                  ];
+                }
+                (lib.mkIf cfg.gui.enable { stylix.image = cfg.gui.sway.background; })
+              ];
+            };
         in
         {
-          imports = [ (import ../modules/shared/starship.nix { inherit cfg; }) ];
-          config = lib.mkMerge [
-            {
-              nixpkgs.overlays = [
-                inputs.self.overlays.unstable
-                inputs.lix-module.overlays.default
-              ];
-            }
-            (lib.mkIf cfg.gui.enable { stylix.image = cfg.gui.sway.background; })
-          ];
+          nixos = lib.mkMerge defaultModules;
+          standalone = lib.mkMerge (
+            defaultModules
+            ++ [
+              inputs.stylix.homeModules.stylix
+              standaloneModule
+            ]
+          );
         };
-    in
-    {
-      nixos.imports = defaultModules;
-      standalone.imports = defaultModules ++ [
-        inputs.stylix.homeModules.stylix
-        standaloneModule
-      ];
     };
 }

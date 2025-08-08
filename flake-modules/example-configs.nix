@@ -11,8 +11,6 @@
             overlays = builtins.attrValues inputs.self.overlays;
             config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ "steam-unwrapped" ];
           };
-          # pin nixpkgs to the one used by the system
-          nix.registry.nixpkgs.flake = inputs.nixpkgs;
         }
       ];
     };
@@ -21,6 +19,8 @@
       modules = [
         inputs.self.homeModules.standalone
         ../example-hm/home.nix # import home-manager configuration
+        # pin nixpkgs to the version used to build this generation
+        { nix.registry.nixpkgs.flake = inputs.nixpkgs; }
       ];
     };
   };
