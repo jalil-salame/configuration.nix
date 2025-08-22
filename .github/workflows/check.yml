@@ -3,30 +3,38 @@ on:
   push:
     branches: [main]
   pull_request:
-
 jobs:
-  check:
+  check-fmt:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
-      - uses:  DeterminateSystems/nix-installer-action@v19
+      - uses: samueldr/lix-gha-installer-action@latest
+      - run: nix build --print-build-logs ".#checks.x86_64-linux.treefmt"
+  build:
+    needs:
+      - check-fmt
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+      - uses: samueldr/lix-gha-installer-action@latest
+      - uses: ./.github/local/cached-build
         with:
-          source-url: "https://install.lix.systems/lix/lix-installer-x86_64-linux"
-          diagnostic-endpoint: ""
-      - name: Run `nix flake check`
-        run: |
-          nix flake check --verbose --keep-going
-          nix run nixpkgs#statix -- check .
+          derivations: |
+            .#nvim
+            .#nvim-headless
+            .#nvim-no-lsps
+            .#nvim-no-ts
+            .#nvim-small
+            .#audiomenu
+            .#jpassmenu
+            .#homeConfigurations.example.activationPackage
+            .#nixosConfigurations.vm.config.system.build.toplevel
   build-docs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
-      - uses:  DeterminateSystems/nix-installer-action@v19
-        with:
-          source-url: "https://install.lix.systems/lix/lix-installer-x86_64-linux"
-          diagnostic-endpoint: ""
-      - name: Build documentation
-        run: nix build .#docs --print-build-logs
+      - uses: samueldr/lix-gha-installer-action@latest
+      - run: nix build --print-build-logs ".#docs"
       - name: Upload artifact
         uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4
         with:
