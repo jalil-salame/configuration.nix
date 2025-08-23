@@ -1,0 +1,28 @@
+name: 'Cached nix build'
+description: 'Build and cache nix derivations'
+inputs:
+  derivations:
+    description: |
+      The nix derivations to build (e.g. '.#my-package .#docs')
+    required: false
+    default: ".#"
+runs:
+  using: composite
+  steps:
+    - name: cache derivation
+      id: cache-drv
+      uses: actions/cache@v4
+      with:
+        path: /tmp/nix-drv-cache
+        key: ${{ runner.arch }}-${{ runner.os }}-drv-cache
+    - name: restore cache
+      # skip on cache miss
+      if: steps.cache-drv.outputs.cache-hit == 'true'
+      run: |
+        nix copy --all --no-check-sigs --from file:///tmp/nix-drv-cache
+    - name: build derivations and copy to cache
+      env:
+        DERIVATIONS: ${{ inputs.derivations }}
+      run: |
+        drvs=($DERIVATIONS)
+        nix copy --to file:///tmp/nix-drv-cache --print-build-logs "${drvs[@]}"
