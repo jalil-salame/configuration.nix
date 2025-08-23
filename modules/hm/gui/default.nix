@@ -209,6 +209,11 @@ in
           default-timeout = 15000;
         };
       };
+      # Nexcloud sync client
+      nextcloud-client = {
+        enable = true;
+        startInBackground = true;
+      };
     };
 
     stylix = lib.mkIf config.jhome.styling.enable {
