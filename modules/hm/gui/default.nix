@@ -23,10 +23,6 @@ in
 
   config = lib.mkIf (jhome.enable && cfg.enable) {
     home.packages = [
-      pkgs.webcord
-      pkgs.ferdium
-      pkgs.xournalpp
-      pkgs.signal-desktop
       pkgs.pcmanfm
       pkgs.wl-clipboard
       # Extra fonts
@@ -206,11 +202,6 @@ in
           border-radius = 8;
           default-timeout = 15000;
         };
-      };
-      # Nexcloud sync client
-      nextcloud-client = {
-        enable = true;
-        startInBackground = true;
       };
     };
 
