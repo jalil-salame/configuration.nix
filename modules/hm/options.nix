@@ -1,20 +1,21 @@
 { lib, pkgs, ... }@attrs:
 let
-  inherit (import ../lib.nix { inherit lib; })
-    fromOsOptions
+  jalilLib = import ../lib.nix { inherit lib; };
+  fromOsOptions = jalilLib.fromOsOptions attrs;
+  inherit (jalilLib)
     mkDisableOption
     mkExtraPackagesOption'
     ;
 
-  mkExtraPackagesOption = mkExtraPackagesOption' pkgs;
-
-  inherit (fromOsOptions attrs)
+  inherit (fromOsOptions)
     mkFromOsOption
     mkFromConfigOption
     mkFromConfigImageOption
     mkFromConfigEnableOption
     mkFromConfigDisableOption
     ;
+
+  mkExtraPackagesOption = mkExtraPackagesOption' pkgs;
 
   inherit (lib) types;
 
@@ -145,6 +146,9 @@ let
   };
 in
 {
+  # add fromOs function to args
+  config._module.args = { inherit (fromOsOptions) fromOs; };
+
   options.jhome = lib.mkOption {
     description = "Jalil's default home-manager configuration.";
     default = { };

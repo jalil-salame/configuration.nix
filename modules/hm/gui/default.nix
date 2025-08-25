@@ -2,14 +2,12 @@
   config,
   lib,
   pkgs,
-  osConfig ? null,
+  fromOs,
   ...
 }:
 let
   inherit (config) jhome;
-  flatpakEnabled = if osConfig != null then osConfig.services.flatpak.enable else false;
-  osSway = osConfig == null && !osConfig.programs.sway.enable;
-  swayPkg = if osSway then pkgs.sway else null;
+  flatpakEnabled = fromOs [ "services" "flatpak" "enable" ] false;
   cfg = jhome.gui;
   cursor = {
     package = pkgs.nordzy-cursor-theme;

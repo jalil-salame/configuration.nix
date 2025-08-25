@@ -2,15 +2,12 @@
   config,
   pkgs,
   lib,
-  osConfig ? null,
+  fromOs,
   ...
-}:
+}@attrs:
 let
   cfg = config.jhome;
   devcfg = cfg.dev;
-  # Query the osConfig for a setting. Return the default value if missing or in standalone mode
-  fromOs =
-    path: default: if osConfig == null then default else lib.attrsets.attrByPath path default osConfig;
 in
 {
   imports = [
