@@ -5,16 +5,17 @@
   ...
 }:
 let
-  cfg = config.jhome.gui.sway;
+  cfgGui = config.jhome.gui;
+  cfg = cfgGui.sway;
 in
 {
-  config = lib.mkIf (config.jhome.enable && config.jhome.gui.enable && cfg.enable) {
+  config = lib.mkIf (config.jhome.enable && cfgGui.enable && cfg.enable) {
     # Window Manager
     wayland.windowManager.sway = {
       inherit (cfg) enable;
       config =
         let
-          inherit (config.jhome.gui) terminal;
+          inherit (cfgGui) terminal;
           termCmd =
             if terminal == "wezterm" then
               "wezterm start"
@@ -39,7 +40,7 @@ in
             smartBorders = "on";
             inner = 4;
           };
-          output."*".bg = "${cfg.background} fill";
+          output."*".bg = "${cfgGui.wallpaper} fill";
           # Window Appearance
           window = {
             border = 2;
@@ -191,7 +192,7 @@ in
                 "XF86AudioRaiseVolume" = "exec ${pkgs.avizo}/bin/volumectl up";
                 "XF86AudioLowerVolume" = "exec ${pkgs.avizo}/bin/volumectl down";
                 "XF86AudioMute" = "exec ${pkgs.avizo}/bin/volumectl toggle-mute";
-                "XF86ScreenSaver" = "exec ${pkgs.swaylock}/bin/swaylock --image ${cfg.background}";
+                "XF86ScreenSaver" = "exec ${pkgs.swaylock}/bin/swaylock --image ${cfgGui.wallpaper}";
                 "XF86MonBrightnessUp" = "exec ${pkgs.avizo}/bin/lightctl up";
                 "XF86MonBrightnessDown" = "exec ${pkgs.avizo}/bin/lightctl down";
                 # Floating

@@ -75,28 +75,6 @@ let
       "gui"
       "sway"
     ];
-    background = mkFromConfigImageOption {
-      description = "The wallpaper to use.";
-      path = [
-        "styling"
-        "wallpaper"
-      ];
-      url = "https://raw.githubusercontent.com/lunik1/nixos-logo-gruvbox-wallpaper/d4937c424fad79c1136a904599ba689fcf8d0fad/png/gruvbox-dark-rainbow.png";
-      sha256 = "036gqhbf6s5ddgvfbgn6iqbzgizssyf7820m5815b2gd748jw8zc";
-    };
-    autostart = lib.mkOption {
-      description = ''
-        Autostart Sway when logging in to /dev/tty1.
-
-        This will make it so `exec sway` is run when logging in to TTY1, if
-        you want a non-graphical session (ie. your GPU drivers are broken)
-        you can switch TTYs when logging in by using CTRL+ALT+F2 (for TTY2,
-        F3 for TTY3, etc).
-      '';
-      type = types.bool;
-      default = true;
-      example = false;
-    };
     exec = lib.mkOption {
       description = "Run commands when starting sway.";
       default = { };
@@ -124,6 +102,32 @@ let
       "gui"
       "enable"
     ];
+    wallpaper = mkFromConfigImageOption {
+      description = "The wallpaper to use.";
+      path = [
+        "styling"
+        "wallpaper"
+      ];
+      url = "https://raw.githubusercontent.com/lunik1/nixos-logo-gruvbox-wallpaper/d4937c424fad79c1136a904599ba689fcf8d0fad/png/gruvbox-dark-rainbow.png";
+      sha256 = "036gqhbf6s5ddgvfbgn6iqbzgizssyf7820m5815b2gd748jw8zc";
+    };
+    autostartWindowManager = lib.mkOption {
+      description = ''
+        Autostart a configured window manager when logging in to /dev/tty1. Set
+        to `"none"` to disable.
+
+        This will make it so `exec $windowManager` is run when logging in to
+        TTY1, if you want a non-graphical session (ie. your GPU drivers are
+        broken) you can switch TTYs when logging in by using CTRL+ALT+F2 (for
+        TTY2, F3 for TTY3, etc).
+      '';
+      type = types.enum [
+        "sway"
+        "none"
+      ];
+      default = "sway";
+      example = "none";
+    };
     tempInfo = lib.mkOption {
       description = "Temperature info to display in the statusbar.";
       default = null;

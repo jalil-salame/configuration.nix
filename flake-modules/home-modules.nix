@@ -13,21 +13,22 @@
             ../modules/hm
           ];
           standaloneModule =
-            { lib, config, ... }:
+            { pkgs, config, ... }:
             let
               cfg = config.jhome;
             in
             {
               imports = [ (import ../modules/shared/starship.nix { inherit cfg; }) ];
-              config = lib.mkMerge [
-                {
-                  nixpkgs.overlays = [
-                    inputs.self.overlays.unstable
-                    inputs.lix-module.overlays.default
-                  ];
-                }
-                (lib.mkIf cfg.gui.enable { stylix.image = cfg.gui.sway.background; })
-              ];
+              config = {
+                nixpkgs.overlays = [
+                  inputs.self.overlays.unstable
+                  inputs.lix-module.overlays.default
+                ];
+                stylix = {
+                  image = cfg.gui.wallpaper;
+                  base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-dark-hard.yaml";
+                };
+              };
             };
         in
         {

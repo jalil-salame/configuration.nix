@@ -172,13 +172,13 @@ in
       zellij.enable = cfg.terminal == "alacritty";
       # PDF reader
       zathura.enable = true;
-      # Auto start sway
+      # Auto start window manager
       fish.loginShellInit =
-        lib.optionalString cfg.sway.autostart # fish
+        lib.optionalString (cfg.autostartWindowManager != "none") # fish
           ''
             # Start Sway on login to TTY 1
             if test "$(tty)" = /dev/tty1
-              exec sway
+              exec ${cfg.autostartWindowManager}
             end
           '';
     };

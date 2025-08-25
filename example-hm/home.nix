@@ -60,11 +60,6 @@
     };
   };
 
-  stylix = {
-    image = config.jhome.gui.sway.background;
-    base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-dark-hard.yaml";
-  };
-
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 }
