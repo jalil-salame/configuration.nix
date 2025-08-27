@@ -203,11 +203,6 @@ in
           default-timeout = 15000;
         };
       };
-      # org.freedesktop.secrets service
-      pass-secret-service = {
-        inherit (config.programs.password-store) enable;
-        storePath = config.programs.password-store.settings.PASSWORD_STORE_DIR or null;
-      };
     };
 
     stylix = lib.mkIf config.jhome.styling.enable {
