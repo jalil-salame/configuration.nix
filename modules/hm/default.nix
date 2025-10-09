@@ -120,6 +120,36 @@ in
           package = pkgs.pass-nodmenu;
           settings.PASSWORD_STORE_DIR = "${config.xdg.dataHome}/pass";
         };
+        jujutsu = {
+          # Use the more up-to-date version of jj
+          package = pkgs.unstable.jujutsu;
+          settings = {
+            ui = lib.mkMerge [
+              # If `bat` is available use it as the pager
+              (lib.mkIf config.programs.bat.enable { pager = "bat"; })
+              # if hunk.nvim is enabled use it as a diff editor
+              (lib.mkIf config.programs.nixvim.plugins.hunk.enable {
+                diff-editor = [
+                  "nvim"
+                  "-c"
+                  "DiffEditor $left $right $output"
+                ];
+              })
+            ];
+            signing = lib.mkMerge [
+              {
+                # If we are signing on push, then drop signatures when rewriting commits otherwise sign commits authored by me
+                behavior = lib.mkDefault (
+                  if lib.attrsets.attrByPath [ "git" "sign-on-push" ] false config.programs.jujutsu.settings then
+                    "drop"
+                  else
+                    "own"
+                );
+                backend = lib.mkDefault "gpg";
+              }
+            ];
+          };
+        };
         # SSH
         ssh.enable = true;
         # cd replacement

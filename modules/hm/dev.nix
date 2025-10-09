@@ -138,22 +138,8 @@ in
             lazygit.enable = true;
             # Jujutsu (alternative DVCS (git-compatible))
             jujutsu = {
-              enable = true;
-              # Use the more up to date version of jj
-              package = pkgs.unstable.jujutsu;
+              enable = lib.mkDefault true;
               settings = {
-                ui = lib.mkMerge [
-                  # If `bat` is available use it as the pager
-                  (lib.mkIf config.programs.bat.enable { pager = "bat"; })
-                  # if hunk.nvim is enabled use it as a diff editor
-                  (lib.mkIf config.programs.nixvim.plugins.hunk.enable {
-                    diff-editor = [
-                      "nvim"
-                      "-c"
-                      "DiffEditor $left $right $output"
-                    ];
-                  })
-                ];
                 fix.tools = builtins.mapAttrs (tool: cmd: jjFormatters.${tool} cmd) nvimFormatters;
                 # mimic git commit --verbose by adding a diff
                 templates.draft_commit_description = ''

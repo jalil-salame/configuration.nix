@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 let
   inherit (config) jhome;
   inherit (cfg.defaultIdentity) signingKey;
@@ -19,13 +24,11 @@ in
       };
 
       jujutsu.settings = {
+        # Use the more up-to-date version of jj
         user = lib.mkIf (cfg.defaultIdentity != null) { inherit (cfg.defaultIdentity) name email; };
         git.sign-on-push = lib.mkDefault hasKey;
-        signing = lib.mkIf hasKey {
-          behaviour = "own";
-          backend = "gpg";
-          key = signingKey;
-        };
+        # Setup Key
+        signing = lib.mkIf hasKey { key = signingKey; };
       };
     };
 
