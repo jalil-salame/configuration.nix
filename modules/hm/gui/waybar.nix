@@ -60,7 +60,7 @@ in
             tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
             format = "{:%a, %d %b, %H:%M}";
           };
-          wireplumber = {
+          pulseaudio = {
             reverse-scrolling = 1;
             format = "{volume}% {icon} {format_source}";
             format-bluetooth = "{volume}% {icon} {format_source}";
