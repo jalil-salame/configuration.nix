@@ -6,7 +6,7 @@ jobs:
   check-fmt:
     runs-on: nixos
     steps:
-      - uses: https://git.salame.cl/actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+      - uses: https://git.salame.cl/actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
       - run: nix --version
       - name: Run treefmt
         run: |
@@ -30,7 +30,7 @@ jobs:
           - nvim-small
           - search
     steps:
-      - uses: "https://git.salame.cl/actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8" # v5
+      - uses: "https://git.salame.cl/actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd" # v5
       - run: nix --version
       - name: Build target
         env:
@@ -50,7 +50,7 @@ jobs:
           - nvim-no-ts
           - nvim-small
     steps:
-      - uses: "https://git.salame.cl/actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8" # v5
+      - uses: "https://git.salame.cl/actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd" # v5
       - run: nix --version
       - name: Build target
         env:
@@ -63,7 +63,7 @@ jobs:
       - build-package
       - check-nvim
     steps:
-      - uses: "https://git.salame.cl/actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8" # v5
+      - uses: "https://git.salame.cl/actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd" # v5
       - run: nix --version
       - name: Build VM configuration
         run: |
@@ -74,7 +74,7 @@ jobs:
       - build-package
       - check-nvim
     steps:
-      - uses: "https://git.salame.cl/actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8" # v5
+      - uses: "https://git.salame.cl/actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd" # v5
       - run: nix --version
       - name: Build Home Manager configuration
         run: |
@@ -85,7 +85,7 @@ jobs:
       - build-vm
       - build-hm
     steps:
-      - uses: "https://git.salame.cl/actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8" # v5
+      - uses: "https://git.salame.cl/actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd" # v5
       - run: nix --version
       - name: Create Size Report
         uses: "https://git.salame.cl/jalil/nix-flake-outputs-size@eb9c1434484fa45d8b442161a6d746478b776702" # main
