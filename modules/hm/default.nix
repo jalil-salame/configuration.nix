@@ -77,7 +77,10 @@ in
         # Direnv
         direnv = {
           enable = true;
-          nix-direnv.enable = true;
+          nix-direnv = {
+            enable = true;
+            package = pkgs.lixPackageSets.latest.nix-direnv;
+          };
           stdlib = # bash
             ''
               : "''${XDG_CACHE_HOME:="''${HOME}/.cache"}"

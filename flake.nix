@@ -10,14 +10,6 @@
   inputs = {
     nixpkgs.url = "https://channels.nixos.org/nixos-25.05/nixexprs.tar.xz";
     unstable.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.xz";
-    # Lix
-    lix-module = {
-      url = "https://git.lix.systems/lix-project/nixos-module/archive/release-2.93.tar.gz";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        flake-utils.inputs.systems.follows = "systems";
-      };
-    };
     # Modules
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
@@ -56,7 +48,7 @@
       url = "github:NuschtOS/search";
       inputs = {
         nixpkgs.follows = "nixpkgs";
-        flake-utils.follows = "lix-module/flake-utils";
+        flake-utils.inputs.systems.follows = "systems";
       };
     };
     # For deduplication

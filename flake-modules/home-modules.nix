@@ -22,7 +22,7 @@
               config = {
                 nixpkgs.overlays = [
                   inputs.self.overlays.unstable
-                  inputs.lix-module.overlays.default
+                  inputs.self.overlays.lix
                 ];
                 stylix = {
                   image = cfg.gui.wallpaper;

@@ -25,6 +25,9 @@ in
     # Enable unlocking the gpg-agent at boot (configured through home.nix)
     security.pam.services.login.gnupg.enable = true;
 
+    # Disable NixOS documentation (uses nix instead of lix)
+    documentation.nixos.enable = lib.mkDefault false;
+
     environment.systemPackages = [
       # CLI tools
       pkgs.fd
@@ -56,6 +59,7 @@ in
     };
     # Nix Settings
     nix = {
+      package = pkgs.lixPackageSets.latest.lix; # use lix
       gc = {
         automatic = true;
         dates = "weekly";

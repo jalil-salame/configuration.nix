@@ -44,7 +44,7 @@
   };
 
   nix = {
-    package = pkgs.lix;
+    package = pkgs.lixPackageSets.latest.lix; # use lix
     gc = {
       automatic = true;
       frequency = "weekly";
