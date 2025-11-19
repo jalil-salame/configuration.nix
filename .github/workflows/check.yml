@@ -3,28 +3,25 @@ on:
   push:
     branches: [main]
   pull_request:
-
+env:
+  NIX_INSTALLER_NIX_PACKAGE_URL: https://releases.lix.systems/lix/lix-2.94.0/lix-2.94.0-x86_64-linux.tar.xz
 jobs:
   check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
-      - uses:  DeterminateSystems/nix-installer-action@v19
-        with:
-          source-url: "https://install.lix.systems/lix/lix-installer-x86_64-linux"
-          diagnostic-endpoint: ""
+      - name: Install lix
+        uses: samueldr/lix-gha-installer-action@latest
       - name: Run `nix flake check`
         run: |
-          nix flake check --verbose --keep-going
           nix run nixpkgs#statix -- check .
+          nix flake check --verbose --keep-going
   build-docs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
-      - uses:  DeterminateSystems/nix-installer-action@v19
-        with:
-          source-url: "https://install.lix.systems/lix/lix-installer-x86_64-linux"
-          diagnostic-endpoint: ""
+      - name: Install lix
+        uses: samueldr/lix-gha-installer-action@latest
       - name: Build documentation
         run: nix build .#docs --print-build-logs
       - name: Upload artifact
