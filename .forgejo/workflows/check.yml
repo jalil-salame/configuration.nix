@@ -88,7 +88,7 @@ jobs:
       - uses: "https://git.salame.cl/actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3" # v6
       - run: nix --version
       - name: Create Size Report
-        uses: "https://git.salame.cl/jalil/nix-flake-outputs-size@639e4a3ad5b8104cce3cea94fe96892d6bd584a0" # main
+        uses: "https://git.salame.cl/jalil/nix-flake-outputs-size@a12d3f759fcdd432ed9909a812a3150c88eae23a" # main
         with:
           # Create a comment on the associated PR
           comment-on-pr: ${{ github.ref_name != 'main' }}
