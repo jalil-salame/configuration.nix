@@ -1,6 +1,6 @@
-{ lib, helpers, ... }:
+{ lib, ... }:
 let
-  inherit (helpers) mkRaw;
+  inherit (lib.nixvim) mkRaw;
 in
 {
   config.plugins = {

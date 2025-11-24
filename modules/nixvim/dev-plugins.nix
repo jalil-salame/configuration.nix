@@ -2,11 +2,10 @@
   lib,
   pkgs,
   config,
-  helpers,
   ...
 }:
 let
-  inherit (helpers) enableExceptInTests;
+  inherit (lib.nixvim) enableExceptInTests;
   inherit (lib.trivial) const;
   cfg = config.jhome.nvim;
   enabledLSPs = [

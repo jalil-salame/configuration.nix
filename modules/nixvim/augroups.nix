@@ -1,11 +1,6 @@
-{
-  config,
-  helpers,
-  lib,
-  ...
-}:
+{ config, lib, ... }:
 let
-  inherit (helpers) mkRaw;
+  inherit (lib.nixvim) mkRaw;
   cfg = config.jhome.nvim;
   dev = cfg.dev.enable;
 in
