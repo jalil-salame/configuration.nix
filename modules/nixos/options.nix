@@ -1,10 +1,12 @@
-{ lib, ... }:
+{ pkgs, lib, ... }:
 let
   inherit (lib) types;
   inherit (import ../lib.nix { inherit lib; })
     mkDisableOption
-    mkImageOption
+    mkImageOption'
     ;
+
+  mkImageOption = mkImageOption' pkgs;
 in
 {
   options.jconfig = lib.mkOption {

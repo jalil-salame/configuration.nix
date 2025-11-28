@@ -10,10 +10,12 @@ let
   inherit (fromOsOptions)
     mkFromOsOption
     mkFromConfigOption
-    mkFromConfigImageOption
+    mkFromConfigImageOption'
     mkFromConfigEnableOption
     mkFromConfigDisableOption
     ;
+
+  mkFromConfigImageOption = mkFromConfigImageOption' pkgs;
 
   mkExtraPackagesOption = mkExtraPackagesOption' pkgs;
 

@@ -2,7 +2,8 @@
 let
   inherit (lib) types;
 
-  mkImageData =
+  mkImageData' =
+    pkgs:
     {
       description,
       url,
@@ -11,7 +12,7 @@ let
     {
       inherit description;
       type = types.path;
-      default = builtins.fetchurl { inherit url sha256; };
+      default = pkgs.fetchurl { inherit url sha256; };
       defaultText = lib.literalMD "![${description}](${url})";
     };
 
@@ -36,7 +37,12 @@ in
     };
 
   # A option that accepts an image (and shows it in the docs)
-  mkImageOption = attrs: lib.mkOption (mkImageData attrs);
+  mkImageOption' =
+    pkgs:
+    let
+      mkImageData = mkImageData' pkgs;
+    in
+    attrs: lib.mkOption (mkImageData attrs);
 
   mkExtraPackagesOption' =
     pkgs: name: defaultPkgsPath:
@@ -97,7 +103,11 @@ in
         mkFromConfigOption
         ;
 
-      mkFromConfigImageOption =
+      mkFromConfigImageOption' =
+        pkgs:
+        let
+          mkImageData = mkImageData' pkgs;
+        in
         { path, ... }@attrs:
         mkFromConfigOption (mkImageData (builtins.removeAttrs attrs [ "path" ]) // { inherit path; });
 
