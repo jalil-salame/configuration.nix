@@ -32,7 +32,7 @@ in
       # CLI tools
       pkgs.fd
       pkgs.ripgrep
-      pkgs.du-dust
+      pkgs.dust
       pkgs.curl
       pkgs.zip
       pkgs.unzip

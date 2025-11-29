@@ -106,7 +106,7 @@ in
                 vim.keymap.set('n', '<leader>w', function() require("conform").format({ lsp_fallback = true }) end, { desc = 'Format Buffer', ${opts} })
               end
               -- Other keybinds
-              vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { desc = '[G]o to [D]efinition', ${opts} })
+              vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { desc = '[G]o to [D]definition', ${opts} })
               vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, { desc = '[G]o to [T]ype Definition', ${opts} })
               vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, { desc = '[G]o to [I]mplementation', ${opts} })
             end
