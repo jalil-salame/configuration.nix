@@ -100,17 +100,18 @@ in
 
           # Github CLI
           programs = {
+            difftastic = {
+              enable = true;
+              git.enable = true;
+              options.background = "dark";
+            };
             gh.enable = true;
             gh-dash.enable = true;
             # Git
             git = {
               enable = true;
-              difftastic = {
-                enable = true;
-                background = "dark";
-              };
               lfs.enable = true;
-              extraConfig = {
+              settings = {
                 # Add diff to the commit message editor
                 commit.verbose = true;
                 # Improve submodule diff

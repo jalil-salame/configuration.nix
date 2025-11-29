@@ -47,7 +47,7 @@
     package = pkgs.lixPackageSets.latest.lix; # use lix
     gc = {
       automatic = true;
-      frequency = "weekly";
+      dates = "weekly";
       options = "--delete-older-than 30d";
       # run between 0 and 45min after boot if run was missed
       randomizedDelaySec = "45min";

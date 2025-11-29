@@ -42,7 +42,7 @@ in
         # Run GC for Home Manager generations
         gc = {
           automatic = true;
-          frequency = "weekly";
+          dates = "weekly";
           options = "--delete-older-than 30d";
           # run between 0 and 45min after boot if run was missed
           randomizedDelaySec = "45min";
@@ -151,7 +151,23 @@ in
           };
         };
         # SSH
-        ssh.enable = true;
+        ssh = {
+          enable = true;
+          enableDefaultConfig = false;
+          # Default config
+          matchBlocks."*" = {
+            forwardAgent = lib.mkDefault false;
+            addKeysToAgent = lib.mkDefault "no";
+            compression = lib.mkDefault false;
+            serverAliveInterval = lib.mkDefault 0;
+            serverAliveCountMax = lib.mkDefault 3;
+            hashKnownHosts = lib.mkDefault false;
+            userKnownHostsFile = lib.mkDefault "~/.ssh/known_hosts";
+            controlMaster = lib.mkDefault "no";
+            controlPath = lib.mkDefault "~/.ssh/master-%r@%n:%p";
+            controlPersist = lib.mkDefault "no";
+          };
+        };
         # cd replacement
         zoxide.enable = true;
       };
