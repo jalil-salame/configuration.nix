@@ -15,11 +15,17 @@ in
   config = lib.mkIf (jhome.enable && cfg != null) {
     programs = {
       git = {
-        userName = cfg.defaultIdentity.name;
-        userEmail = cfg.defaultIdentity.email;
-        signing = lib.mkIf hasKey {
-          signByDefault = true;
-          key = signingKey;
+        settings = {
+          user = {
+            inherit (cfg.defaultIdentity)
+              name
+              email
+              ;
+          };
+          signing = lib.mkIf hasKey {
+            signByDefault = true;
+            key = signingKey;
+          };
         };
       };
 
