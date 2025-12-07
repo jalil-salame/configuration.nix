@@ -25,11 +25,11 @@
       };
     };
     nixvim = {
-      url = "github:nix-community/nixvim";
+      url = "github:nix-community/nixvim/nixos-25.11";
       inputs = {
         flake-parts.follows = "flake-parts";
         systems.follows = "systems";
-        nixpkgs.follows = "unstable";
+        nixpkgs.follows = "nixpkgs";
         # disable optional inputs
         nuschtosSearch.follows = "";
       };

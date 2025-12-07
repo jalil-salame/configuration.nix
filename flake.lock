@@ -225,7 +225,7 @@
           "flake-parts"
         ],
         "nixpkgs": [
-          "unstable"
+          "nixpkgs"
         ],
         "nuschtosSearch": [],
         "systems": [
@@ -233,15 +233,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1764720537,
-        "narHash": "sha256-BTVEOnpGaJargkE/SW3q40Wa/FAgoDbSctvDxeEF3o4=",
+        "lastModified": 1765027122,
+        "narHash": "sha256-yeJjXWkzK7B6j+tiN9aGc1yZNxuH16O5kR68m8Axu8w=",
         "owner": "nix-community",
         "repo": "nixvim",
-        "rev": "b52b1fb4a4317a96fd8e481e5d80903c1e07bcfb",
+        "rev": "cb9357fe1068cbcec1e6ddc525ab5226f7781d09",
         "type": "github"
       },
       "original": {
         "owner": "nix-community",
+        "ref": "nixos-25.11",
         "repo": "nixvim",
         "type": "github"
       }
