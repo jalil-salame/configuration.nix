@@ -60,13 +60,6 @@ in
               zls = noPackage;
             };
           };
-          lspkind = {
-            enable = true;
-            settings = {
-              mode = "symbol";
-              maxwidth = 50;
-            };
-          };
           lsp-lines.enable = true;
         };
       }
