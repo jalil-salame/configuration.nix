@@ -307,11 +307,11 @@
         "tinted-zed": "tinted-zed"
       },
       "locked": {
-        "lastModified": 1765900102,
-        "narHash": "sha256-Ea1R+dGLu/psLNMgYKoDpVLg9psGq9drKUOOcety1fo=",
+        "lastModified": 1766418901,
+        "narHash": "sha256-zaISsfwlVaLTJrUIBJf1Mk83kKLp83bl1VOzf8QVczo=",
         "owner": "nix-community",
         "repo": "stylix",
-        "rev": "259af48fe5dc004c11aa2b1339814138517616bf",
+        "rev": "c51431509b7c8dec0cd0369ea3cc20a772c3dba1",
         "type": "github"
       },
       "original": {
@@ -439,11 +439,11 @@
     },
     "unstable": {
       "locked": {
-        "lastModified": 1766070988,
-        "narHash": "sha256-fViPX/G/0T7zwCj2C19fuMmEiGvwhj7EYnRJZSjIIyk=",
-        "rev": "c6245e83d836d0433170a16eb185cefe0572f8b8",
+        "lastModified": 1766309749,
+        "narHash": "sha256-fT99itTh09Z6ESczofFglzEL+wtBI0AAOCqL96V2s4A=",
+        "rev": "a6531044f6d0bef691ea18d4d4ce44d0daa6e816",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.05pre913595.c6245e83d836/nixexprs.tar.xz?lastModified=1766070988&rev=c6245e83d836d0433170a16eb185cefe0572f8b8"
+        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.05pre914755.a6531044f6d0/nixexprs.tar.xz?lastModified=1766309749&rev=a6531044f6d0bef691ea18d4d4ce44d0daa6e816"
       },
       "original": {
         "type": "tarball",
