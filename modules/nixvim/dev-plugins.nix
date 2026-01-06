@@ -13,8 +13,10 @@ let
     "bashls"
     "clangd"
     "gopls"
+    # "idris2_lsp" # Soon ...
     # "html" # Not writing html
     "jsonls"
+    "lua_ls"
     "marksman"
     "ruff"
     "taplo"
