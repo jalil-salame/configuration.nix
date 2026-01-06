@@ -13,7 +13,7 @@ let
     "bashls"
     "clangd"
     "gopls"
-    # "idris2_lsp" # Soon ...
+    "idris2_lsp"
     # "html" # Not writing html
     "jsonls"
     "lua_ls"
