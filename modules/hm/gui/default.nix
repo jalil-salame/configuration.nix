@@ -77,6 +77,7 @@ in
                   icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
                   definedAliases = [
                     "@np"
+                    "@nixpkgs"
                     "@nixpackages"
                   ];
                 };
@@ -113,6 +114,18 @@ in
                     "@nw"
                     "@nixwiki"
                   ];
+                };
+
+                ddg-no-ai = {
+                  name = "DuckDuckGo No AI";
+                  urls = [
+                    {
+                      template = "https://noai.duckduckgo.com/";
+                      params = [ (queryParam "q" "{searchTerms}") ];
+                    }
+                  ];
+                  iconMapObj."16" = "https://noai.duckduckgo.com/favicon.ico";
+                  definedAliases = [ "@ddgnoai" ];
                 };
 
                 # hide bing
