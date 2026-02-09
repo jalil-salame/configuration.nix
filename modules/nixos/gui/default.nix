@@ -5,6 +5,8 @@ let
   linuxOlderThan6_3 = lib.versionOlder args.config.boot.kernelPackages.kernel.version "6.3";
 in
 {
+  imports = [ ./sway.nix ];
+
   config = lib.mkIf enable (
     lib.mkMerge [
       {
@@ -20,18 +22,7 @@ in
         '';
 
         fonts.fontDir.enable = true;
-        programs = {
-          dconf.enable = true;
-          sway = {
-            enable = cfg.sway;
-            # No extra packages (by default it adds foot, dmenu, and other stuff)
-            extraPackages = [ ];
-            wrapperFeatures = {
-              base = true;
-              gtk = true;
-            };
-          };
-        };
+        programs.dconf.enable = true;
         security = {
           polkit.enable = true;
           rtkit.enable = true; # Recommended for pipewire
@@ -53,19 +44,7 @@ in
           # Virtual Filesystem (for PCManFM)
           gvfs.enable = true;
         };
-        xdg.portal = {
-          # XDG portals
-          enable = true;
-          wlr.enable = true;
-          extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-          config.preferred = {
-            # Default to the gtk portal
-            default = "gtk";
-            # Use wlr for screenshots and screen recording
-            "org.freedesktop.impl.portal.Screenshot" = "wlr";
-          };
-          # Consider using darkman like upstream
-        };
+        xdg.portal.enable = true;
         hardware = {
           graphics.enable = true;
           uinput.enable = true;
