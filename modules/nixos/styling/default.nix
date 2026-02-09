@@ -4,6 +4,10 @@ let
   enable = args.config.jconfig.enable && cfg.enable;
 in
 {
+  imports = [
+    (import ../../shared/starship.nix { cfg = args.config.jconfig; })
+  ];
+
   config = lib.mkIf enable {
     boot.plymouth = { inherit (cfg) enable; };
 
