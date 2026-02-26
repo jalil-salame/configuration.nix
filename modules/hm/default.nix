@@ -12,6 +12,7 @@ in
 {
   imports = [
     ./options.nix
+    ./styling.nix
     ./gui
     ./dev.nix
     ./users.nix
@@ -55,7 +56,6 @@ in
           config = {
             # Disable headers and numbers
             style = "plain";
-            theme = lib.mkForce "gruvbox-dark";
           };
         };
         # Direnv

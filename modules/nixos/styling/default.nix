@@ -2,6 +2,7 @@
 let
   cfg = args.config.jconfig.styling;
   enable = args.config.jconfig.enable && cfg.enable;
+  gui = args.config.jconfig.gui.enable;
 in
 {
   imports = [
@@ -9,12 +10,20 @@ in
   ];
 
   config = lib.mkIf enable {
+    catppuccin = lib.mkMerge [
+      { tty.enable = true; }
+      (lib.mkIf gui {
+        cursors.enable = true;
+        gtk.icon.enable = true;
+      })
+    ];
+
     boot.plymouth = {
       inherit (cfg) enable;
       logo = cfg.bootLogo;
     };
 
-    fonts = lib.mkIf args.config.jconfig.gui.enable {
+    fonts = lib.mkIf gui {
       packages = [
         pkgs.jetbrains-mono
         pkgs.nerd-fonts.symbols-only

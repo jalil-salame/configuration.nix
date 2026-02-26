@@ -9,6 +9,7 @@
         let
           defaultModules = [
             inputs.nixvim.homeModules.nixvim
+            inputs.catppuccin.homeModules.catppuccin
             self.nixvimModules.homeManager
             ../modules/hm
           ];

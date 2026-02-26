@@ -10,6 +10,7 @@
       nixosModule = {
         imports = [
           inputs.home-manager.nixosModules.home-manager
+          inputs.catppuccin.nixosModules.catppuccin
           ../modules/nixos
         ];
         home-manager = {

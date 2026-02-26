@@ -9,11 +9,6 @@ let
   inherit (config) jhome;
   flatpakEnabled = fromOs [ "services" "flatpak" "enable" ] false;
   cfg = jhome.gui;
-  cursor = {
-    package = pkgs.nordzy-cursor-theme;
-    size = 48;
-    name = "Nordzy-cursors";
-  };
 in
 {
   imports = [
@@ -196,19 +191,9 @@ in
       };
     };
 
-    home.pointerCursor = lib.mkIf config.jhome.styling.enable (
-      lib.mkDefault {
-        gtk.enable = true;
-        inherit (cursor) name package;
-      }
-    );
     # Set Gtk theme
     gtk = lib.mkIf config.jhome.styling.enable {
       enable = true;
-      iconTheme = {
-        name = "Papirus-Dark";
-        package = pkgs.papirus-icon-theme;
-      };
       colorScheme = "dark";
     };
     # Set Qt theme
