@@ -58,7 +58,7 @@ in
         mkRaw
           # lua
           ''
-            vim.diagnostic.goto_next
+            function() vim.diagnostic.jump({ count = 1, float = true }) end
           '';
       options.desc = "Diagnostics next [J]";
     }
@@ -69,7 +69,7 @@ in
         mkRaw
           # lua
           ''
-            vim.diagnostic.goto_prev
+            function() vim.diagnostic.jump({ count = -1, float = true }) end
           '';
       options.desc = "Diagnostics previous [K]";
     }
