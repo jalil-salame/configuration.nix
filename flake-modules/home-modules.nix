@@ -24,22 +24,12 @@
                   inputs.self.overlays.unstable
                   inputs.self.overlays.lix
                 ];
-                stylix = {
-                  image = cfg.gui.wallpaper;
-                  base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-dark-hard.yaml";
-                };
               };
             };
         in
         {
           nixos = lib.mkMerge defaultModules;
-          standalone = lib.mkMerge (
-            defaultModules
-            ++ [
-              inputs.stylix.homeModules.stylix
-              standaloneModule
-            ]
-          );
+          standalone = lib.mkMerge (defaultModules ++ [ standaloneModule ]);
         };
     };
 }

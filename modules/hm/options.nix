@@ -214,7 +214,7 @@ in
           type = types.submodule gui;
         };
         styling = lib.mkOption {
-          description = "My custom styling (uses stylix)";
+          description = "My custom styling";
           default = { };
           type = types.submodule {
             options.enable = mkFromConfigEnableOption "styling" [

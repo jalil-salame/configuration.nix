@@ -9,38 +9,39 @@ in
   ];
 
   config = lib.mkIf enable {
-    boot.plymouth = { inherit (cfg) enable; };
-
-    stylix = {
+    boot.plymouth = {
       inherit (cfg) enable;
-      image = cfg.wallpaper;
-      base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-dark-hard.yaml";
-      polarity = "dark";
-      fonts = {
-        monospace = {
-          name = "JetBrains Mono";
-          package = pkgs.jetbrains-mono;
+      logo = cfg.bootLogo;
+    };
+
+    fonts = lib.mkIf args.config.jconfig.gui.enable {
+      packages = [
+        pkgs.jetbrains-mono
+        pkgs.nerd-fonts.symbols-only
+        pkgs.noto-fonts
+        pkgs.noto-fonts-color-emoji
+        # Chinese, Japanese and Korean characters
+        pkgs.noto-fonts-cjk-sans
+        pkgs.noto-fonts-cjk-serif
+      ];
+
+      fontconfig = {
+        enable = true;
+        defaultFonts = {
+          emoji = [ "Noto Color Emoji" ];
+          monospace = [
+            "JetBrains Mono"
+            "Symbols Nerd Font"
+          ];
+          sansSerif = [
+            "Noto Sans"
+            "Symbols Nerd Font"
+          ];
+          serif = [
+            "Noto Serif"
+            "Symbols Nerd Font"
+          ];
         };
-        sansSerif = {
-          name = "Noto Sans";
-          package = pkgs.noto-fonts;
-        };
-        serif = {
-          name = "Noto Serif";
-          package = pkgs.noto-fonts;
-        };
-        emoji = {
-          package = pkgs.noto-fonts-color-emoji;
-          name = "Noto Color Emoji";
-        };
-        sizes.popups = 12;
-      };
-      targets = {
-        plymouth = {
-          logoAnimated = false;
-          logo = cfg.bootLogo;
-        };
-        nixvim.enable = false;
       };
     };
   };

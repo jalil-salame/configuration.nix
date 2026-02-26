@@ -25,30 +25,8 @@ in
     home.packages = [
       pkgs.pcmanfm
       pkgs.wl-clipboard
-      # Extra fonts
-      pkgs.noto-fonts-cjk-sans # Chinese, Japanese and Korean characters
-      pkgs.noto-fonts-cjk-serif # Chinese, Japanese and Korean characters
-      pkgs.nerd-fonts.symbols-only
     ]
     ++ lib.optional flatpakEnabled pkgs.flatpak;
-    fonts.fontconfig = {
-      enable = true;
-      defaultFonts = lib.mkIf config.jhome.styling.enable {
-        emoji = [ "Noto Color Emoji" ];
-        monospace = [
-          "JetBrains Mono"
-          "Symbols Nerd Font"
-        ];
-        serif = [
-          "Noto Serif"
-          "Symbols Nerd Font"
-        ];
-        sansSerif = [
-          "Noto Sans"
-          "Symbols Nerd Font"
-        ];
-      };
-    };
     # Browser
     programs = {
       firefox = {
@@ -218,17 +196,6 @@ in
       };
     };
 
-    stylix = lib.mkIf config.jhome.styling.enable {
-      # Set cursor style
-      inherit cursor;
-      targets.firefox.profileNames = [ config.home.username ];
-      iconTheme = {
-        enable = true;
-        light = "Papirus-Light";
-        dark = "Papirus-Dark";
-        package = pkgs.papirus-icon-theme;
-      };
-    };
     home.pointerCursor = lib.mkIf config.jhome.styling.enable (
       lib.mkDefault {
         gtk.enable = true;
@@ -238,8 +205,11 @@ in
     # Set Gtk theme
     gtk = lib.mkIf config.jhome.styling.enable {
       enable = true;
-      gtk3.extraConfig.gtk-application-prefer-dark-theme = 1;
-      gtk4.extraConfig.gtk-application-prefer-dark-theme = 1;
+      iconTheme = {
+        name = "Papirus-Dark";
+        package = pkgs.papirus-icon-theme;
+      };
+      colorScheme = "dark";
     };
     # Set Qt theme
     qt = lib.mkIf config.jhome.styling.enable { enable = true; };

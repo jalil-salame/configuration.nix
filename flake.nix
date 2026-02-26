@@ -15,15 +15,6 @@
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    stylix = {
-      url = "github:nix-community/stylix/release-25.11";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        flake-parts.follows = "flake-parts";
-        systems.follows = "systems";
-        nur.follows = "";
-      };
-    };
     nixvim = {
       url = "github:nix-community/nixvim/nixos-25.11";
       inputs = {

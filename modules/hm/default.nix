@@ -18,22 +18,6 @@ in
   ];
 
   config = lib.mkMerge [
-    (lib.mkIf (cfg.enable && cfg.styling.enable) {
-      stylix = {
-        enable = true;
-        targets.nixvim.enable = false; # I prefer styling it myself
-      };
-    })
-    (lib.mkIf (cfg.enable && cfg.styling.enable && !cfg.gui.enable) {
-      # Stylix disable graphical targets when no GUI is requested
-      stylix.targets = {
-        gtk.enable = false;
-        qt.enable = false;
-        gnome.enable = false;
-        kde.enable = false;
-        xresources.enable = false;
-      };
-    })
     (lib.mkIf cfg.enable {
       # Add gopass if pass is enabled
       home.packages = lib.optional config.programs.password-store.enable pkgs.gopass;
