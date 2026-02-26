@@ -196,19 +196,6 @@ in
       options.desc = "Find Quickfix";
     }
   ]
-  # Nvim Silicon
-  ++ lib.optional (!cfg.reduceSize) {
-    mode = "v";
-    key = "<leader>sc";
-    action =
-      mkRaw
-        # lua
-        ''
-          require('nvim-silicon').clip
-
-        '';
-    options.desc = "Snap Code (to clipboard)";
-  }
   ++ lib.optional cfg.dev.enable {
     mode = "n";
     key = "<leader>w";

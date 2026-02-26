@@ -134,17 +134,8 @@ in
       }
       # Jupyter notebooks
       {
-        extraPackages = [ (pkgs.python3.withPackages (p: [ p.jupytext ])) ];
         plugins = {
           image.enable = enableExceptInTests;
-          jupytext = {
-            enable = true;
-            settings.custom_language_formatting.python = {
-              extension = "md";
-              style = "markdown";
-              force_ft = "markdown";
-            };
-          };
           molten = {
             enable = true;
             settings = {
