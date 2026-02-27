@@ -28,14 +28,7 @@ in
       withRuby = false;
       globals.mapleader = " ";
       # Appearance
-      colorschemes.gruvbox = {
-        enable = true;
-        settings = {
-          bold = true;
-          transparent_mode = true;
-          terminal_colors = true;
-        };
-      };
+      colorschemes.catppuccin.enable = true;
       opts = {
         number = true;
         relativenumber = true;
