@@ -79,8 +79,8 @@ in
               enable = mkDisableOption "jalil's default styling";
               wallpaper = mkImageOption {
                 description = "The wallpaper to use.";
-                url = "https://raw.githubusercontent.com/lunik1/nixos-logo-gruvbox-wallpaper/d4937c424fad79c1136a904599ba689fcf8d0fad/png/gruvbox-dark-rainbow.png";
-                sha256 = "036gqhbf6s5ddgvfbgn6iqbzgizssyf7820m5815b2gd748jw8zc";
+                url = "https://raw.githubusercontent.com/NixOS/nixos-artwork/refs/heads/master/wallpapers/nix-wallpaper-nineish-catppuccin-mocha-alt.png";
+                sha256 = "sha256-ThDrZIJIyO2DdIW41sV6iYyCNhM89cwHr8l6DAfbXjI=";
               };
               bootLogo = mkImageOption {
                 description = "The logo used by plymouth at boot.";
