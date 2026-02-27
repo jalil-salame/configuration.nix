@@ -80,7 +80,7 @@ jobs:
         run: |
           nix build --print-build-logs '.#homeConfigurations.example.activationPackage'
   report-size:
-    runs-on: nixos
+    runs-on: nixos-taurus
     needs:
       - build-vm
       - build-hm
