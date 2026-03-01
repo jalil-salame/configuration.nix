@@ -116,6 +116,7 @@ in
         enable = true;
         settings.background_colour = "#000000";
       };
+      oil.enable = true;
       telescope = {
         enable = true;
         extensions = {

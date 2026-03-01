@@ -165,6 +165,7 @@ in
           };
           hunk.enable = true;
           otter.enable = true;
+          parinfer-rust.enable = true;
         };
       }
     ]
