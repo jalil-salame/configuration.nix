@@ -1,0 +1,98 @@
+@import "catppuccin.css";
+
+* {
+  border: none;
+  border-radius: 0;
+  font-size: 13px;
+  min-height: 0;
+  min-width: 0px;
+}
+
+window#waybar {
+  background-color: alpha(@base, 0.5);
+  border-bottom: 3px solid alpha(@mantle, 0.5);
+  color: @text;
+  transition-property: background-color;
+  transition-duration: .5s;
+}
+
+window#waybar.hidden {
+  opacity: 0.2;
+}
+
+#window, #workspaces {
+  min-width: 0px;
+  margin: 0 4px;
+}
+
+#workspaces button {
+  padding: 0 0.75em;
+  border: 3px solid @surface1;
+  border-right-style: none;
+  border-left-style: none;
+}
+
+#workspaces button:first-child {
+  border-left-style: solid;
+  border-radius: 8px 0 0 8px;
+}
+
+#workspaces button:last-child {
+  border-right-style: solid;
+  border-radius: 0 8px 8px 0;
+}
+
+#workspaces button.visible {
+  border-color: @overlay0;
+}
+
+#workspaces button.focused {
+  border-color: @mauve;
+}
+
+#workspaces button.persistent {
+  border-color: @surface0;
+}
+
+#workspaces button.urgent {
+  background-color: @red;
+}
+
+#clock,
+#battery,
+#cpu,
+#memory,
+#disk,
+#temperature,
+#backlight,
+#network,
+#pulseaudio,
+#wireplumber,
+#custom-media,
+#tray,
+#mode,
+#idle_inhibitor,
+#scratchpad,
+#power-profiles-daemon,
+#mpd {
+    padding: 0 3px;
+    color: @text;
+}
+
+/* If workspaces is the leftmost module, omit left margin */
+.modules-left > widget:first-child > #workspaces {
+  margin-left: 0;
+}
+
+#tray {
+  background-color: @base;
+}
+
+#tray > .passive {
+  -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+  -gtk-icon-effect: highlight;
+  background-color: @red;
+}

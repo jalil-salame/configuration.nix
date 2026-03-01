@@ -20,7 +20,6 @@ in
         fuzzel.enable = true;
         mako.enable = true;
         mpv.enable = true;
-        waybar.enable = true;
         zathura.enable = true;
       })
     ];
