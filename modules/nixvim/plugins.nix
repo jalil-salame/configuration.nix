@@ -88,7 +88,7 @@ in
       lazydev.enable = true;
       lualine = {
         enable = true;
-        settings.options.theme = lib.mkForce "gruvbox";
+        settings.options.theme = lib.mkForce "catppuccin-mocha";
       };
       noice = {
         enable = true;
