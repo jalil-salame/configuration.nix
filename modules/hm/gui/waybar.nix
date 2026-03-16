@@ -61,7 +61,6 @@ in
             interval = 3;
           };
           clock = {
-            timezone = "Europe/Berlin";
             tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
             format = "{:%a, %d %b, %H:%M}";
           };
