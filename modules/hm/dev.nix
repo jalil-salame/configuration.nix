@@ -98,13 +98,86 @@ in
             packages = cfg.extraPackages;
           };
 
-          # Github CLI
           programs = {
+            fish.functions = {
+              # Useful for home-manager config testing (quickly modify the config source)
+              edit-nix-link = {
+                description = "Create a copy of a nix file for editing";
+                argumentNames = [ "file" ];
+                body = # fish
+                  ''
+                    test (count $argv) -eq 1
+                    or begin
+                        echo "ERROR: exactly one argument needed, got" (count $argv) >&2
+                        return 1
+                    end
+
+                    realpath $file >/dev/null
+                    or begin
+                        echo "ERROR: couldn't find $file" >&2
+                        return 1
+                    end
+
+                    string match --quiet --regex '^/nix/store' (realpath $file)
+                    or begin
+                        echo "ERROR: $file is not a symlink to the nix store" >&2
+                        return 1
+                    end
+
+                    mv $file "$file.bak"
+                    and begin
+                        install --mode 644 "$file.bak" $file
+                        or mv "$file.bak" $file
+                    end
+                    or begin
+                        echo "ERROR: failed to create editable file" >&2
+                        return 1
+                    end
+
+                    and if type --query $VISUAL
+                        $VISUAL $file
+                    else if type --query $EDITOR
+                        $EDITOR $file
+                    end
+                  '';
+              };
+              unedit-nix-link = {
+                description = "Restore backup from edit-nix-link";
+                argumentNames = [ "file" ];
+                body = # fish
+                  ''
+                    test (count $argv) -eq 1
+                    or begin
+                        echo "ERROR: exactly one argument needed, got" (count $argv) >&2
+                        return 1
+                    end
+
+                    realpath $file.bak >/dev/null
+                    or begin
+                        echo "ERROR: couldn't find backup for $file at $file.bak" >&2
+                        return 1
+                    end
+
+                    string match --quiet --regex '^/nix/store' (realpath "$file.bak")
+                    or begin
+                        echo "ERROR: backup $file.bak is not a symlink to the nix store" >&2
+                        return 1
+                    end
+
+                    mv "$file.bak" $file
+                    or begin
+                        echo "ERROR: failed to restore backup file" >&2
+                        return 1
+                    end
+                  '';
+              };
+            };
             difftastic = {
               enable = true;
               git.enable = true;
               options.background = "dark";
             };
+            # Github CLI
             gh.enable = true;
             gh-dash.enable = true;
             # Git
