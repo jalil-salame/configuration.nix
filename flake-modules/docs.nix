@@ -19,7 +19,7 @@
             optionsJSON = "${options.optionsJSON}/share/doc/nixos/options.json";
             urlPrefix = "https://github.com/jalil-salame/configuration.nix/blob/main/";
           };
-          search = inputs'.nuschtosSearch.packages.mkMultiSearch {
+          searchOptions = {
             title = "Search Jalil's configuration.nix";
             baseHref = "/";
 
@@ -29,6 +29,10 @@
               (mkScope "NixVIM" nvim)
             ];
           };
+          search = inputs'.nuschtosSearch.packages.mkMultiSearch searchOptions;
+          docsSearch = inputs'.nuschtosSearch.packages.mkMultiSearch (
+            searchOptions // { baseHref = "/configuration.nix/search/"; }
+          );
           home = genOptionsDoc "jhome" ../modules/hm/options.nix;
           nvim = genOptionsDoc "jhome" ../modules/nixvim/options.nix;
           nixos = genOptionsDoc "jconfig" ../modules/nixos/options.nix;
@@ -58,7 +62,7 @@
               cleanup_md ${nvim-markdown} >> ./src/nvim-options.md
               cleanup_md ${nixos-markdown} >> ./src/nixos-options.md
               # link search site
-              ln -s "${search.override { baseHref = "/configuration.nix/search/"; }}" ./src/search
+              ln -s "${docsSearch}" ./src/search
             ''; # FIXME: only add the `/configuration.nix/` part for GH CI
 
             nativeBuildInputs = [ pkgs.mdbook-toc ];

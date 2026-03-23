@@ -40,10 +40,17 @@
     };
     # For generating the docs (can be set to null)
     nuschtosSearch = {
-      url = "github:NuschtOS/search";
+      url = "github:NuschtOS/search/packages";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         flake-utils.inputs.systems.follows = "systems";
+        ixx = {
+          url = "github:NuschtOS/ixx/5c474fe53ae04572f73a73bd8c316f397a8e5b75";
+          inputs = {
+            nixpkgs.follows = "nixpkgs";
+            flake-utils.follows = "nuschtosSearch/flake-utils";
+          };
+        };
       };
     };
     # For deduplication
