@@ -102,7 +102,7 @@
       },
       "original": {
         "owner": "NuschtOS",
-        "ref": "packages",
+        "ref": "v0.2.0",
         "repo": "ixx",
         "type": "github"
       }
@@ -130,11 +130,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1773964973,
-        "narHash": "sha256-d2Q5VNbc91GloTZNByC4u3JS8Tj5BjfuOF19/vuJ/iM=",
-        "rev": "812b3986fd1568f7a858f97fcf425ad996ba7d25",
+        "lastModified": 1774244481,
+        "narHash": "sha256-mw80nQK4uJ8wJWiQnZ32j/BQlRx4QByvli8EP7/2hGE=",
+        "rev": "4590696c8693fea477850fe379a01544293ca4e2",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/25.11/nixos-25.11.7849.812b3986fd15/nixexprs.tar.xz?lastModified=1773964973&rev=812b3986fd1568f7a858f97fcf425ad996ba7d25"
+        "url": "https://releases.nixos.org/nixos/25.11/nixos-25.11.8023.4590696c8693/nixexprs.tar.xz?lastModified=1774244481&rev=4590696c8693fea477850fe379a01544293ca4e2"
       },
       "original": {
         "type": "tarball",
@@ -179,11 +179,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1774034877,
-        "narHash": "sha256-C5BmJbAbU+D1kzz3MkOMtDfXTj/kamoJnVBCBEUWfPk=",
+        "lastModified": 1774300333,
+        "narHash": "sha256-2JqMtqMBwkMvo9SzhJ8akIXGybdLVMe7ixkZpFJWe6M=",
         "owner": "NuschtOS",
         "repo": "search",
-        "rev": "9613724665cc8f03cd7bd932e5caf719fe346d13",
+        "rev": "6ed24f37315cc44839e2058ec7bcd37236079925",
         "type": "github"
       },
       "original": {
