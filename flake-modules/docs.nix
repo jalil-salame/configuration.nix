@@ -14,25 +14,6 @@
               inherit (lib.evalModules { modules = [ module ]; }) options;
               transformOptions = filterVisible toplevelOption;
             };
-          mkScope = name: options: {
-            inherit name;
-            optionsJSON = "${options.optionsJSON}/share/doc/nixos/options.json";
-            urlPrefix = "https://github.com/jalil-salame/configuration.nix/blob/main/";
-          };
-          searchOptions = {
-            title = "Search Jalil's configuration.nix";
-            baseHref = "/";
-
-            scopes = [
-              (mkScope "NixOS" nixos)
-              (mkScope "Home-Manager" home)
-              (mkScope "NixVIM" nvim)
-            ];
-          };
-          search = inputs'.nuschtosSearch.packages.mkMultiSearch searchOptions;
-          docsSearch = inputs'.nuschtosSearch.packages.mkMultiSearch (
-            searchOptions // { baseHref = "/configuration.nix/search/"; }
-          );
           home = genOptionsDoc "jhome" ../modules/hm/options.nix;
           nvim = genOptionsDoc "jhome" ../modules/nixvim/options.nix;
           nixos = genOptionsDoc "jconfig" ../modules/nixos/options.nix;
@@ -41,7 +22,6 @@
           nvim-markdown = nvim.optionsCommonMark;
         in
         {
-          inherit search;
           docs-home-markdown = home-markdown;
           docs-nixos-markdown = nixos-markdown;
           docs-nvim-markdown = nvim-markdown;
@@ -61,8 +41,6 @@
               cleanup_md ${home-markdown} >> ./src/home-options.md
               cleanup_md ${nvim-markdown} >> ./src/nvim-options.md
               cleanup_md ${nixos-markdown} >> ./src/nixos-options.md
-              # link search site
-              ln -s "${docsSearch}" ./src/search
             ''; # FIXME: only add the `/configuration.nix/` part for GH CI
 
             nativeBuildInputs = [ pkgs.mdbook-toc ];
