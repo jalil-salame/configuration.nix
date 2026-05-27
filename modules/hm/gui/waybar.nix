@@ -85,7 +85,7 @@ in
                 "󰕾"
               ];
             };
-            on-click = lib.getExe pkgs.helvum;
+            on-click = lib.getExe pkgs.crosspipe;
             min-length = 13;
           };
           temperature = lib.optionalAttrs (cfg.tempInfo != null) {

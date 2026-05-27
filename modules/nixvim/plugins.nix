@@ -6,7 +6,6 @@ in
   config = {
     extraPlugins = [
       pkgs.vimPlugins.blink-cmp-conventional-commits
-      pkgs.vimPlugins.blink-cmp-spell
     ];
 
     plugins = {
@@ -20,7 +19,6 @@ in
               # "calc" # I should make  a plugin
               "path"
               "buffer"
-              "spell"
             ];
             per_filetype.lua = mkRaw ''{ inherit_defaults = true, "lazydev" }'';
             providers = {
@@ -41,11 +39,6 @@ in
                 name = "LazyDev";
                 module = "lazydev.integrations.blink";
                 score_offset = 100;
-              };
-              # Spelling suggestions
-              spell = {
-                name = "Spell";
-                module = "blink-cmp-spell";
               };
             };
           };

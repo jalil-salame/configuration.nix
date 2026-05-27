@@ -7,14 +7,19 @@
     checks.enable = false; # FIXME: borked due to nix-community/nixvim#3074
   };
 
-  flake.nixvimModules =
-    let
-      module = ../modules/nixvim;
-    in
-    {
-      standalone = "${module}/standalone.nix";
-      homeManager = module;
+  flake.nixvimModules = {
+    standalone = {
+      imports = [ ../modules/nixvim/standalone.nix ];
+
+      nixpkgs.source = inputs.nixpkgs;
     };
+
+    homeManager = {
+      imports = [ ../modules/nixvim ];
+
+      config.programs.nixvim.nixpkgs.source = inputs.nixpkgs;
+    };
+  };
 
   perSystem =
     { system, ... }:

@@ -139,7 +139,7 @@ in
           enable = true;
           enableDefaultConfig = false;
           # Default config
-          matchBlocks."*" = {
+          settings."Host *" = {
             forwardAgent = lib.mkDefault false;
             addKeysToAgent = lib.mkDefault "no";
             compression = lib.mkDefault false;

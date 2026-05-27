@@ -66,7 +66,7 @@ based configuration. This is the general structure you'll want:
         {
           nixpkgs = {
             overlays = builtins.attrValues inputs.self.overlays;
-            config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ "steam-unwrapped" ];
+            config.allowUnfreePackages = [ "steam-unwrapped" ];
           };
 
           # Enable my custom configuration

@@ -1,2 +1,3 @@
 [default.extend-words]
 noice = "noice" # nvim package name :c
+ype = "ype"     # intentional mispelling in [T]ype

@@ -132,21 +132,6 @@ in
           };
         };
       }
-      # Jupyter notebooks
-      {
-        plugins = {
-          image.enable = enableExceptInTests;
-          molten = {
-            enable = true;
-            settings = {
-              image_provider = "image.nvim";
-              virt_text_output = true;
-              molten_auto_open_output = false;
-              molten_virt_lines_off_by_1 = true;
-            };
-          };
-        };
-      }
       # Rust plugins
       {
         plugins.rustaceanvim.enable = true;
