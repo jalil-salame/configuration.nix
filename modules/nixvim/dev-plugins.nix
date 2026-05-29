@@ -94,7 +94,7 @@ in
           settings = {
             formatters = {
               fish.command = lib.getExe' pkgs.fish "fish_indent";
-              nixfmt.command = lib.getExe pkgs.nixfmt-rfc-style;
+              nixfmt.command = lib.getExe pkgs.nixfmt;
               shfmt.command = lib.getExe pkgs.shfmt;
               stylua.command = lib.getExe pkgs.stylua;
               taplo.command = lib.getExe pkgs.taplo;
