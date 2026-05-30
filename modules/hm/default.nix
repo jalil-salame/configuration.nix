@@ -140,16 +140,16 @@ in
           enableDefaultConfig = false;
           # Default config
           settings."Host *" = {
-            forwardAgent = lib.mkDefault false;
-            addKeysToAgent = lib.mkDefault "no";
-            compression = lib.mkDefault false;
-            serverAliveInterval = lib.mkDefault 0;
-            serverAliveCountMax = lib.mkDefault 3;
-            hashKnownHosts = lib.mkDefault false;
-            userKnownHostsFile = lib.mkDefault "~/.ssh/known_hosts";
-            controlMaster = lib.mkDefault "no";
-            controlPath = lib.mkDefault "~/.ssh/master-%r@%n:%p";
-            controlPersist = lib.mkDefault "no";
+            ForwardAgent = lib.mkDefault false;
+            AddKeysToAgent = lib.mkDefault "no";
+            Compression = lib.mkDefault false;
+            ServerAliveInterval = lib.mkDefault 0;
+            ServerAliveCountMax = lib.mkDefault 3;
+            HashKnownHosts = lib.mkDefault false;
+            UserKnownHostsFile = lib.mkDefault "~/.ssh/known_hosts";
+            ControlMaster = lib.mkDefault "no";
+            ControlPath = lib.mkDefault "~/.ssh/master-%r@%n:%p";
+            ControlPersist = lib.mkDefault "no";
           };
         };
         # cd replacement
