@@ -21,10 +21,7 @@
             {
               imports = [ (import ../modules/shared/starship.nix { inherit cfg; }) ];
               config = {
-                nixpkgs.overlays = [
-                  inputs.self.overlays.unstable
-                  inputs.self.overlays.lix
-                ];
+                nixpkgs.overlays = [ inputs.self.overlays.unstable ];
               };
             };
         in
