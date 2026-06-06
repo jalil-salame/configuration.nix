@@ -3,64 +3,30 @@ on:
     branches: [main]
   pull_request:
 jobs:
-  check-fmt:
+  build-packages:
     runs-on: nixos
-    steps:
-      - uses: https://git.salame.cl/actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
-      - run: nix --version
-      - name: Run treefmt
-        run: |
-          nix build --print-build-logs ".#checks.$(nix eval --raw --impure --expr builtins.currentSystem).treefmt"
-  build-package:
-    runs-on: nixos
-    needs: check-fmt
-    strategy:
-      matrix:
-        package:
-          - audiomenu
-          - docs
-          - docs-home-markdown
-          - docs-nixos-markdown
-          - docs-nvim-markdown
-          - jpassmenu
-          - nvim
-          - nvim-headless
-          - nvim-no-lsps
-          - nvim-no-ts
-          - nvim-small
     steps:
       - uses: "https://git.salame.cl/actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10" # v6
       - run: nix --version
-      - name: Build target
-        env:
-          PACKAGE: ${{ matrix.package }}
+      - name: Build packages
         run: |
-          # shellcheck disable=SC2016
-          nix build --print-build-logs ".#$PACKAGE"
-  check-nvim:
+          nix-fast-build --no-nom --skip-cached --eval-workers 2 --flake .#packages.x86_64-linux
+  checks:
     runs-on: nixos
-    needs: build-package
-    strategy:
-      matrix:
-        nvim:
-          - nvim
-          - nvim-headless
-          - nvim-no-lsps
-          - nvim-no-ts
-          - nvim-small
+    needs: build-packages
     steps:
       - uses: "https://git.salame.cl/actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10" # v6
       - run: nix --version
-      - name: Build target
+      - name: Run checks
         env:
           NVIM: ${{ matrix.nvim }}
         run: |
-          nix build --print-build-logs ".#checks.$(nix eval --raw --impure --expr builtins.currentSystem).$NVIM"
+          nix-fast-build --no-nom --skip-cached --eval-workers 2 --flake .#checks.x86_64-linux
   build-vm:
     runs-on: nixos
     needs:
-      - build-package
-      - check-nvim
+      - build-packages
+      - checks
     steps:
       - uses: "https://git.salame.cl/actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10" # v6
       - run: nix --version
@@ -70,8 +36,8 @@ jobs:
   build-hm:
     runs-on: nixos
     needs:
-      - build-package
-      - check-nvim
+      - build-packages
+      - checks
     steps:
       - uses: "https://git.salame.cl/actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10" # v6
       - run: nix --version
