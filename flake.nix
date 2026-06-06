@@ -37,7 +37,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     # For deduplication
-    systems.url = "github:nix-systems/default";
+    systems.url = "github:nix-systems/default/future-26.11";
   };
 
   # Flake outputs that other flakes can use
