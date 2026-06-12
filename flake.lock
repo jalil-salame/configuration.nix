@@ -88,11 +88,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1781038653,
-        "narHash": "sha256-MxUVyE7A5QMJXOEFQhOHsqs4UPhujeDgdFhguE7Wmic=",
+        "lastModified": 1781287895,
+        "narHash": "sha256-980eQ7c4HeblAy/gUxrYw9GmZHerC9qsjG/2NsbT0Xo=",
         "owner": "nix-community",
         "repo": "nixvim",
-        "rev": "e7ce6708cc5b6275406a8feee06ca50c5cafd6bf",
+        "rev": "d5a4ff853474e0459402ff307545c6df70b267e6",
         "type": "github"
       },
       "original": {
@@ -152,11 +152,11 @@
     },
     "unstable": {
       "locked": {
-        "lastModified": 1780749050,
-        "narHash": "sha256-G5B1h4sOH4DN/RZ85xYi6zPm2MHdOrNMeUmMslZ28Qs=",
-        "rev": "a799d3e3886da994fa307f817a6bc705ae538eeb",
+        "lastModified": 1781074563,
+        "narHash": "sha256-d34lhgOet4IqYMnCxbIvwFBMOyTV6PT4TyNEOP0/ZhU=",
+        "rev": "9ae611a455b90cf061d8f332b977e387bda8e1ca",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1011622.a799d3e3886d/nixexprs.tar.xz?lastModified=1780749050&rev=a799d3e3886da994fa307f817a6bc705ae538eeb"
+        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1014179.9ae611a455b9/nixexprs.tar.xz?lastModified=1781074563&rev=9ae611a455b90cf061d8f332b977e387bda8e1ca"
       },
       "original": {
         "type": "tarball",
