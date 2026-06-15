@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
       - name: Install lix
-        uses: samueldr/lix-gha-installer-action@f5e94192f565f53d84f41a056956dc0d3183b343 # latest
+        uses: samueldr/lix-gha-installer-action@a0fee77b2a98bb7c5c0ed7ae6d6ad4903dbdad0d # latest
       - name: Run `nix flake check`
         run: |
           nix run nixpkgs#statix -- check .
@@ -21,7 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
       - name: Install lix
-        uses: samueldr/lix-gha-installer-action@f5e94192f565f53d84f41a056956dc0d3183b343 # latest
+        uses: samueldr/lix-gha-installer-action@a0fee77b2a98bb7c5c0ed7ae6d6ad4903dbdad0d # latest
       - name: Build documentation
         run: nix build .#docs --print-build-logs
       - name: Upload artifact
