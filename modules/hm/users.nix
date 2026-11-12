@@ -32,7 +32,7 @@ in
       jujutsu.settings = {
         # Use the more up-to-date version of jj
         user = lib.mkIf (cfg.defaultIdentity != null) { inherit (cfg.defaultIdentity) name email; };
-        git.sign-on-push = lib.mkDefault hasKey;
+        revsets.git-sign-on-push = lib.mkIf hasKey "~signed() & mine()";
         # Setup Key
         signing = lib.mkIf hasKey { key = signingKey; };
       };

@@ -124,7 +124,9 @@ in
               {
                 # If we are signing on push, then drop signatures when rewriting commits otherwise sign commits authored by me
                 behavior = lib.mkDefault (
-                  if lib.attrsets.attrByPath [ "git" "sign-on-push" ] false config.programs.jujutsu.settings then
+                  if
+                    lib.attrsets.attrByPath [ "revsets" "git-sign-on-push" ] false config.programs.jujutsu.settings
+                  then
                     "drop"
                   else
                     "own"
